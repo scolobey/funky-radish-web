@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import RecipeList from './components/RecipeList';
 import Menu from './components/Menu';
+import AuthView from './components/AuthView';
 import './App.css';
 
 import PrivacyPolicy from './components/PrivacyPolicy';
@@ -16,6 +17,7 @@ class App extends Component {
     this.state = {
       menu: false
     };
+
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
@@ -41,6 +43,7 @@ class App extends Component {
           <div className="content">
             <Route path="/" exact component={RecipeList} />
             <Route path="/about/" component={About} />
+            <Route path="/login/" component={AuthView} />
             <Route path="/privacy/" component={PrivacyPolicy} />
           </div>
 

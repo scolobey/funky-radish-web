@@ -7,13 +7,10 @@ body {
   margin: 0px !important;
   padding: 0px !important;
   max-width: 100%;
-  overflow-x: hidden;
 }
 
-body > #root > div {
-  background: rgb(255,255,255);
-  background: linear-gradient(rgba(255,255,255,1) 3%, rgba(162,255,177,1) 44%);
+body > #root {
   height: 100%;
   width: 100%;
-  background-attachment: fixed;
+
 }
