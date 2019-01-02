@@ -1,6 +1,4 @@
 body {
-  margin: 0;
-  padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -8,7 +6,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+body > #root > div {
+  background: rgb(255,255,255);
+  background: linear-gradient(rgba(255,255,255,1) 20%, rgba(162,255,177,1) 74%);
+  height: 100vh;
 }
