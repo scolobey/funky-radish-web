@@ -26,7 +26,7 @@ class App extends Component {
 
           <Menu open={this.state.menu ? true : false} />
 
-          <header className="App-header">
+          <header className="header">
             <a href="/">
               <img className="icon" src={icon} alt="Logo"/>
             </a>

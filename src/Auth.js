@@ -10,6 +10,7 @@ export default class Auth {
 
   getToken = () => {
     let token = localStorage.getItem('access_token');
+    console.log("token", token)
     return token
   }
 }
