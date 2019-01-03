@@ -15,6 +15,12 @@ class Menu extends Component {
             <a href='./login'>Login</a>
           </li>
           <li>
+            <a href='./roadmap'>Road Map</a>
+          </li>
+          <li>
+            <a href='./about'>About</a>
+          </li>
+          <li>
             <a href='./privacy'>Privacy</a>
           </li>
         </ul>

@@ -7,10 +7,10 @@ body {
   margin: 0px !important;
   padding: 0px !important;
   max-width: 100%;
+  overflow-x: hidden;
 }
 
 body > #root {
   height: 100%;
   width: 100%;
-
 }

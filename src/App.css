@@ -7,6 +7,120 @@
   padding-left: 50px;
 }
 
+.icon {
+  width: 5%;
+  height: auto;
+}
+
+.content {
+  padding-top: 150px;
+  min-height: 100vh;
+  min-width: 100vh;
+  background: linear-gradient(rgba(255,255,255,1) 23%, rgba(162,255,177,1) 64%);
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+/* Recipe list */
+
+.RecipeList {
+  width: 100%;
+  margin: auto;
+}
+
+.Recipe {
+  background-color: white;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: thin;
+  border-color: rgb(168,168,168);
+  padding: 40px;
+  margin: 50px;
+  list-style-type: none;
+  overflow: auto;
+  box-shadow: 2px 2px #888888;
+}
+
+.Title {
+  margin-bottom: 15px;
+}
+
+.Ingredients ul{
+  list-style-type: none;
+  display: inline;
+  width: 30%;
+  float:left;
+}
+
+.Directions ul{
+  list-style-type: none;
+  display: inline-block;
+  width: 55%;
+  float:left;
+}
+
+/* Privacy policy */
+
+.Privacy {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  border: solid;
+  border-width: thin;
+  border-radius: 20px;
+  margin-top: 50px;
+  padding: 4vh;
+  left: 12%;
+  width: 75%;
+  margin-bottom: 75px;
+}
+
+.Privacy h2 {
+  font-size: 36px;
+}
+
+.Privacy strong {
+  font-size: 24px;
+}
+
+.Privacy p {
+  font-size: 12px;
+}
+
+/* Roadmap */
+
+.RoadMap {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  border: solid;
+  border-width: thin;
+  border-radius: 20px;
+  margin-top: 50px;
+  padding: 4vh;
+  width: 75%;
+  font-size: 36px;
+  margin-bottom: 75px;
+}
+
+/* About */
+
+.About {
+  width: 100%;
+  margin: auto;
+  background-color: white;
+  border: solid;
+  border-width: thin;
+  border-radius: 20px;
+  margin-top: 50px;
+  padding: 4vh;
+  left: 12%;
+  width: 75%;
+  margin-bottom: 75px;
+}
+
+/* Authorization */
+
 .auth-container {
   width: 100vw;
   height: 100vh;
@@ -73,19 +187,7 @@
   background-image: linear-gradient(to right, #84fab0 12%, #8fd3f4 84%);
 }
 
-.content {
-  padding-top: 150px;
-  min-height: 100vh;
-  min-width: 100vh;
-  background: linear-gradient(rgba(255,255,255,1) 23%, rgba(162,255,177,1) 64%);
-  background-attachment: fixed !important;
-  overflow: hidden !important;
-}
-
-.icon {
-  width: 5%;
-  height: auto;
-}
+/* Hamburger menu */
 
 #Nav-Icon {
   width: 50px;
@@ -161,47 +263,8 @@
   left: 50%;
 }
 
-.RecipeListContainer {
-  /* background: rgb(255,255,255);
-  background: linear-gradient(rgba(255,255,255,1) 3%, rgba(162,255,177,1) 44%);
-  width: 100%;
-  background-attachment: fixed; */
-}
-
-.RecipeList {
-  width: 100%;
-  margin: auto;
-}
-
-.Recipe {
-  background-color: white;
-  border-radius: 20px;
-  border-style: solid;
-  border-width: thin;
-  border-color: rgb(168,168,168);
-  padding: 40px;
-  margin: 50px;
-  list-style-type: none;
-  overflow: auto;
-  box-shadow: 2px 2px #888888;
-}
-
-.Ingredients ul{
-  list-style-type: none;
-  display: inline;
-  width: 30%;
-  float:left;
-}
-
-.Directions ul{
-  list-style-type: none;
-  display: inline-block;
-  width: 55%;
-  float:left;
-}
-
 #menu {
-  position: absolute;
+  position: fixed;
   top: 20vh;
   right: 0px;
   height: 75%;
@@ -232,28 +295,4 @@
 
 #menu.open {
   transform: translateX(10%);
-}
-
-.Privacy {
-  position: absolute;
-  background-color: white;
-  border: solid;
-  border-width: thin;
-  border-radius: 20px;
-  margin-top: 50px;
-  padding: 4vh;
-  left: 12%;
-  width: 75%;
-}
-
-.Privacy h2 {
-  font-size: 36px;
-}
-
-.Privacy strong {
-  font-size: 24px;
-}
-
-.Privacy p {
-  font-size: 12px;
 }

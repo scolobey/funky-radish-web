@@ -141,7 +141,9 @@ class RecipeList extends Component {
             {this.state.recipes.map(recipe => (
               <div className="Recipe">
                 <li key={recipe._id}>
-                  <b>{recipe.title}</b>
+                  <div className="Title">
+                    <b>{recipe.title}</b>
+                  </div>
                   <div className="Ingredients">
                     <ul>
                       {recipe.ingredients.map(ingredient => (
@@ -152,13 +154,13 @@ class RecipeList extends Component {
                     </ul>
                   </div>
                   <div className="Directions">
-                    <ul>
+                    <ol>
                       {recipe.directions.map(direction => (
                         <li>
                           {direction}
                         </li>
                       ))}
-                    </ul>
+                    </ol>
                   </div>
                 </li>
               </div>
