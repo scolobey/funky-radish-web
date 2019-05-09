@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { login, signup } from "../actions/Actions";
 
 class AuthView extends Component {
   constructor(props) {
     super(props);
+
+    let loginProxy = false;
+
+    if (props.login == null) {
+      loginProxy = true;
+    }
+
     // Any number of links can be added here
     this.state = {
-      login: props.login || false,
+      login: loginProxy,
       email: '',
       username: '',
       password: ''
@@ -18,9 +27,13 @@ class AuthView extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username);
-    console.log(this.state.email);
-    console.log(this.state.password);
+
+    if (this.state.login) {
+      this.props.login({email: this.state.email, password: this.state.password});
+    }
+    else {
+      this.props.signup({email: this.state.email, password: this.state.password, username: this.state.username});
+    }
   }
 
   toggleMode = (event) => {
@@ -51,4 +64,12 @@ class AuthView extends Component {
   }
 }
 
-export default AuthView;
+function mapStateToProps(state) {
+  return {
+    email: state.email,
+    password: state.password,
+    username: state.username
+  };
+}
+
+export default connect(mapStateToProps, { login, signup })(AuthView);

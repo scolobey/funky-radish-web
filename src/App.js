@@ -1,61 +1,38 @@
 import React, { Component } from 'react';
-import icon from './icon.png';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import NavBar from './components/NavBar';
 
 import RecipeList from './components/RecipeList';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import RoadMap from './components/RoadMap';
 import About from './components/About';
+import List from "./components/List";
+import Builder from "./components/Builder";
+import Post from "./components/Posts.js";
 
-import Menu from './components/Menu';
 import AuthView from './components/AuthView';
+
 import './App.css';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menu: false
-    };
-
-    this.toggleMenu = this.toggleMenu.bind(this);
-  }
-
   render() {
     return (
-      <Router>
-        <div className="App">
-
-          <Menu open={this.state.menu ? true : false} />
-
-          <header className="header">
-            <a href="/">
-              <img className="icon" src={icon} alt="Logo"/>
-            </a>
-            <div id="Nav-Icon" className={this.state.menu ? 'open' : ''} onClick={this.toggleMenu}>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </header>
-
-          <div className="content">
-            <Route path="/" exact component={RecipeList} />
-            <Route path="/login/" component={AuthView} />
-            <Route path="/about/" component={About} />
-            <Route path="/roadmap/" component={RoadMap} />
-            <Route path="/privacy/" component={PrivacyPolicy} />
-          </div>
-
+      <div>
+        <NavBar />
+        <div className="content">
+          <Route path="/:filter?" component={RecipeList} />
+          <Route path="/login/" exact component={AuthView} />
+          <Route path="/signup/" exact render={(props) => <AuthView {...props} login={false} />}  />
+          <Route path="/about/" exact component={About} />
+          <Route path="/roadmap/" component={RoadMap} />
+          <Route path="/privacy/" component={PrivacyPolicy} />
+          <Route path="/list/" component={List} />
+          <Route path="/builder/" component={Builder} />
+          <Route path="/posts/" component={Post} />
         </div>
-      </Router>
+      </div>
     );
-  }
-
-  toggleMenu(e) {
-    e.stopPropagation();
-    this.setState({ menu: !this.state.menu });
   }
 }
 
