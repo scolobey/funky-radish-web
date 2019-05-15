@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getToken } from "../actions/Actions";
 
-export class Post extends Component {
+export class Recipes extends Component {
 
   componentDidMount() {
     this.props.getToken();
@@ -53,4 +53,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { getToken })(Post);
+export default connect(mapStateToProps, { getToken })(Recipes);

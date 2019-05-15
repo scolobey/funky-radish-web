@@ -1,4 +1,4 @@
-import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, RECIPE_LOAD_FAILED } from "../constants/action-types";
+import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME } from "../constants/action-types";
 
 const initialState = {
   recipes: [],
@@ -14,9 +14,18 @@ function rootReducer(state = initialState, action) {
    }
 
     if (action.type === RECIPES_LOADED) {
-      console.log(action.payload);
+      console.log("setting recipes.")
       return Object.assign({}, state, {
-        remoteRecipes: state.remoteRecipes.concat(action.payload)
+        redirect: true,
+        remoteRecipes: action.payload
+      });
+    }
+
+    if (action.type === SET_USERNAME) {
+      console.log("setting user");
+      console.log(action.user);
+      return Object.assign({}, state, {
+        user: action.user
       });
     }
 
@@ -26,12 +35,6 @@ function rootReducer(state = initialState, action) {
         warnings: state.warnings.concat({message: "This recipe may be inappropriate.", id: action.recipeID})
       });
      }
-
-     if (action.type === RECIPE_LOAD_FAILED) {
-       return Object.assign({}, state, {
-         warnings: state.warnings.concat({message: "Recipes failed to load.", error: action.error})
-       });
-      }
 
    return state;
 };

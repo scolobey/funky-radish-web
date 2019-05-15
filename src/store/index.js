@@ -5,7 +5,7 @@ import {
   tokenCollectionMiddleware,
   recipeLoadingMiddleware,
   loginMiddleware,
-  signupMiddleware
+  signupMiddleware,
 } from "../middleware";
 import thunk from "redux-thunk";
 

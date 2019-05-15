@@ -3,13 +3,13 @@ import {
   ADD_RECIPE,
   FLAG_RECIPE,
   RECIPES_LOADED,
-  RECIPE_LOAD_FAILED,
   GET_TOKEN,
   AUTH_FAILED,
   CREATE_USER,
   LOGIN,
   SIGNUP,
-  WARNING
+  WARNING,
+  SET_USERNAME
 } from "../constants/action-types"
 
 /* other constants */
@@ -21,7 +21,6 @@ export const MenuOpen = false
 export function warning(error) {
   return { type: WARNING, error }
 };
-
 
 // Auth
 export function login(user) {
@@ -46,7 +45,6 @@ export function createUser(email) {
 
 
 // Recipes
-
 export function getRecipes(token) {
   return { type: GET_RECIPES, token }
 };
@@ -59,10 +57,10 @@ export function flagRecipe(recipeID) {
   return { type: FLAG_RECIPE, recipeID }
 };
 
-export function recipeLoadFailed(message) {
-  return { type: RECIPE_LOAD_FAILED, message }
+export function recipesLoaded(payload) {
+  return { type: RECIPES_LOADED, payload }
 };
 
-export function recipesLoaded(message) {
-  return { type: RECIPES_LOADED, message }
+export function setUsername(user) {
+  return { type: SET_USERNAME, user }
 };

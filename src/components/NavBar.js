@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-
 import Menu from './Menu';
-
 import icon from '../icon.png';
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       menu: false
     };
@@ -14,12 +13,16 @@ class NavBar extends Component {
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
+  toggleMenu(e) {
+    e.stopPropagation();
+    this.setState({ menu: !this.state.menu });
+  }
+
   render() {
     return (
-
         <div className="App">
 
-          <Menu open={this.state.menu ? true : false} />
+          <Menu open={this.state.menu ? true : false}/>
 
           <header className="header">
             <a href="/">
@@ -34,13 +37,7 @@ class NavBar extends Component {
           </header>
 
         </div>
-
     );
-  }
-
-  toggleMenu(e) {
-    e.stopPropagation();
-    this.setState({ menu: !this.state.menu });
   }
 }
 

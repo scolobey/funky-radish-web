@@ -2,14 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addRecipe } from "../actions/Actions";
-import List from "./List";
-
-
-function mapDispatchToProps(dispatch) {
-  return {
-    addRecipe: recipe => dispatch(addRecipe(recipe))
-  };
-}
+import Recipes from "./Recipes";
 
 class ConnectedForm extends Component {
 
@@ -81,10 +74,16 @@ class ConnectedForm extends Component {
           </button>
         </form>
       </div>,
-      <List/>
+      <Recipes/>
     ]
     );
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addRecipe: recipe => dispatch(addRecipe(recipe))
+  };
 }
 
 const Builder = connect(null, mapDispatchToProps)(ConnectedForm);

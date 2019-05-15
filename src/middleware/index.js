@@ -2,8 +2,6 @@ import {
   ADD_RECIPE,
   GET_TOKEN,
   GET_RECIPES,
-  RECIPES_LOADED,
-  RECIPE_LOAD_FAILED,
   LOGIN,
   SIGNUP
 } from "../constants/action-types";
@@ -13,7 +11,9 @@ import {
   getRecipes,
   authFailed,
   getToken,
-  warning
+  warning,
+  recipesLoaded,
+  setUsername
 } from "../actions/Actions";
 
 import Auth from '../Auth'
@@ -61,8 +61,6 @@ export function signupMiddleware({ dispatch }) {
             return dispatch(warning({message: "Unidentified validation error."}));
         }
 
-        console.log(action.user)
-
         var params = {
           name: action.user.username,
           email: action.user.email,
@@ -79,16 +77,18 @@ export function signupMiddleware({ dispatch }) {
           }),
           body: JSON.stringify(params)
         })
-        .then(res=>res.clone().json())
+        .then(res=> {
+          return res.clone().json()
+        })
         .then(data => {
-          console.log("wegotsomethinghere");
-          console.log(data);
-
           if (data.message != "User created successfully.") {
             dispatch(warning({message: "Failed to retrieve token."}));
           } else {
             auth.setSession(data.token, action.user.email);
-            return dispatch(getRecipes(data.token));
+            dispatch(setUsername(action.user.email));
+            // go to main recipe list.
+            var recipes = new Array();
+            return dispatch(recipesLoaded(recipes));
           }
         })
         .catch(err => console.log('Error: ' + err))
@@ -104,9 +104,21 @@ export function tokenCollectionMiddleware({ dispatch }) {
       // do your stuff
       if (action.type === GET_TOKEN) {
 
+        let token = auth.getToken();
+
+        if (token) {
+          console.log("token exists.")
+          console.log(token)
+          return dispatch(getRecipes(token));
+        }
+
+        if (!action.authData || !action.authData) {
+          return dispatch(authFailed("not logged in."));
+        }
+
         var params = {
-          email: 'matador@gmail.com',
-          password: 'matador123'
+          email: action.authData.email,
+          password: action.authData.password
         };
 
         var formBody = [];
@@ -127,11 +139,9 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(response => response.json())
         .then(data => {
           if (!data.success) {
-            console.log("Failed to retrieve a token.")
             return dispatch(authFailed(data.message ));
           } else {
-            console.log(data.token);
-            console.log("sending token");
+            auth.setSession(data.token, action.authData.email);
             return dispatch(getRecipes(data.token));
           }
         })
@@ -155,12 +165,12 @@ export function recipeLoadingMiddleware({ dispatch }) {
         })
         .then(response => response.json())
           .then(json => {
-            console.log("recipes loaded I think");
-            return dispatch({ type: RECIPES_LOADED, payload: json });
+            let user = auth.getUser();
+            dispatch(setUsername(user));
+            return dispatch(recipesLoaded(json));
           })
           .catch(error => {
-            console.log("recipe load failed");
-            return dispatch({ type: RECIPE_LOAD_FAILED, payload: error });
+            return dispatch(warning({message: "Recipe load failed."}));
           });
 
       }

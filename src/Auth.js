@@ -7,7 +7,8 @@ export default class Auth {
 
   logout = () => {
     console.log("called logout");
-    localStorage.removeItem('access_token', 'user');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
   }
 
   getToken = () => {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { setUsername, recipesLoaded } from "../actions/Actions";
+
 import Auth from '../Auth'
-import { BrowserRouter as Link } from "react-router-dom";
 
 const auth = new Auth();
 
@@ -8,32 +10,23 @@ class Menu extends Component {
   constructor(props) {
     super(props);
 
-    let authUser = auth.getUser()
-    let user = ""
-    if (authUser != "undefined") {
-      user = authUser;
-    }
-
-    this.state = {
-      user: user
-    }
-
     this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleLogout(event) {
     event.preventDefault();
 
-    console.log("clickety click");
-    this.setState({user: ""});
+    let recipes = new Array();
+    this.props.setUsername("");
+    this.props.recipesLoaded(recipes);
     auth.logout();
   }
 
   renderUserState() {
-    if (this.state.user && this.state.user.length > 0) {
+    if (this.props.user && this.props.user.length > 0) {
         return (
           [
-            <li key='1'><h2>{this.state.user}</h2></li>,
+            <li key='1'>{this.props.user}</li>,
             <li key='2'><a href='/' onClick={this.handleLogout} >Logout</a></li>
           ]
         );
@@ -69,4 +62,10 @@ class Menu extends Component {
   }
 }
 
-export default Menu;
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+export default connect(mapStateToProps, { setUsername, recipesLoaded })(Menu);
