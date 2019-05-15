@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { setUsername, recipesLoaded } from "../actions/Actions";
+import { setUsername, recipesLoaded, toggleMenu } from "../actions/Actions";
 
 import Auth from '../Auth'
 
@@ -19,6 +19,7 @@ class Menu extends Component {
     let recipes = new Array();
     this.props.setUsername("");
     this.props.recipesLoaded(recipes);
+    this.props.toggleMenu();
     auth.logout();
   }
 
@@ -44,7 +45,7 @@ class Menu extends Component {
 
   render() {
     return (
-      <div className={this.props.open ? 'open' : ''} id='menu'>
+      <div className={this.props.menu ? 'open' : ''} id='menu'>
         <ul>
           {this.renderUserState()}
           <li key='5'>
@@ -64,8 +65,9 @@ class Menu extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
+    menu: state.menu
   };
 }
 
-export default connect(mapStateToProps, { setUsername, recipesLoaded })(Menu);
+export default connect(mapStateToProps, { setUsername, recipesLoaded, toggleMenu })(Menu);

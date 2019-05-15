@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { toggleMenu } from "../actions/Actions";
 import Menu from './Menu';
 import icon from '../icon.png';
 
@@ -6,29 +8,25 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      menu: false
-    };
-
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
   toggleMenu(e) {
     e.stopPropagation();
-    this.setState({ menu: !this.state.menu });
+    this.props.toggleMenu();
   }
 
   render() {
     return (
         <div className="App">
 
-          <Menu open={this.state.menu ? true : false}/>
+          <Menu/>
 
           <header className="header">
             <a href="/">
               <img className="icon" src={icon} alt="Logo"/>
             </a>
-            <div id="Nav-Icon" className={this.state.menu ? 'open' : ''} onClick={this.toggleMenu}>
+            <div id="Nav-Icon" className={this.props.menu ? 'open' : ''} onClick={this.toggleMenu}>
               <span></span>
               <span></span>
               <span></span>
@@ -41,4 +39,10 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+function mapStateToProps(state) {
+  return {
+    menu: state.menu
+  };
+}
+
+export default connect(mapStateToProps, { toggleMenu })(NavBar);

@@ -1,4 +1,4 @@
-import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME } from "../constants/action-types";
+import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME, TOGGLE_MENU } from "../constants/action-types";
 
 const initialState = {
   recipes: [],
@@ -26,6 +26,12 @@ function rootReducer(state = initialState, action) {
       console.log(action.user);
       return Object.assign({}, state, {
         user: action.user
+      });
+    }
+
+    if (action.type === TOGGLE_MENU) {
+      return Object.assign({}, state, {
+        menu: !state.menu
       });
     }
 

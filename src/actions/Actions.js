@@ -9,7 +9,8 @@ import {
   LOGIN,
   SIGNUP,
   WARNING,
-  SET_USERNAME
+  SET_USERNAME,
+  TOGGLE_MENU
 } from "../constants/action-types"
 
 /* other constants */
@@ -63,4 +64,8 @@ export function recipesLoaded(payload) {
 
 export function setUsername(user) {
   return { type: SET_USERNAME, user }
+};
+
+export function toggleMenu() {
+  return { type: TOGGLE_MENU }
 };
