@@ -3,7 +3,8 @@ import {
   GET_TOKEN,
   GET_RECIPES,
   LOGIN,
-  SIGNUP
+  SIGNUP,
+  WARNING
 } from "../constants/action-types";
 
 import {
@@ -14,7 +15,8 @@ import {
   warning,
   recipesLoaded,
   setUsername,
-  toggleLoader
+  toggleLoader,
+  warningToggle
 } from "../actions/Actions";
 
 import Auth from '../Auth'
@@ -201,6 +203,22 @@ export function recipeModerationMiddleware({ dispatch }) {
         if (foundWord.length) {
           return dispatch(flagRecipe(action.recipe.id));
         }
+      }
+      return next(action);
+    };
+  };
+}
+
+export function warningCycleMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      // do your stuff
+      if (action.type === WARNING) {
+
+        setInterval(() => {
+          return dispatch(warningToggle());
+        }, 2000);
+
       }
       return next(action);
     };

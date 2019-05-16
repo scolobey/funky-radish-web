@@ -27,7 +27,8 @@ class Menu extends Component {
     if (this.props.user && this.props.user.length > 0) {
         return (
           [
-            <li key='1'>{this.props.user}</li>,
+            <li key='1' className="user-label">{this.props.user}</li>,
+            <hr></hr>,
             <li key='2'><a href='/' onClick={this.handleLogout} >Logout</a></li>
           ]
         );

@@ -6,7 +6,7 @@ class Loader extends Component {
     return ( !this.props.loader ? (<div></div>) : (
       <div className="loader-container">
         <svg version="1.1"
-        	class="svg-loader"
+        	className="svg-loader"
         	x="0px"
         	y="0px"
         	viewBox="0 0 80 80">

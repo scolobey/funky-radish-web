@@ -11,6 +11,7 @@ import Recipes from "./components/Recipes.js";
 
 import AuthView from './components/AuthView';
 import Loader from "./components/Loader";
+import Warning from "./components/Warning";
 
 import './App.css';
 
@@ -18,6 +19,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Warning />
         <Loader />
         <NavBar />
         <div className="content">

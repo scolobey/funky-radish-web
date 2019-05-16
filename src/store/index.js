@@ -6,6 +6,7 @@ import {
   recipeLoadingMiddleware,
   loginMiddleware,
   signupMiddleware,
+  warningCycleMiddleware
 } from "../middleware";
 import thunk from "redux-thunk";
 
@@ -19,6 +20,7 @@ const store = createStore(
       recipeLoadingMiddleware,
       loginMiddleware,
       signupMiddleware,
+      warningCycleMiddleware,
       thunk
   ))
 );

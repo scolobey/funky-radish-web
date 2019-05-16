@@ -11,7 +11,8 @@ import {
   WARNING,
   SET_USERNAME,
   TOGGLE_MENU,
-  TOGGLE_LOADER
+  TOGGLE_LOADER,
+  WARNING_TOGGLE
 } from "../constants/action-types"
 
 /* other constants */
@@ -73,4 +74,8 @@ export function toggleMenu() {
 
 export function toggleLoader(loader) {
   return { type: TOGGLE_LOADER, loader }
+};
+
+export function warningToggle() {
+  return { type: WARNING_TOGGLE }
 };

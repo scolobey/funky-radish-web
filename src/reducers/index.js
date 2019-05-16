@@ -1,4 +1,4 @@
-import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER } from "../constants/action-types";
+import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE } from "../constants/action-types";
 
 const initialState = {
   recipes: [],
@@ -35,6 +35,18 @@ function rootReducer(state = initialState, action) {
     if (action.type === TOGGLE_LOADER) {
       return Object.assign({}, state, {
         loader: action.loader
+      });
+    }
+
+    if (action.type === WARNING) {
+      return Object.assign({}, state, {
+        warnings: state.warnings.concat({message: action.error})
+      });
+    }
+
+    if (action.type === WARNING_TOGGLE) {
+      return Object.assign({}, state, {
+        warnings: state.warnings.slice(1)
       });
     }
 
