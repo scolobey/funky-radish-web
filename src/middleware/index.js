@@ -34,11 +34,11 @@ export function loginMiddleware({ dispatch }) {
           case 1:
             return dispatch(getToken({email: action.user.email, password: action.user.password}));
           case 2:
-            return dispatch(warning({message: "Invalid password."}));
+            return dispatch(warning("Invalid password."));
           case 3:
-            return dispatch(warning({message: "Invalid email."}));
+            return dispatch(warning("Invalid email."));
           default:
-            return dispatch(warning({message: "Unidentified validation error."}));
+            return dispatch(warning("Unidentified validation error."));
         }
 
       }
@@ -57,11 +57,11 @@ export function signupMiddleware({ dispatch }) {
           case 1:
             break;
           case 2:
-            return dispatch(warning({message: "Invalid password."}));
+            return dispatch(warning("Password needs 8 characters and a number."));
           case 3:
-            return dispatch(warning({message: "Invalid email."}));
+            return dispatch(warning("Invalid email."));
           default:
-            return dispatch(warning({message: "Unidentified validation error."}));
+            return dispatch(warning("Unidentified validation error."));
         }
 
         var params = {
@@ -88,7 +88,7 @@ export function signupMiddleware({ dispatch }) {
         .then(data => {
           if (data.message != "User created successfully.") {
             dispatch(toggleLoader(false));
-            dispatch(warning({message: "Failed to retrieve token."}));
+            dispatch(warning(data.message));
           } else {
             auth.setSession(data.token, action.user.email);
             dispatch(setUsername(action.user.email));
@@ -148,7 +148,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(data => {
           if (!data.success) {
             dispatch(toggleLoader(false));
-            return dispatch(authFailed(data.message ));
+            return dispatch(warning(data.message ));
           } else {
             auth.setSession(data.token, action.authData.email);
             return dispatch(getRecipes(data.token));
@@ -182,7 +182,7 @@ export function recipeLoadingMiddleware({ dispatch }) {
           })
           .catch(error => {
             dispatch(toggleLoader(false));
-            return dispatch(warning({message: "Recipe load failed."}));
+            return dispatch(warning("Recipe load failed."));
           });
 
       }
@@ -217,7 +217,7 @@ export function warningCycleMiddleware({ dispatch }) {
 
         setInterval(() => {
           return dispatch(warningToggle());
-        }, 2000);
+        }, 3000);
 
       }
       return next(action);

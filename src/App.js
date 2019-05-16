@@ -23,7 +23,7 @@ class App extends Component {
         <Loader />
         <NavBar />
         <div className="content">
-          <Route path="/:filter?" component={Recipes} />
+          <Route path="/" exact component={Recipes} />
           <Route path="/login/" exact component={AuthView} />
           <Route path="/signup/" exact component={AuthView} />
           <Route path="/about/" exact component={About} />

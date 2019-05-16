@@ -33,7 +33,7 @@ class ConnectedForm extends Component {
     const { title } = this.state;
 
     return (
-      [<div className="builder">
+      <div className="builder">
         <form onSubmit={this.handleSubmit}>
 
           <div className="title">
@@ -73,9 +73,7 @@ class ConnectedForm extends Component {
             SAVE
           </button>
         </form>
-      </div>,
-      <Recipes/>
-    ]
+      </div>
     );
   }
 }
