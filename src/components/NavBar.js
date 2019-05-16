@@ -34,6 +34,8 @@ class NavBar extends Component {
             </div>
           </header>
 
+          <div className="create-button"><a href="./builder">+</a></div>
+
         </div>
     );
   }

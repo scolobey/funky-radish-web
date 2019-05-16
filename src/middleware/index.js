@@ -13,7 +13,8 @@ import {
   getToken,
   warning,
   recipesLoaded,
-  setUsername
+  setUsername,
+  toggleLoader
 } from "../actions/Actions";
 
 import Auth from '../Auth'
@@ -69,6 +70,8 @@ export function signupMiddleware({ dispatch }) {
           recipes: []
         };
 
+        dispatch(toggleLoader(true));
+
         fetch("https://funky-radish-api.herokuapp.com/users", {
           method: 'post',
           headers: new Headers({
@@ -82,10 +85,12 @@ export function signupMiddleware({ dispatch }) {
         })
         .then(data => {
           if (data.message != "User created successfully.") {
+            dispatch(toggleLoader(false));
             dispatch(warning({message: "Failed to retrieve token."}));
           } else {
             auth.setSession(data.token, action.user.email);
             dispatch(setUsername(action.user.email));
+            dispatch(toggleLoader(false));
             // go to main recipe list.
             var recipes = new Array();
             return dispatch(recipesLoaded(recipes));
@@ -129,6 +134,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
         }
         formBody = formBody.join("&");
 
+        dispatch(toggleLoader(true));
         return fetch("https://funky-radish-api.herokuapp.com/authenticate", {
           method: 'post',
           headers: new Headers({
@@ -139,6 +145,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(response => response.json())
         .then(data => {
           if (!data.success) {
+            dispatch(toggleLoader(false));
             return dispatch(authFailed(data.message ));
           } else {
             auth.setSession(data.token, action.authData.email);
@@ -157,6 +164,7 @@ export function recipeLoadingMiddleware({ dispatch }) {
       // do your stuff
       if (action.type === GET_RECIPES) {
 
+        dispatch(toggleLoader(true));
         return fetch("https://funky-radish-api.herokuapp.com/recipes", {
           method: 'get',
           headers: new Headers({
@@ -167,9 +175,11 @@ export function recipeLoadingMiddleware({ dispatch }) {
           .then(json => {
             let user = auth.getUser();
             dispatch(setUsername(user));
+            dispatch(toggleLoader(false));
             return dispatch(recipesLoaded(json));
           })
           .catch(error => {
+            dispatch(toggleLoader(false));
             return dispatch(warning({message: "Recipe load failed."}));
           });
 

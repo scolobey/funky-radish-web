@@ -1,4 +1,4 @@
-import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME, TOGGLE_MENU } from "../constants/action-types";
+import { ADD_RECIPE, FLAG_RECIPE, RECIPES_LOADED, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER } from "../constants/action-types";
 
 const initialState = {
   recipes: [],
@@ -14,7 +14,6 @@ function rootReducer(state = initialState, action) {
    }
 
     if (action.type === RECIPES_LOADED) {
-      console.log("setting recipes.")
       return Object.assign({}, state, {
         redirect: true,
         remoteRecipes: action.payload
@@ -22,8 +21,6 @@ function rootReducer(state = initialState, action) {
     }
 
     if (action.type === SET_USERNAME) {
-      console.log("setting user");
-      console.log(action.user);
       return Object.assign({}, state, {
         user: action.user
       });
@@ -32,6 +29,12 @@ function rootReducer(state = initialState, action) {
     if (action.type === TOGGLE_MENU) {
       return Object.assign({}, state, {
         menu: !state.menu
+      });
+    }
+
+    if (action.type === TOGGLE_LOADER) {
+      return Object.assign({}, state, {
+        loader: action.loader
       });
     }
 

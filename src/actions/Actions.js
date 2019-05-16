@@ -10,7 +10,8 @@ import {
   SIGNUP,
   WARNING,
   SET_USERNAME,
-  TOGGLE_MENU
+  TOGGLE_MENU,
+  TOGGLE_LOADER
 } from "../constants/action-types"
 
 /* other constants */
@@ -68,4 +69,8 @@ export function setUsername(user) {
 
 export function toggleMenu() {
   return { type: TOGGLE_MENU }
+};
+
+export function toggleLoader(loader) {
+  return { type: TOGGLE_LOADER, loader }
 };

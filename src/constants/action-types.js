@@ -18,3 +18,4 @@ export const OPEN_MENU = 'OPEN_MENU';
 export const WARNING = 'WARNING';
 export const SET_USERNAME = 'SET_USERNAME';
 export const TOGGLE_MENU = 'TOGGLE_MENU';
+export const TOGGLE_LOADER = 'TOGGLE_LOADER';
