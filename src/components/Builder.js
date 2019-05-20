@@ -10,6 +10,8 @@ class ConnectedForm extends Component {
     super();
 
     this.state = {
+      ingredients: [],
+      directions: [],
       title: ""
     };
 
@@ -24,9 +26,15 @@ class ConnectedForm extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    const { title } = this.state;
-    const id = uuidv1();
-    this.props.addRecipe({ title, id });
+    const { title, ingredients, directions } = this.state;
+    const clientID = uuidv1();
+
+    this.props.addRecipe({
+      ingredients: ingredients.split("\n"),
+      directions: directions.split("\n"),
+      clientID: clientID,
+      title: title
+    });
   }
 
   render() {
@@ -53,7 +61,6 @@ class ConnectedForm extends Component {
               className="form-control"
               placeholder="ingredients"
               id="ingredients"
-              value="this is where the ingredients should go."
               onChange={this.handleChange}
             />
           </div>
@@ -64,7 +71,6 @@ class ConnectedForm extends Component {
               className="form-control"
               placeholder="directions"
               id="directions"
-              value="this is where the directions should go."
               onChange={this.handleChange}
             />
           </div>
@@ -78,12 +84,6 @@ class ConnectedForm extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    addRecipe: recipe => dispatch(addRecipe(recipe))
-  };
-}
-
-const Builder = connect(null, mapDispatchToProps)(ConnectedForm);
+const Builder = connect(null, {addRecipe})(ConnectedForm);
 
 export default Builder;
