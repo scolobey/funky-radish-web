@@ -5,6 +5,10 @@ export default class Auth {
     localStorage.setItem('user', user);
   }
 
+  setToken = (token) => {
+    localStorage.setItem('access_token', token);
+  }
+
   logout = () => {
     console.log("called logout");
     localStorage.removeItem('access_token');
