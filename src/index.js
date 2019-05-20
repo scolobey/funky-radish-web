@@ -7,7 +7,16 @@ import { Provider } from "react-redux";
 import * as serviceWorker from './serviceWorker';
 
 import store from "./store/index";
+import throttle from "lodash/throttle";
+import { saveState } from './stateLoader.js';
 import { addRecipe } from "./actions/Actions";
+
+store.subscribe(throttle(() => {
+  saveState({
+    remoteRecipes: store.getState().remoteRecipes,
+    warnings: store.getState().warnings
+  });
+}, 1000));
 
 window.store = store;
 window.addRecipe = addRecipe;
