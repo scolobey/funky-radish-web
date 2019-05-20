@@ -8,8 +8,8 @@ import {
 } from "../constants/action-types";
 
 import {
-  flagRecipe,
   getRecipes,
+  updateRecipe,
   authFailed,
   getToken,
   warning,
@@ -21,6 +21,8 @@ import {
 
 import Auth from '../Auth'
 const auth = new Auth();
+
+var moment = require('moment');
 
 const forbiddenWords = ["123abc"];
 
@@ -114,8 +116,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
         let token = auth.getToken();
 
         if (token) {
-          console.log("token exists.")
-          console.log(token)
           return dispatch(getRecipes(token));
         }
 
@@ -163,9 +163,8 @@ export function tokenCollectionMiddleware({ dispatch }) {
 export function recipeLoadingMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
-      // do your stuff
-      if (action.type === GET_RECIPES) {
 
+      if (action.type === GET_RECIPES) {
         dispatch(toggleLoader(true));
         return fetch("https://funky-radish-api.herokuapp.com/recipes", {
           method: 'get',
@@ -174,35 +173,70 @@ export function recipeLoadingMiddleware({ dispatch }) {
           })
         })
         .then(response => response.json())
-          .then(json => {
-            let user = auth.getUser();
-            dispatch(setUsername(user));
+        .then(json => {
+          if (json.message) {
+            dispatch(warning(json.message))
             dispatch(toggleLoader(false));
-            return dispatch(recipesLoaded(json));
-          })
-          .catch(error => {
-            dispatch(toggleLoader(false));
-            return dispatch(warning("Recipe load failed."));
-          });
+            auth.setToken("");
+            return dispatch(getToken());
+          }
 
+          let user = auth.getUser();
+          dispatch(setUsername(user));
+          dispatch(toggleLoader(false));
+          return dispatch(recipesLoaded(json));
+        })
+        .catch(error => {
+          dispatch(toggleLoader(false));
+          return dispatch(warning("Recipe load failed."));
+        });
       }
       return next(action);
     };
   };
 }
 
-export function recipeModerationMiddleware({ dispatch }) {
+export function addRecipeMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
-      // do your stuff
       if (action.type === ADD_RECIPE) {
+        let token = auth.getToken();
 
-        const foundWord = forbiddenWords.filter(word =>
-          action.recipe.title.includes(word)
-        );
-        if (foundWord.length) {
-          return dispatch(flagRecipe(action.recipe.id));
+        if (!token) {
+          return dispatch(warning("You're not logged in. Recipe will not be saved."));
         }
+
+        var date = new Date();
+        var formattedDate = moment.utc(date).format("YYYY-MM-DDTHH:mm:ss.sssz").replace(/UTC/, "Z");
+
+        var params = [{
+          ingredients: action.recipe.ingredients,
+          directions: action.recipe.directions,
+          updatedAt: formattedDate,
+          title: action.recipe.title,
+          clientID: action.recipe.clientID
+        }];
+
+        fetch("https://funky-radish-api.herokuapp.com/recipes", {
+          method: 'post',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          }),
+          body: JSON.stringify(params)
+        })
+        .then(res=> {
+          return res.clone().json()
+        })
+        .then(data => {
+          if (data.message) {
+            return dispatch(warning(data.message))
+          }
+          // update recipe to fill in ._id
+          return dispatch(updateRecipe(data));
+        })
+        .catch(err => dispatch(warning(error)))
       }
       return next(action);
     };
