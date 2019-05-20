@@ -236,7 +236,7 @@ export function addRecipeMiddleware({ dispatch }) {
           // update recipe to fill in ._id
           return dispatch(updateRecipe(data));
         })
-        .catch(err => dispatch(warning(error)))
+        .catch(error => dispatch(warning(error)))
       }
       return next(action);
     };
