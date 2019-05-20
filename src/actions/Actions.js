@@ -1,7 +1,7 @@
 import {
   GET_RECIPES,
   ADD_RECIPE,
-  FLAG_RECIPE,
+  UPDATE_RECIPE,
   RECIPES_LOADED,
   GET_TOKEN,
   AUTH_FAILED,
@@ -56,8 +56,8 @@ export function addRecipe(recipe) {
   return { type: ADD_RECIPE, recipe }
 };
 
-export function flagRecipe(recipeID) {
-  return { type: FLAG_RECIPE, recipeID }
+export function updateRecipe(recipe) {
+  return { type: UPDATE_RECIPE, recipe }
 };
 
 export function recipesLoaded(payload) {
