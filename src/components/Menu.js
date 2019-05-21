@@ -16,7 +16,7 @@ class Menu extends Component {
   handleLogout(event) {
     event.preventDefault();
 
-    let recipes = new Array();
+    let recipes = [];
     this.props.setUsername("");
     this.props.recipesLoaded(recipes);
     this.props.toggleMenu();

@@ -24,8 +24,6 @@ const auth = new Auth();
 
 var moment = require('moment');
 
-const forbiddenWords = ["123abc"];
-
 export function loginMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
@@ -88,7 +86,7 @@ export function signupMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
-          if (data.message != "User created successfully.") {
+          if (data.message !== "User created successfully.") {
             dispatch(toggleLoader(false));
             dispatch(warning(data.message));
           } else {
@@ -96,7 +94,7 @@ export function signupMiddleware({ dispatch }) {
             dispatch(setUsername(action.user.email));
             dispatch(toggleLoader(false));
             // go to main recipe list.
-            var recipes = new Array();
+            var recipes = [];
             return dispatch(recipesLoaded(recipes));
           }
         })

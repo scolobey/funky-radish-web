@@ -3,7 +3,7 @@ export const loadState = () => {
   try {
     let serializedState = localStorage.getItem("funkyradish.com:state");
 
-    if (serializedState === undefined || serializedState == "undefined") {
+    if (serializedState === undefined || serializedState === "undefined") {
       let initialState = initializeState();
       localStorage.setItem("funkyradish.com:state", JSON.stringify(initialState));
     }

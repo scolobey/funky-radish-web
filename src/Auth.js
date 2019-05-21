@@ -26,7 +26,7 @@ export default class Auth {
   }
 
   validateCredentials = (email, password) => {
-    var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
     var passwordRegex = /^(?=.*\d)(?=.*[a-z]).{8,20}$/;
 
     if (emailRegex.test(email) && passwordRegex.test(password)) {

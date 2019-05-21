@@ -10,7 +10,7 @@ class AuthView extends Component {
 
     let login = false;
 
-    if (props.match.url == "/login") {
+    if (props.match.url === "/login") {
       login = true;
     }
 
