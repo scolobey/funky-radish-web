@@ -2,15 +2,10 @@
 export const loadState = () => {
   try {
     let serializedState = localStorage.getItem("funkyradish.com:state");
-    console.log(JSON.stringify(serializedState));
 
-    initializeState();
-
-    serializedState = localStorage.getItem("funkyradish.com:state");
-    console.log(JSON.stringify(serializedState));
-
-    if (serializedState === undefined) {
-      return initializeState();
+    if (serializedState === undefined || serializedState == "undefined") {
+      let initialState = initializeState();
+      localStorage.setItem("funkyradish.com:state", JSON.stringify(initialState));
     }
 
     return JSON.parse(serializedState);
@@ -31,12 +26,12 @@ export const saveState = (state) => {
 };
 
 export const initializeState = () => {
+
   let initialState = {
     recipes: [],
     warnings: [],
     remoteRecipes: []
   }
 
-  localStorage.setItem("funkyradish.com:state", JSON.stringify(initializeState));
   return initialState;
 }
