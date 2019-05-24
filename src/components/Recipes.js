@@ -18,7 +18,7 @@ export class Recipes extends Component {
             <ul>
               {this.props.recipes.map(recipe => (
                 <div className="Recipe">
-                  <li key={recipe._id}>
+                  <li key={recipe.clientID}>
                     <div className="Title">
                       <b>{recipe.title}</b>
                     </div>
@@ -48,11 +48,12 @@ export class Recipes extends Component {
         </div>
     );
   }
+
 }
 
 function mapStateToProps(state) {
   return {
-    recipes: state.remoteRecipes.slice(0, 10),
+    recipes: state.remoteRecipes,
     user: state.user
   };
 }
