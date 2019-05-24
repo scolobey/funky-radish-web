@@ -4,6 +4,7 @@ export const GET_RECIPES = 'GET_RECIPES';
 export const ADD_RECIPE = 'ADD_RECIPE';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const RECIPES_LOADED = 'RECIPES_LOADED';
+export const CLEAR_RECIPES = 'CLEAR_RECIPES';
 
 // Authentication
 export const LOGIN = 'LOGIN';

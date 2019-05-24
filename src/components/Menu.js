@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { setUsername, recipesLoaded, toggleMenu } from "../actions/Actions";
+import { setUsername, recipesLoaded, clearRecipes, toggleMenu } from "../actions/Actions";
 
 import Auth from '../Auth'
 
@@ -18,7 +18,7 @@ class Menu extends Component {
 
     let recipes = [];
     this.props.setUsername("");
-    this.props.recipesLoaded(recipes);
+    this.props.clearRecipes();
     this.props.toggleMenu();
     auth.logout();
   }
@@ -71,4 +71,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { setUsername, recipesLoaded, toggleMenu })(Menu);
+export default connect(mapStateToProps, { setUsername, recipesLoaded, clearRecipes, toggleMenu })(Menu);

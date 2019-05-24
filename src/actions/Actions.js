@@ -3,6 +3,7 @@ import {
   ADD_RECIPE,
   UPDATE_RECIPE,
   RECIPES_LOADED,
+  CLEAR_RECIPES,
   GET_TOKEN,
   AUTH_FAILED,
   CREATE_USER,
@@ -62,6 +63,10 @@ export function updateRecipe(recipe) {
 
 export function recipesLoaded(payload) {
   return { type: RECIPES_LOADED, payload }
+};
+
+export function clearRecipes() {
+  return { type: CLEAR_RECIPES }
 };
 
 export function setUsername(user) {
