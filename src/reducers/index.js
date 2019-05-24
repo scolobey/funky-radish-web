@@ -1,9 +1,10 @@
-import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE } from "../constants/action-types";
+import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, VIEW_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE } from "../constants/action-types";
 
 import uuidv1 from "uuid";
 
 function rootReducer(state, action) {
   if (action.type === ADD_RECIPE) {
+    console.log(action.recipe);
     return Object.assign({}, state, {
       remoteRecipes: state.remoteRecipes.concat(action.recipe)
     });
@@ -74,6 +75,12 @@ function rootReducer(state, action) {
   if (action.type === TOGGLE_MENU) {
     return Object.assign({}, state, {
       menu: !state.menu
+    });
+  }
+
+  if (action.type === VIEW_RECIPE ) {
+    return Object.assign({}, state, {
+      recipe: action.recipe
     });
   }
 

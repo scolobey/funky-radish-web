@@ -13,6 +13,7 @@ import {
   SET_USERNAME,
   TOGGLE_MENU,
   TOGGLE_LOADER,
+  VIEW_RECIPE,
   WARNING_TOGGLE
 } from "../constants/action-types"
 
@@ -67,6 +68,10 @@ export function recipesLoaded(payload) {
 
 export function clearRecipes() {
   return { type: CLEAR_RECIPES }
+};
+
+export function viewRecipe(recipe) {
+  return { type: VIEW_RECIPE, recipe }
 };
 
 export function setUsername(user) {

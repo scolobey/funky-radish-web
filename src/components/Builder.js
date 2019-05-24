@@ -6,14 +6,29 @@ import Recipes from "./Recipes";
 
 class ConnectedForm extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
-    this.state = {
-      ingredients: [],
-      directions: [],
-      title: ""
-    };
+    // clientID comes from parameter, but in case of redirect from recipe view,
+    // recipe data is already in recipe props.
+
+    let clientID = props.match.params.clientID;
+
+    if(clientID) {
+
+      this.state = {
+        ingredients: this.props.recipe.ingredients.join("\n"),
+        directions: this.props.recipe.directions.join("\n"),
+        title: this.props.recipe.title
+      };
+    }
+    else {
+      this.state = {
+        ingredients: [],
+        directions: [],
+        title: ""
+      };
+    }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,7 +53,7 @@ class ConnectedForm extends Component {
   }
 
   render() {
-    const { title } = this.state;
+    const { title, ingredients, directions } = this.state;
 
     return (
       <div className="builder">
@@ -61,6 +76,7 @@ class ConnectedForm extends Component {
               className="form-control"
               placeholder="ingredients"
               id="ingredients"
+              value={ingredients}
               onChange={this.handleChange}
             />
           </div>
@@ -71,6 +87,7 @@ class ConnectedForm extends Component {
               className="form-control"
               placeholder="directions"
               id="directions"
+              value={directions}
               onChange={this.handleChange}
             />
           </div>
@@ -84,6 +101,12 @@ class ConnectedForm extends Component {
   }
 }
 
-const Builder = connect(null, {addRecipe})(ConnectedForm);
+function mapStateToProps(state) {
+  return {
+    recipe: state.recipe
+  };
+}
+
+const Builder = connect(mapStateToProps, {addRecipe})(ConnectedForm);
 
 export default Builder;
