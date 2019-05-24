@@ -28,7 +28,6 @@ class Menu extends Component {
         return (
           [
             <li key='1' className="user-label">{this.props.user}</li>,
-            <hr></hr>,
             <li key='2'><a href='/' onClick={this.handleLogout} >Logout</a></li>
           ]
         );
