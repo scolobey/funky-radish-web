@@ -373,7 +373,7 @@
 
 #menu ul {
   list-style: none;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 #menu li {
@@ -411,8 +411,23 @@
   resize: vertical;
 }
 
+.builder .recipe {
+  width:100%;
+}
+
+.builder .ingredients {
+  width: 25%;
+  display: inline-block;
+}
+
+.builder .directions {
+  width: 65%;
+  margin-left: 90px;
+  display: inline-block;
+}
+
 .builder form textarea{
-  height: 200px;
+  height: 300px;
 }
 
 button[type=submit] {
@@ -423,8 +438,24 @@ button[type=submit] {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  float: right;
 }
 
 button[type=submit]:hover {
   background-color: #45a049;
+}
+
+button[type=delete] {
+  background-color: #ec3a61;
+  color: white;
+  padding: 12px 20px;
+  margin: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+button[type=delete]:hover {
+  background-color: #dc0b2e;
 }

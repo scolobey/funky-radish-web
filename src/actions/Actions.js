@@ -4,6 +4,8 @@ import {
   UPDATE_RECIPE,
   RECIPES_LOADED,
   CLEAR_RECIPES,
+  DELETE_REMOTE_RECIPE,
+  DELETE_LOCAL_RECIPE,
   GET_TOKEN,
   AUTH_FAILED,
   CREATE_USER,
@@ -72,6 +74,14 @@ export function clearRecipes() {
 
 export function viewRecipe(recipe) {
   return { type: VIEW_RECIPE, recipe }
+};
+
+export function deleteLocalRecipe(recipeID) {
+  return { type: DELETE_LOCAL_RECIPE, recipeID }
+};
+
+export function deleteRemoteRecipe(recipe) {
+  return { type: DELETE_REMOTE_RECIPE, recipe }
 };
 
 export function setUsername(user) {

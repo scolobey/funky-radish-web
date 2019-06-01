@@ -14,7 +14,7 @@ import { addRecipe } from "./actions/Actions";
 store.subscribe(throttle(() => {
   saveState({
     remoteRecipes: store.getState().remoteRecipes,
-    warnings: store.getState().warnings
+    warnings: []
   });
 }, 1000));
 

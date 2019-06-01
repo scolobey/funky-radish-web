@@ -1,6 +1,4 @@
-import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, VIEW_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE } from "../constants/action-types";
-
-import uuidv1 from "uuid";
+import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, VIEW_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE } from "../constants/action-types";
 
 function rootReducer(state, action) {
   if (action.type === ADD_RECIPE) {
@@ -17,37 +15,9 @@ function rootReducer(state, action) {
   }
 
   if (action.type === RECIPES_LOADED) {
-    // Check local for recipes with the same ._id.
-    function checkForTwin(incomingRecipe) {
-        let idCheck = state.remoteRecipes.filter(storedRecipe => (storedRecipe._id === incomingRecipe._id))
-        if (idCheck.length > 0) {
-          return true;
-        }
-        else {
-          return false;
-        }
-    }
-
-    for (var i = action.payload.length-1 ; i > -1 ; i--) {
-      if (checkForTwin(action.payload[i])) {
-        // if it's already downloaded, kick it out of the array.
-        action.payload.splice(i);
-      }
-      else {
-        //If it doesn't have a clientID, add one.
-        let newAction = action.payload[i];
-        if (newAction.clientID === undefined) {
-          const client = uuidv1();
-          newAction.clientID = client;
-          action.payload[i] = newAction;
-          //TODO: gotta adjust the online version now.
-        }
-      }
-    }
-
     return Object.assign({}, state, {
       redirect: true,
-      remoteRecipes: state.remoteRecipes.concat(action.payload)
+      remoteRecipes: action.payload
     });
   }
 
@@ -81,6 +51,21 @@ function rootReducer(state, action) {
   if (action.type === VIEW_RECIPE ) {
     return Object.assign({}, state, {
       recipe: action.recipe
+    });
+  }
+
+  if (action.type === DELETE_LOCAL_RECIPE ) {
+    console.log("calling reducer.");
+    console.log(action.recipeID);
+
+    let recipeList = state.remoteRecipes.filter(function(recipe ) {
+      return recipe.clientID !== action.recipeID;
+    });
+
+    console.log(recipeList)
+
+    return Object.assign({}, state, {
+      remoteRecipes: recipeList
     });
   }
 

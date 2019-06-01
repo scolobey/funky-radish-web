@@ -6,6 +6,8 @@ export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const RECIPES_LOADED = 'RECIPES_LOADED';
 export const CLEAR_RECIPES = 'CLEAR_RECIPES';
 export const VIEW_RECIPE = 'VIEW_RECIPE';
+export const DELETE_REMOTE_RECIPE = 'DELETE_REMOTE_RECIPE';
+export const DELETE_LOCAL_RECIPE = 'DELETE_LOCAL_RECIPE';
 
 // Authentication
 export const LOGIN = 'LOGIN';

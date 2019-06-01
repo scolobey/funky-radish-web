@@ -5,6 +5,7 @@ import {
   tokenCollectionMiddleware,
   recipeLoadingMiddleware,
   addRecipeMiddleware,
+  deleteRecipeMiddleware,
   loginMiddleware,
   signupMiddleware,
   warningCycleMiddleware
@@ -24,6 +25,7 @@ const store = createStore(
       tokenCollectionMiddleware,
       recipeLoadingMiddleware,
       addRecipeMiddleware,
+      deleteRecipeMiddleware,
       loginMiddleware,
       signupMiddleware,
       warningCycleMiddleware,

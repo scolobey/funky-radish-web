@@ -2,6 +2,7 @@ import {
   ADD_RECIPE,
   GET_TOKEN,
   GET_RECIPES,
+  DELETE_REMOTE_RECIPE,
   LOGIN,
   SIGNUP,
   WARNING
@@ -10,6 +11,7 @@ import {
 import {
   getRecipes,
   updateRecipe,
+  deleteLocalRecipe,
   authFailed,
   getToken,
   warning,
@@ -18,6 +20,8 @@ import {
   toggleLoader,
   warningToggle
 } from "../actions/Actions";
+
+import uuidv1 from "uuid";
 
 import Auth from '../Auth'
 const auth = new Auth();
@@ -34,11 +38,11 @@ export function loginMiddleware({ dispatch }) {
           case 1:
             return dispatch(getToken({email: action.user.email, password: action.user.password}));
           case 2:
-            return dispatch(warning("Invalid password."));
+            return dispatch("Invalid password.");
           case 3:
-            return dispatch(warning("Invalid email."));
+            return dispatch("Invalid email.");
           default:
-            return dispatch(warning("Unidentified validation error."));
+            return dispatch("Unidentified validation error.");
         }
 
       }
@@ -57,11 +61,11 @@ export function signupMiddleware({ dispatch }) {
           case 1:
             break;
           case 2:
-            return dispatch(warning("Password needs 8 characters and a number."));
+            return dispatch("Password needs 8 characters and a number.");
           case 3:
-            return dispatch(warning("Invalid email."));
+            return dispatch("Invalid email.");
           default:
-            return dispatch(warning("Unidentified validation error."));
+            return dispatch("Unidentified validation error.");
         }
 
         var params = {
@@ -88,7 +92,7 @@ export function signupMiddleware({ dispatch }) {
         .then(data => {
           if (data.message !== "User created successfully.") {
             dispatch(toggleLoader(false));
-            dispatch(warning(data.message));
+            dispatch(data.message);
           } else {
             auth.setSession(data.token, action.user.email);
             dispatch(setUsername(action.user.email));
@@ -146,7 +150,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(data => {
           if (!data.success) {
             dispatch(toggleLoader(false));
-            return dispatch(warning(data.message ));
+            return dispatch(data.message);
           } else {
             auth.setSession(data.token, action.authData.email);
             return dispatch(getRecipes(data.token));
@@ -163,7 +167,9 @@ export function recipeLoadingMiddleware({ dispatch }) {
     return function(action) {
 
       if (action.type === GET_RECIPES) {
+
         dispatch(toggleLoader(true));
+
         return fetch("https://funky-radish-api.herokuapp.com/recipes", {
           method: 'get',
           headers: new Headers({
@@ -182,11 +188,13 @@ export function recipeLoadingMiddleware({ dispatch }) {
           let user = auth.getUser();
           dispatch(setUsername(user));
           dispatch(toggleLoader(false));
+
+          json.forEach(recipe => recipe.clientID = uuidv1());
           return dispatch(recipesLoaded(json));
         })
         .catch(error => {
           dispatch(toggleLoader(false));
-          return dispatch(warning("Recipe load failed."));
+          return dispatch("Recipe load failed.");
         });
       }
       return next(action);
@@ -207,34 +215,104 @@ export function addRecipeMiddleware({ dispatch }) {
         var date = new Date();
         var formattedDate = moment.utc(date).format("YYYY-MM-DDTHH:mm:ss.sssz").replace(/UTC/, "Z");
 
-        var params = [{
+        var params = {
           ingredients: action.recipe.ingredients,
           directions: action.recipe.directions,
           updatedAt: formattedDate,
           title: action.recipe.title,
           clientID: action.recipe.clientID
-        }];
+        }
 
-        fetch("https://funky-radish-api.herokuapp.com/recipes", {
-          method: 'post',
+        if(action.recipe._id) {
+          let url = "https://funky-radish-api.herokuapp.com/recipe/" + action.recipe._id;
+
+          fetch(url, {
+            method: 'put',
+            headers: new Headers({
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'x-access-token': token
+            }),
+            body: JSON.stringify(params)
+          })
+          .then(res=> {
+            return res.clone().json()
+          })
+          .then(data => {
+            if (data.message) {
+              return dispatch(warning(data.message))
+            }
+            return dispatch(updateRecipe(data));
+          })
+          .catch(error => dispatch(warning(error)))
+        }
+        else {
+          params = [params];
+
+          fetch("https://funky-radish-api.herokuapp.com/recipes", {
+            method: 'post',
+            headers: new Headers({
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'x-access-token': token
+            }),
+            body: JSON.stringify(params)
+          })
+          .then(res=> {
+            return res.clone().json()
+          })
+          .then(data => {
+            if (data.message) {
+              return dispatch(warning(data.message))
+            }
+            // update recipe to fill in ._id
+            return dispatch(updateRecipe(data));
+          })
+          .catch(error => dispatch(warning(error)))
+        }
+      }
+      return next(action);
+    };
+  };
+}
+
+export function deleteRecipeMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === DELETE_REMOTE_RECIPE) {
+
+        let token = auth.getToken();
+
+        if (!token) {
+          return dispatch("You're not logged in. Recipe will not be removed.");
+        }
+
+        console.log("running middleware.");
+
+        let id = action.recipe._id;
+        let url = "https://funky-radish-api.herokuapp.com/recipe/" + id;
+
+        console.log(url);
+
+        // call to delete recipe.
+        fetch(url, {
+          method: 'delete',
           headers: new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
             'x-access-token': token
-          }),
-          body: JSON.stringify(params)
+          })
         })
         .then(res=> {
           return res.clone().json()
         })
         .then(data => {
-          if (data.message) {
-            return dispatch(warning(data.message))
+          console.log(data.message);
+          if (data.message === "Recipe deleted successfully!" || data.message === "Authentication failed. Recipe not found.") {
+            return dispatch(deleteLocalRecipe(action.recipe.clientID))
           }
-          // update recipe to fill in ._id
-          return dispatch(updateRecipe(data));
+          else {
+            return dispatch("Delete failed.")
+          }
         })
-        .catch(error => dispatch(warning(error)))
       }
       return next(action);
     };

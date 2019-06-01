@@ -3,10 +3,6 @@ import { connect } from "react-redux";
 
 class Warning extends Component {
 
-  componentDidMount() {
-    console.log(this.props.warnings.count);
-  }
-
   render() {
     return ( (this.props.warnings.length < 1) ? (<div></div>) : (
       <div className="warning-container">
