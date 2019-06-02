@@ -5,7 +5,7 @@ export const ADD_RECIPE = 'ADD_RECIPE';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const RECIPES_LOADED = 'RECIPES_LOADED';
 export const CLEAR_RECIPES = 'CLEAR_RECIPES';
-export const VIEW_RECIPE = 'VIEW_RECIPE';
+export const SET_RECIPE = 'SET_RECIPE';
 export const DELETE_REMOTE_RECIPE = 'DELETE_REMOTE_RECIPE';
 export const DELETE_LOCAL_RECIPE = 'DELETE_LOCAL_RECIPE';
 
@@ -24,3 +24,4 @@ export const SET_USERNAME = 'SET_USERNAME';
 export const TOGGLE_MENU = 'TOGGLE_MENU';
 export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 export const WARNING_TOGGLE = 'WARNING_TOGGLE';
+export const SET_REDIRECT = 'SET_REDIRECT';

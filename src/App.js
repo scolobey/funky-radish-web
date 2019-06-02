@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import NavBar from './components/NavBar';
+import Navigation from './components/Navigation';
 
 import PrivacyPolicy from './components/PrivacyPolicy';
 import RoadMap from './components/RoadMap';
@@ -12,6 +12,7 @@ import Recipes from "./components/Recipes.js";
 import AuthView from './components/AuthView';
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
+import Redirector from './components/Redirector';
 
 import './App.css';
 
@@ -19,9 +20,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Warning />
+        <Navigation />
         <Loader />
-        <NavBar />
+        <Redirector />
+        <Warning />
+
         <div className="content">
           <Route path="/" exact component={Recipes} />
           <Route path="/login/" exact component={AuthView} />

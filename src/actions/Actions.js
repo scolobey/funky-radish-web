@@ -15,8 +15,9 @@ import {
   SET_USERNAME,
   TOGGLE_MENU,
   TOGGLE_LOADER,
-  VIEW_RECIPE,
-  WARNING_TOGGLE
+  SET_RECIPE,
+  WARNING_TOGGLE,
+  SET_REDIRECT
 } from "../constants/action-types"
 
 /* other constants */
@@ -72,8 +73,9 @@ export function clearRecipes() {
   return { type: CLEAR_RECIPES }
 };
 
-export function viewRecipe(recipe) {
-  return { type: VIEW_RECIPE, recipe }
+export function setRecipe(recipe) {
+  console.log("set recipe action is being called.")
+  return { type: SET_RECIPE, recipe }
 };
 
 export function deleteLocalRecipe(recipeID) {
@@ -98,4 +100,8 @@ export function toggleLoader(loader) {
 
 export function warningToggle() {
   return { type: WARNING_TOGGLE }
+};
+
+export function setRedirect(redirect) {
+  return { type: SET_REDIRECT, redirect }
 };

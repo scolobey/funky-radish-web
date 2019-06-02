@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { setUsername, recipesLoaded, clearRecipes, toggleMenu } from "../actions/Actions";
+import { setUsername, clearRecipes, toggleMenu } from "../actions/Actions";
 
 import Auth from '../Auth'
 
@@ -69,4 +69,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { setUsername, recipesLoaded, clearRecipes, toggleMenu })(Menu);
+export default connect(mapStateToProps, { setUsername, clearRecipes, toggleMenu })(Menu);

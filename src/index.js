@@ -13,7 +13,7 @@ import { addRecipe } from "./actions/Actions";
 
 store.subscribe(throttle(() => {
   saveState({
-    remoteRecipes: store.getState().remoteRecipes,
+    recipes: store.getState().recipes,
     warnings: []
   });
 }, 1000));

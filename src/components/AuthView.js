@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { login, signup } from "../actions/Actions";
 
-import { Redirect } from "react-router-dom";
-
 class AuthView extends Component {
   constructor(props) {
     super(props);
@@ -48,8 +46,7 @@ class AuthView extends Component {
 
   render() {
 
-      return this.props.redirect ? (<Redirect to="/" />) :
-      (
+      return (
         <div className='auth-container'>
           <div className='auth'>
             <a href='./'>Dismiss.</a>
@@ -70,7 +67,6 @@ class AuthView extends Component {
 
 function mapStateToProps(state) {
   return {
-    redirect: state.redirect,
     email: state.email,
     password: state.password,
     user: state.user

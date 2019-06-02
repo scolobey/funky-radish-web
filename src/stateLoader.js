@@ -26,12 +26,10 @@ export const saveState = (state) => {
 };
 
 export const initializeState = () => {
-  console.log("ok we initializin'.")
-
   let initialState = {
     recipes: [],
     warnings: [],
-    remoteRecipes: []
+    recipes: []
   }
 
   return initialState;

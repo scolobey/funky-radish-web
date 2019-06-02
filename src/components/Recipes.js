@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getToken, viewRecipe } from "../actions/Actions";
-
-import { Redirect } from "react-router-dom";
+import { getToken, setRecipe } from "../actions/Actions";
 
 export class Recipes extends Component {
 
@@ -17,11 +15,13 @@ export class Recipes extends Component {
 
         <div className="RecipeListContainer">
           <div className="RecipeList">
-            {this.props.recipe ? ( <Redirect to={'/builder/' + this.props.recipe.clientID} /> ) : (<div></div>) }
             {this.props.recipes.length > 0 ? <div></div> : <div className="no-recipes-banner">To add a recipe, click the '+' button below.</div> }
             <ul>
               {this.props.recipes.map(recipe => (
-                <div className="Recipe" key={recipe.clientID} onClick={() => this.props.viewRecipe(recipe)}>
+                <div className="Recipe" key={recipe.clientID} onClick={() => {
+                  console.log("you clicked a recipe: ", recipe);
+                  this.props.setRecipe(recipe);
+                }}>
                   <li key={recipe.clientID}>
                     <div className="Title">
                       <b>{recipe.title}</b>
@@ -49,6 +49,8 @@ export class Recipes extends Component {
               ))}
             </ul>
           </div>
+
+          <div className="create-button"><a href="./builder">+</a></div>
         </div>
     );
   }
@@ -57,10 +59,10 @@ export class Recipes extends Component {
 
 function mapStateToProps(state) {
   return {
-    recipes: state.remoteRecipes,
+    recipes: state.recipes,
     recipe: state.recipe,
     user: state.user
   };
 }
 
-export default connect(mapStateToProps, { getToken, viewRecipe })(Recipes);
+export default connect(mapStateToProps, { getToken, setRecipe })(Recipes);

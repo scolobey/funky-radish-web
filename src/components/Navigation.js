@@ -4,7 +4,7 @@ import { toggleMenu } from "../actions/Actions";
 import Menu from './Menu';
 import icon from '../icon.png';
 
-class NavBar extends Component {
+class Navigation extends Component {
   constructor(props) {
     super(props);
 
@@ -34,8 +34,6 @@ class NavBar extends Component {
             </div>
           </header>
 
-          <div className="create-button"><a href="./builder">+</a></div>
-
         </div>
     );
   }
@@ -47,4 +45,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { toggleMenu })(NavBar);
+export default connect(mapStateToProps, { toggleMenu })(Navigation);

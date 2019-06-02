@@ -18,7 +18,8 @@ import {
   recipesLoaded,
   setUsername,
   toggleLoader,
-  warningToggle
+  warningToggle,
+  setRedirect
 } from "../actions/Actions";
 
 import uuidv1 from "uuid";
@@ -102,7 +103,7 @@ export function signupMiddleware({ dispatch }) {
             return dispatch(recipesLoaded(recipes));
           }
         })
-        .catch(err => console.log('Error: ' + err))
+        .catch(err => dispatch(warning('Error: ' + err)))
       }
       return next(action);
     };
@@ -287,12 +288,8 @@ export function deleteRecipeMiddleware({ dispatch }) {
           return dispatch("You're not logged in. Recipe will not be removed.");
         }
 
-        console.log("running middleware.");
-
         let id = action.recipe._id;
         let url = "https://funky-radish-api.herokuapp.com/recipe/" + id;
-
-        console.log(url);
 
         // call to delete recipe.
         fetch(url, {
@@ -305,7 +302,6 @@ export function deleteRecipeMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
-          console.log(data.message);
           if (data.message === "Recipe deleted successfully!" || data.message === "Authentication failed. Recipe not found.") {
             return dispatch(deleteLocalRecipe(action.recipe.clientID))
           }

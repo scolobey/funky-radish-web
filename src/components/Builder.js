@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
-import { addRecipe, deleteRemoteRecipe, viewRecipe } from "../actions/Actions";
+import { addRecipe, deleteRemoteRecipe, setRecipe, setRedirect } from "../actions/Actions";
 import Recipes from "./Recipes";
 
-import { Redirect } from "react-router-dom";
-
 class ConnectedForm extends Component {
+
+  componentWillUnmount() {
+    this.props.setRecipe(null);
+  }
 
   constructor(props) {
     super(props);
@@ -21,18 +23,14 @@ class ConnectedForm extends Component {
         clientID: this.props.recipe.clientID,
         ingredients: this.props.recipe.ingredients.join("\n"),
         directions: this.props.recipe.directions.join("\n"),
-        title: this.props.recipe.title,
-        redirect: false
+        title: this.props.recipe.title
       };
-
-      this.props.viewRecipe(null);
     }
     else {
       this.state = {
         ingredients: [],
         directions: [],
-        title: "",
-        redirect: false
+        title: ""
       };
     }
 
@@ -50,8 +48,7 @@ class ConnectedForm extends Component {
 
     if (window.confirm("Are you sure!?")) {
       this.props.deleteRemoteRecipe(this.state);
-    } else {
-      console.log("You pressed Cancel!");
+      this.props.setRedirect("/");
     }
   }
 
@@ -75,7 +72,7 @@ class ConnectedForm extends Component {
   render() {
     const { title, ingredients, directions } = this.state;
 
-    return this.state.redirect ? ( <Redirect to={'/'} /> ) : (
+    return (
       <div className="builder">
         <form onSubmit={this.handleSubmit}>
 
@@ -135,6 +132,6 @@ function mapStateToProps(state) {
   };
 }
 
-const Builder = connect(mapStateToProps, {addRecipe, deleteRemoteRecipe, viewRecipe})(ConnectedForm);
+const Builder = connect(mapStateToProps, {addRecipe, deleteRemoteRecipe, setRecipe, setRedirect})(ConnectedForm);
 
 export default Builder;
