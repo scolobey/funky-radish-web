@@ -28,8 +28,7 @@ export const saveState = (state) => {
 export const initializeState = () => {
   let initialState = {
     recipes: [],
-    warnings: [],
-    recipes: []
+    warnings: []
   }
 
   return initialState;
