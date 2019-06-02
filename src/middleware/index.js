@@ -18,8 +18,7 @@ import {
   recipesLoaded,
   setUsername,
   toggleLoader,
-  warningToggle,
-  setRedirect
+  warningToggle
 } from "../actions/Actions";
 
 import uuidv1 from "uuid";

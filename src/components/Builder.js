@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addRecipe, deleteRemoteRecipe, setRecipe, setRedirect } from "../actions/Actions";
-import Recipes from "./Recipes";
 
 class ConnectedForm extends Component {
 
