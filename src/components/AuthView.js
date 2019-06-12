@@ -54,7 +54,7 @@ class AuthView extends Component {
             <form onSubmit={this.onSubmit}>
               {this.state.login ? '' : <input placeholder='Username...' name='user' value={this.state.user} onChange={this.onChange} /> }
               <input placeholder='Email...' name='email' value={this.state.email} onChange={this.onChange} />
-              <input placeholder='Password...' name='password' value={this.state.password} onChange={this.onChange} />
+              <input type='password' placeholder='Password...' name='password' value={this.state.password} onChange={this.onChange} />
               {this.state.login ? <button>Login</button> : <button>Signup</button> }
             </form>
 

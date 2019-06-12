@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom'
+
 import uuidv1 from "uuid";
 import { addRecipe, deleteRemoteRecipe, setRecipe, setRedirect } from "../actions/Actions";
 
@@ -12,18 +14,17 @@ class ConnectedForm extends Component {
   constructor(props) {
     super(props);
 
-    // clientID comes from parameter, but in case of redirect from recipe view,
-    // recipe data is already in recipe props.
     let clientID = props.match.params.clientID;
+    let recipe = this.props.recipes.filter( recipe => recipe.clientID === clientID )[0]
 
-    if(clientID) {
-      this.state = {
-        _id: this.props.recipe._id || '',
-        clientID: this.props.recipe.clientID,
-        ingredients: this.props.recipe.ingredients.join("\n"),
-        directions: this.props.recipe.directions.join("\n"),
-        title: this.props.recipe.title
-      };
+    if(clientID && recipe) {
+        this.state = {
+          _id: recipe._id || '',
+          clientID: recipe.clientID,
+          ingredients: recipe.ingredients.join("\n") || "",
+          directions: recipe.directions.join("\n") || "",
+          title: recipe.title
+        };
     }
     else {
       this.state = {
@@ -127,10 +128,10 @@ class ConnectedForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    recipe: state.recipe
+    recipes: state.recipes
   };
 }
 
 const Builder = connect(mapStateToProps, {addRecipe, deleteRemoteRecipe, setRecipe, setRedirect})(ConnectedForm);
 
-export default Builder;
+export default withRouter(Builder);

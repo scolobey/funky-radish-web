@@ -16,6 +16,13 @@ import Redirector from './components/Redirector';
 
 import './App.css';
 
+import ReactGA from 'react-ga';
+
+function initializeReactGA() {
+    ReactGA.initialize('UA-141908035-1');
+    ReactGA.pageview('/');
+}
+
 class App extends Component {
   render() {
     return (

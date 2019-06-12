@@ -102,7 +102,9 @@ export function signupMiddleware({ dispatch }) {
             return dispatch(recipesLoaded(recipes));
           }
         })
-        .catch(err => dispatch(warning('Error: ' + err)))
+        .catch(err => {
+          return dispatch(warning('Error: ' + err))
+        })
       }
       return next(action);
     };
@@ -114,7 +116,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
     return function(action) {
       // do your stuff
       if (action.type === GET_TOKEN) {
-
         let token = auth.getToken();
 
         if (token) {
@@ -139,7 +140,8 @@ export function tokenCollectionMiddleware({ dispatch }) {
         formBody = formBody.join("&");
 
         dispatch(toggleLoader(true));
-        return fetch("https://funky-radish-api.herokuapp.com/authenticate", {
+
+        fetch("https://funky-radish-api.herokuapp.com/authenticate", {
           method: 'post',
           headers: new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -150,7 +152,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(data => {
           if (!data.success) {
             dispatch(toggleLoader(false));
-            return dispatch(data.message);
+            return dispatch(warning(data.message));
           } else {
             auth.setSession(data.token, action.authData.email);
             return dispatch(getRecipes(data.token));
