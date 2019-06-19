@@ -23,6 +23,7 @@ export class Recipes extends Component {
                   <div className="Recipe" key={recipe.clientID}>
                     <li key={recipe.clientID}>
                       <div className="Title">
+
                         <b>{recipe.title}</b>
                       </div>
                       <div className="Ingredients">
