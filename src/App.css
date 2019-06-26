@@ -70,17 +70,19 @@
   margin-bottom: 15px;
 }
 
+.Ingredients {
+  width: 25%;
+}
+
 .Ingredients ul{
   list-style-type: none;
   display: inline;
-  width: 30%;
   float:left;
 }
 
-.Directions ul{
-  list-style-type: none;
-  display: inline-block;
-  width: 55%;
+.Directions {
+  width: 70%;
+  padding-right: 40px;
   float:right;
 }
 
@@ -463,4 +465,45 @@ button[type=delete] {
 
 button[type=delete]:hover {
   background-color: #dc0b2e;
+}
+
+.RecipeSearchField {
+  display: inline;
+  float: right;
+  padding-top: 25px;
+  width: 50%;
+}
+
+.RecipeSearchField img {
+  vertical-align: bottom;
+  padding-right: 10px;
+}
+
+.RecipeSearchField input {
+  width: 10%;
+  padding-right: 10%;
+  padding: 10px;
+  font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+  font-size: 1em;
+  border: none;
+  border-bottom: #757575 solid 2px;
+  outline: none;
+  font-weight: bold;
+}
+
+.RecipeSearchField input:focus {
+  width: 40%;
+  padding: 10px;
+  transition: 0.5s;
+  border: none;
+  border-bottom: #757575 solid 2px;
+  outline: none;
+}
+
+.download-icons {
+  text-align: center;
+}
+
+.download-icons a {
+  padding: 50px;
 }

@@ -14,6 +14,7 @@ import { addRecipe } from "./actions/Actions";
 store.subscribe(throttle(() => {
   saveState({
     recipes: store.getState().recipes,
+    filteredRecipes: store.getState().recipes,
     warnings: []
   });
 }, 1000));

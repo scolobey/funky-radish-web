@@ -30,6 +30,7 @@ export const saveState = (state) => {
 export const initializeState = () => {
   let initialState = {
     recipes: [],
+    filteredRecipes: [],
     recipe: null,
     warnings: []
   }

@@ -25,3 +25,5 @@ export const TOGGLE_MENU = 'TOGGLE_MENU';
 export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 export const WARNING_TOGGLE = 'WARNING_TOGGLE';
 export const SET_REDIRECT = 'SET_REDIRECT';
+
+export const SEARCH = 'SEARCH';

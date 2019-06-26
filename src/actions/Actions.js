@@ -17,7 +17,8 @@ import {
   TOGGLE_LOADER,
   SET_RECIPE,
   WARNING_TOGGLE,
-  SET_REDIRECT
+  SET_REDIRECT,
+  SEARCH
 } from "../constants/action-types"
 
 /* other constants */
@@ -104,4 +105,8 @@ export function warningToggle() {
 
 export function setRedirect(redirect) {
   return { type: SET_REDIRECT, redirect }
+};
+
+export function search(query) {
+  return { type: SEARCH, query }
 };

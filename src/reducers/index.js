@@ -1,10 +1,10 @@
-import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT } from "../constants/action-types";
+import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT, SEARCH } from "../constants/action-types";
 
 function rootReducer(state, action) {
   if (action.type === ADD_RECIPE) {
     return Object.assign({}, state, {
       recipes: state.recipes.concat(action.recipe)
-    });
+    }); 
   }
 
   if (action.type === CLEAR_RECIPES) {
@@ -16,7 +16,8 @@ function rootReducer(state, action) {
   if (action.type === RECIPES_LOADED) {
     return Object.assign({}, state, {
       redirect: "/",
-      recipes: action.payload
+      recipes: action.payload,
+      filteredRecipes: action.payload
     });
   }
 
@@ -93,6 +94,18 @@ function rootReducer(state, action) {
   if (action.type === SET_REDIRECT) {
     return Object.assign({}, state, {
       redirect: action.redirect
+    });
+  }
+
+  if (action.type === SEARCH) {
+    console.log(state.recipes.length);
+
+    let recipeList = state.recipes.filter(function(recipe ) {
+      return recipe.title.toLowerCase().includes(action.query.toLowerCase());
+    });
+
+    return Object.assign({}, state, {
+      filteredRecipes: recipeList
     });
   }
 
