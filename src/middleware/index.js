@@ -18,7 +18,8 @@ import {
   recipesLoaded,
   setUsername,
   toggleLoader,
-  warningToggle
+  warningToggle,
+  setRedirect
 } from "../actions/Actions";
 
 import uuidv1 from "uuid";
@@ -152,7 +153,8 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(data => {
           if (!data.success) {
             dispatch(toggleLoader(false));
-            return dispatch(warning(data.message));
+            dispatch(setRedirect("/login"));
+            return dispatch(warning("welcome back."));
           } else {
             auth.setSession(data.token, action.authData.email);
             return dispatch(getRecipes(data.token));

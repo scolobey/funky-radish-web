@@ -4,7 +4,7 @@ function rootReducer(state, action) {
   if (action.type === ADD_RECIPE) {
     return Object.assign({}, state, {
       recipes: state.recipes.concat(action.recipe)
-    }); 
+    });
   }
 
   if (action.type === CLEAR_RECIPES) {
@@ -98,8 +98,6 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SEARCH) {
-    console.log(state.recipes.length);
-
     let recipeList = state.recipes.filter(function(recipe ) {
       return recipe.title.toLowerCase().includes(action.query.toLowerCase());
     });
