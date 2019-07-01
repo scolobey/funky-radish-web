@@ -8,6 +8,7 @@ import RoadMap from './components/RoadMap';
 import About from './components/About';
 import Builder from "./components/Builder";
 import Recipes from "./components/Recipes.js";
+import Recipe from "./components/Recipe.js";
 
 import AuthView from './components/AuthView';
 import Loader from "./components/Loader";
@@ -40,6 +41,7 @@ class App extends Component {
           <Route path="/roadmap/" component={RoadMap} />
           <Route path="/privacy/" component={PrivacyPolicy} />
           <Route path="/builder/:clientID?" component={Builder} />
+          <Route path="/recipes/:recipeTitle?" component={Recipe} />
         </div>
       </div>
     );

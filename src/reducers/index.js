@@ -48,19 +48,9 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_RECIPE ) {
-    console.log("the SET_RECIPE reducer is being called", action)
-
-    if (action.recipe === null) {
-      return Object.assign({}, state, {
-        recipe: null
-      });
-    }
-    else {
-      return Object.assign({}, state, {
-        recipe: action.recipe,
-        redirect: "/builder/" + action.recipe.clientID
-      });
-    }
+    return Object.assign({}, state, {
+      recipe: action.recipe
+    });
   }
 
   if (action.type === DELETE_LOCAL_RECIPE ) {
@@ -74,9 +64,11 @@ function rootReducer(state, action) {
   }
 
   if (action.type === TOGGLE_LOADER) {
-    return Object.assign({}, state, {
-      loader: action.loader
-    });
+    if (state.recipes.length < 1) {
+      return Object.assign({}, state, {
+        loader: action.loader
+      });
+    }
   }
 
   if (action.type === WARNING) {

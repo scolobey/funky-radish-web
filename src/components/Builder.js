@@ -3,13 +3,9 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom'
 
 import uuidv1 from "uuid";
-import { addRecipe, deleteRemoteRecipe, setRecipe, setRedirect } from "../actions/Actions";
+import { addRecipe, deleteRemoteRecipe, setRedirect } from "../actions/Actions";
 
 class ConnectedForm extends Component {
-
-  componentWillUnmount() {
-    this.props.setRecipe(null);
-  }
 
   constructor(props) {
     super(props);
@@ -132,6 +128,6 @@ function mapStateToProps(state) {
   };
 }
 
-const Builder = connect(mapStateToProps, {addRecipe, deleteRemoteRecipe, setRecipe, setRedirect})(ConnectedForm);
+const Builder = connect(mapStateToProps, {addRecipe, deleteRemoteRecipe, setRedirect})(ConnectedForm);
 
 export default withRouter(Builder);

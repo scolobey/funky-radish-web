@@ -5,7 +5,8 @@ import {
   DELETE_REMOTE_RECIPE,
   LOGIN,
   SIGNUP,
-  WARNING
+  WARNING,
+  GET_RECIPE
 } from "../constants/action-types";
 
 import {
@@ -19,7 +20,8 @@ import {
   setUsername,
   toggleLoader,
   warningToggle,
-  setRedirect
+  setRedirect,
+  setRecipe
 } from "../actions/Actions";
 
 import uuidv1 from "uuid";
@@ -274,6 +276,32 @@ export function addRecipeMiddleware({ dispatch }) {
           })
           .catch(error => dispatch(warning(error)))
         }
+      }
+      return next(action);
+    };
+  };
+}
+
+export function getRecipeMiddleware({dispatch}) {
+  return function(next) {
+    return function(action) {
+      if (action.type === GET_RECIPE) {
+        fetch("https://funky-radish-api.herokuapp.com/recipes/" + action.recipeTitle , {
+          method: 'get'
+        })
+        .then(response => response.json())
+        .then(json => {
+          if (json.message) {
+            dispatch(warning(json.message))
+            return dispatch(toggleLoader(false));
+          }
+          else {
+            return dispatch(setRecipe(json));
+          }
+        })
+        .catch(error => {
+          return dispatch(warning("I can't find that recipe."));
+        });
       }
       return next(action);
     };

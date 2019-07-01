@@ -26,4 +26,6 @@ export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 export const WARNING_TOGGLE = 'WARNING_TOGGLE';
 export const SET_REDIRECT = 'SET_REDIRECT';
 
+export const GET_RECIPE = 'GET_RECIPE';
+
 export const SEARCH = 'SEARCH';

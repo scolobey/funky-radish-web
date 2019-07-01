@@ -1,5 +1,6 @@
 import {
   GET_RECIPES,
+  GET_RECIPE,
   ADD_RECIPE,
   UPDATE_RECIPE,
   RECIPES_LOADED,
@@ -58,6 +59,10 @@ export function getRecipes(token) {
   return { type: GET_RECIPES, token }
 };
 
+export function getRecipe(recipeTitle) {
+  return { type: GET_RECIPE, recipeTitle }
+};
+
 export function addRecipe(recipe) {
   return { type: ADD_RECIPE, recipe }
 };
@@ -75,7 +80,6 @@ export function clearRecipes() {
 };
 
 export function setRecipe(recipe) {
-  console.log("set recipe action is being called.")
   return { type: SET_RECIPE, recipe }
 };
 
