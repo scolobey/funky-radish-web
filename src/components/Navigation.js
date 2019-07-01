@@ -44,7 +44,7 @@ class Navigation extends Component {
 
 function mapStateToProps(state) {
   return {
-    menu: state.menu || false
+    menu: state.menu
   };
 }
 
