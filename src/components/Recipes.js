@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import { getToken } from "../actions/Actions";
+import { Helmet } from "react-helmet";
 
 export class Recipes extends Component {
 
@@ -19,6 +20,12 @@ export class Recipes extends Component {
       ]
       ) : (
         <div className="RecipeListContainer">
+          <Helmet>
+            <meta charSet="utf-8" />
+            <title>Funky Radish Professional Recipe Repository</title>
+            <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
+          </Helmet>
+
           <div className="RecipeList">
             {this.props.filteredRecipes.length > 0 ? <div></div> : <div className="no-recipes-banner">To add a recipe, click the '+' button below.</div> }
             <ul>

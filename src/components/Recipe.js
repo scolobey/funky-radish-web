@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom'
+import { Helmet } from "react-helmet";
 
 import uuidv1 from "uuid";
 import { getRecipe, setRedirect } from "../actions/Actions";
@@ -18,6 +19,12 @@ class RecipeView extends Component {
 
     return this.props.recipe ? (
       <div className="Recipe" key={this.props.recipe.clientID}>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>{this.props.recipe.title}</title>
+          <meta name="description" content= {"Recipe for " + this.props.recipe.title + ". "} />
+        </Helmet>
+
         <li key={this.props.recipe.clientID}>
           <div className="Title">
             <b>{this.props.recipe.title}</b>
