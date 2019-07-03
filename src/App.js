@@ -1,6 +1,6 @@
-import 'babel-polyfill';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { withRouter } from 'react-router-dom'
 
 import Navigation from './components/Navigation';
 
@@ -36,8 +36,8 @@ class App extends Component {
 
         <div className="content">
           <Route path="/" exact component={Recipes} />
-          <Route path="/login/" exact component={AuthView} />
-          <Route path="/signup/" exact component={AuthView} />
+          <Route path="/login/" exact component={withRouter(AuthView)} />
+          <Route path="/signup/" exact component={withRouter(AuthView)} />
           <Route path="/about/" exact component={About} />
           <Route path="/roadmap/" component={RoadMap} />
           <Route path="/privacy/" component={PrivacyPolicy} />
