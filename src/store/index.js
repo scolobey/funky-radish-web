@@ -18,8 +18,6 @@ import { loadState } from '../stateLoader.js';
 
 const persistedState = loadState();
 
-console.log("persisted state.", persistedState)
-
 const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(

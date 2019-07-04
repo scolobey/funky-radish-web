@@ -11,6 +11,8 @@ import throttle from "lodash/throttle";
 import { saveState } from './stateLoader.js';
 import { addRecipe } from "./actions/Actions";
 
+import 'babel-polyfill';
+
 store.subscribe(throttle(() => {
   saveState({
     recipes: store.getState().recipes,
