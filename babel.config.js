@@ -4,8 +4,11 @@ module.exports = function (api) {
   const presets = [ ... ];
   const plugins = [
     new BabelPlugin({
-  		test: /\.js$/,
-  		presets: ['es2015'],
+  		test: /\.(js|jsx)$/,
+  		presets: [
+        "@babel/preset-env",
+        "@babel/preset-react"
+      ],
   		sourceMaps: false,
   		compact: false
   	})
