@@ -1,3 +1,7 @@
+import 'babel-polyfill';
+import 'url-search-params-polyfill';
+import 'whatwg-fetch'
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
@@ -10,8 +14,6 @@ import store from "./store/index";
 import throttle from "lodash/throttle";
 import { saveState } from './stateLoader.js';
 import { addRecipe } from "./actions/Actions";
-
-import 'babel-polyfill';
 
 store.subscribe(throttle(() => {
   saveState({
