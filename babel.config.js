@@ -1,3 +1,5 @@
+/* global __DEV__ */
+
 module.exports = function (api) {
   api.cache(true);
 
