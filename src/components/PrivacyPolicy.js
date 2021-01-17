@@ -19,7 +19,7 @@ class PrivacyPolicy extends Component {
             <p>Link to privacy policy of third party service providers used by the app</p>
             <ul>
               <li>
-                <a href="https://www.google.com/policies/privacy/" target="_blank">Google Play Services</a>
+                <a href="https://www.google.com/policies/privacy/" target="_blank" rel="noreferrer">Google Play Services</a>
               </li>
             </ul>
           </div>

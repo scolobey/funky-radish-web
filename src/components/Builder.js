@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom'
 
-import uuidv1 from "uuid";
+import {v1 as uuid} from "uuid";
 import { addRecipe, deleteRemoteRecipe, setRedirect } from "../actions/Actions";
 
 class ConnectedForm extends Component {
@@ -52,7 +52,7 @@ class ConnectedForm extends Component {
     event.preventDefault();
 
     const { _id, title, ingredients, directions } = this.state;
-    const clientID = uuidv1();
+    const clientID = uuid();
 
     let recipe = {
       _id: _id,

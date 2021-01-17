@@ -26,7 +26,7 @@ import {
   setRecipe
 } from "../actions/Actions";
 
-import uuidv1 from "uuid";
+import {v1 as uuid} from "uuid";
 
 import Auth from '../Auth'
 const auth = new Auth();
@@ -38,19 +38,18 @@ export function loginMiddleware({ dispatch }) {
     return function(action) {
 
       if (action.type === LOGIN) {
-
         switch (auth.validateCredentials(action.user.email, action.user.password)) {
           case 1:
             return dispatch(getToken({email: action.user.email, password: action.user.password}));
           case 2:
-            return dispatch("Invalid password.");
+            return dispatch(warning('Invalid password.'));
           case 3:
-            return dispatch("Invalid email.");
+            return dispatch(warning('Invalid email.'));
           default:
-            return dispatch("Unidentified validation error.");
+            return dispatch(warning('Unidentified validation error.'));
         }
-
       }
+
       return next(action);
     };
   };
@@ -66,11 +65,11 @@ export function signupMiddleware({ dispatch }) {
           case 1:
             break;
           case 2:
-            return dispatch("Password needs 8 characters and a number.");
+            return dispatch(warning('Password needs 8 characters and a number.'));
           case 3:
-            return dispatch("Invalid email.");
+            return dispatch(warning('Invalid email.'));
           default:
-            return dispatch("Unidentified validation error.");
+            return dispatch(warning('Unidentified validation error.'));
         }
 
         var params = {
@@ -111,6 +110,7 @@ export function signupMiddleware({ dispatch }) {
           return dispatch(warning('Error: ' + err))
         })
       }
+
       return next(action);
     };
   };
@@ -225,12 +225,12 @@ export function recipeLoadingMiddleware({ dispatch }) {
           dispatch(setUsername(user));
           dispatch(toggleLoader(false));
 
-          json.forEach(recipe => recipe.clientID = uuidv1());
+          json.forEach(recipe => recipe.clientID = uuid());
           return dispatch(recipesLoaded(json));
         })
         .catch(error => {
           dispatch(toggleLoader(false));
-          return dispatch("Recipe load failed.");
+          return dispatch(warning("Recipe load failed."));
         });
       }
       return next(action);
@@ -346,7 +346,7 @@ export function deleteRecipeMiddleware({ dispatch }) {
         let token = auth.getToken();
 
         if (!token) {
-          return dispatch("You're not logged in. Recipe will not be removed.");
+          return dispatch(warning("You're not logged in. Recipe will not be removed."));
         }
 
         let id = action.recipe._id;
@@ -367,10 +367,11 @@ export function deleteRecipeMiddleware({ dispatch }) {
             return dispatch(deleteLocalRecipe(action.recipe.clientID))
           }
           else {
-            return dispatch("Delete failed.")
+            return dispatch(warning("Delete failed."))
           }
         })
       }
+
       return next(action);
     };
   };
@@ -381,11 +382,9 @@ export function warningCycleMiddleware({ dispatch }) {
     return function(action) {
       // do your stuff
       if (action.type === WARNING) {
-
         setInterval(() => {
           return dispatch(warningToggle());
         }, 3000);
-
       }
       return next(action);
     };

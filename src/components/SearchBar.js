@@ -17,7 +17,7 @@ class SearchBar extends Component {
   render() {
     return (
       <div className="RecipeSearchField">
-        <img src="/search_icon.svg" height="30"/>
+        <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input type="text" placeholder="Search.." onChange={this.handleChange}/>
       </div>
     );
