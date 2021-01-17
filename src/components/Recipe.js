@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom'
 import { Helmet } from "react-helmet";
 
-import uuidv1 from "uuid";
 import { getRecipe, setRedirect } from "../actions/Actions";
 
 class RecipeView extends Component {

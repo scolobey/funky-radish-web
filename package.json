@@ -5,18 +5,18 @@
   "dependencies": {
     "core-js": "^3.8.2",
     "moment": "^2.29.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-ga": "^2.5.7",
-    "react-helmet": "^5.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-ga": "^3.3.0",
+    "react-helmet": "^6.1.0",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "^3.4.4",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "url-search-params-polyfill": "^7.0.0",
-    "uuid": "^3.3.2",
+    "url-search-params-polyfill": "^8.1.0",
+    "uuid": "^8.3.2",
     "whatwg-fetch": "^3.5.0"
   },
   "scripts": {
@@ -34,5 +34,8 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0"
+  },
+  "proxy": "http://localhost:3000"
 }

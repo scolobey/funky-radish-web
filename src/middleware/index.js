@@ -24,7 +24,7 @@ import {
   setRecipe
 } from "../actions/Actions";
 
-import uuidv1 from "uuid";
+import {v1 as uuid} from "uuid";
 
 import Auth from '../Auth'
 const auth = new Auth();
@@ -195,7 +195,7 @@ export function recipeLoadingMiddleware({ dispatch }) {
           dispatch(setUsername(user));
           dispatch(toggleLoader(false));
 
-          json.forEach(recipe => recipe.clientID = uuidv1());
+          json.forEach(recipe => recipe.clientID = uuid());
           return dispatch(recipesLoaded(json));
         })
         .catch(error => {
