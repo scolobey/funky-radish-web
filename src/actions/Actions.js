@@ -9,6 +9,8 @@ import {
   DELETE_LOCAL_RECIPE,
   GET_TOKEN,
   AUTH_FAILED,
+  VERIFY_EMAIL,
+  SET_VERIFIED,
   CREATE_USER,
   LOGIN,
   SIGNUP,
@@ -49,10 +51,17 @@ export function authFailed(message) {
   return { type: AUTH_FAILED, message }
 };
 
+export function verifyEmail(token) {
+  return { type: VERIFY_EMAIL, token }
+};
+
+export function setVerified() {
+  return { type: SET_VERIFIED }
+};
+
 export function createUser(email) {
   return { type: CREATE_USER, email }
 };
-
 
 // Recipes
 export function getRecipes(token) {

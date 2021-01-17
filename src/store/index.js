@@ -3,6 +3,7 @@ import rootReducer from "../reducers/index";
 
 import {
   tokenCollectionMiddleware,
+  emailVerificationMiddleware,
   recipeLoadingMiddleware,
   addRecipeMiddleware,
   getRecipeMiddleware,
@@ -25,6 +26,7 @@ const store = createStore(
   persistedState,
   storeEnhancers(applyMiddleware(
       tokenCollectionMiddleware,
+      emailVerificationMiddleware,
       recipeLoadingMiddleware,
       addRecipeMiddleware,
       getRecipeMiddleware,

@@ -15,6 +15,8 @@ export const SIGNUP = 'SIGNUP';
 export const GET_TOKEN = 'GET_TOKEN';
 export const AUTH_FAILED = 'AUTH_FAILED';
 export const TOKEN_STORED = 'TOKEN_STORED';
+export const VERIFY_EMAIL = 'VERIFY_EMAIL';
+export const SET_VERIFIED = 'SET_VERIFIED';
 
 export const CREATE_USER = 'CREATE_USER';
 export const OPEN_MENU = 'OPEN_MENU';

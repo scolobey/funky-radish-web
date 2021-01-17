@@ -2,6 +2,7 @@ import {
   ADD_RECIPE,
   GET_TOKEN,
   GET_RECIPES,
+  VERIFY_EMAIL,
   DELETE_REMOTE_RECIPE,
   LOGIN,
   SIGNUP,
@@ -15,6 +16,7 @@ import {
   deleteLocalRecipe,
   authFailed,
   getToken,
+  setVerified,
   warning,
   recipesLoaded,
   setUsername,
@@ -162,6 +164,34 @@ export function tokenCollectionMiddleware({ dispatch }) {
             return dispatch(getRecipes(data.token));
           }
         })
+      }
+      return next(action);
+    };
+  };
+}
+
+export function emailVerificationMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === VERIFY_EMAIL) {
+        dispatch(toggleLoader(true));
+        const endpoint = "https://funky-radish-api.herokuapp.com/verify/" + action.token
+        console.log("fetching.")
+
+        fetch(endpoint, { method: 'get' })
+        .then(response => {
+          console.log(response.body)
+          response.json()
+        })
+        .then(data => {
+          console.log("fetch returned.")
+          dispatch(toggleLoader(false));
+          if ( data.message == "Email verified.") {
+            dispatch(setVerified());
+          }
+          return dispatch(warning(data.message));
+        });
       }
       return next(action);
     };
