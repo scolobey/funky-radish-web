@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "10.20.1"
+    "node": "15.6.0"
   },
   "dependencies": {
     "core-js": "^3.8.2",
