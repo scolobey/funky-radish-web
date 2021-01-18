@@ -188,9 +188,13 @@ export function emailVerificationMiddleware({ dispatch }) {
           console.log("fetch returned.")
           dispatch(toggleLoader(false));
           if ( data.message == "Email verified.") {
-            dispatch(setVerified());
+            dispatch(setVerified("Welcome to Funky Radish! You can now login from any device."));
           }
           return dispatch(warning(data.message));
+        });
+        .catch(error => {
+          dispatch(toggleLoader(false));
+          return dispatch(warning("Recipe load failed."));
         });
       }
       return next(action);

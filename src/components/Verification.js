@@ -14,7 +14,7 @@ export class Verification extends Component {
 
     this.state = {
       token: token || '',
-      verified: false
+      verified: "Just a moment while we verify your account..."
     };
   }
 
@@ -29,10 +29,7 @@ export class Verification extends Component {
 
     return (
       <div className="verificationView">
-
-        Your account has not yet been verified.
-        <b>{this.state.token}</b>
-
+        <b>{this.state.verified}</b>
       </div>
     );
 
