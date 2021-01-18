@@ -29,7 +29,7 @@ export class Verification extends Component {
 
     return (
       <div className="verificationView">
-        <b>{this.state.verified}</b>
+        <b>{this.props.verified}</b>
       </div>
     );
 

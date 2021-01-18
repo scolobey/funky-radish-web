@@ -177,7 +177,6 @@ export function emailVerificationMiddleware({ dispatch }) {
       if (action.type === VERIFY_EMAIL) {
         dispatch(toggleLoader(true));
         const endpoint = "https://funky-radish-api.herokuapp.com/verify/" + action.token
-        console.log("fetching.")
 
         fetch(endpoint, { method: 'get' })
         .then(response => {
@@ -186,11 +185,14 @@ export function emailVerificationMiddleware({ dispatch }) {
         })
         .then(data => {
           console.log("fetch returned.")
+          console.log(data)
           dispatch(toggleLoader(false));
           if ( data.message == "Email verified.") {
-            dispatch(setVerified("Welcome to Funky Radish! You can now login from any device."));
+            return dispatch(setVerified("Welcome to Funky Radish! You can now login from any device."));
           }
-          return dispatch(warning(data.message));
+          else {
+            return dispatch(setVerified(data.message));
+          }
         })
         .catch(error => {
           dispatch(toggleLoader(false));

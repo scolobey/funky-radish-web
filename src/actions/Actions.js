@@ -55,8 +55,8 @@ export function verifyEmail(token) {
   return { type: VERIFY_EMAIL, token }
 };
 
-export function setVerified() {
-  return { type: SET_VERIFIED }
+export function setVerified(verificationMessage) {
+  return { type: SET_VERIFIED, verificationMessage }
 };
 
 export function createUser(email) {
