@@ -194,7 +194,7 @@ export function emailVerificationMiddleware({ dispatch }) {
         })
         .catch(error => {
           dispatch(toggleLoader(false));
-          return dispatch(warning("Email verification failed."));
+          return dispatch(setVerified("Verification failed: " + error.message));
         });
       }
       return next(action);
