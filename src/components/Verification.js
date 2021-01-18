@@ -10,7 +10,6 @@ export class Verification extends Component {
     super(props);
 
     let token = props.match.params.token;
-    console.log("props", token)
 
     this.state = {
       token: token || '',

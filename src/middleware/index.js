@@ -179,9 +179,8 @@ export function emailVerificationMiddleware({ dispatch }) {
         const endpoint = "https://funky-radish-api.herokuapp.com/verify/" + action.token
 
         fetch(endpoint, { method: 'get' })
-        .then(response => {
-          console.log(response.body)
-          response.json()
+        .then(res=> {
+          return res.clone().json()
         })
         .then(data => {
           console.log("fetch returned.")
