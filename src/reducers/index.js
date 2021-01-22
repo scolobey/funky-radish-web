@@ -42,7 +42,6 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_VERIFIED ) {
-    console.log("setting verified: ", action.verificationMessage)
     return Object.assign({}, state, {
       verified: action.verificationMessage
     });

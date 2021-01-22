@@ -10,6 +10,10 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from 'react-router-dom';
 import './index.css';
 import App from './App';
+
+import { REALM_APP_ID } from "./constants/api";
+import * as Realm from "realm-web";
+
 import { Provider } from "react-redux";
 import * as serviceWorker from './serviceWorker';
 
@@ -17,6 +21,8 @@ import store from "./store/index";
 import throttle from "lodash/throttle";
 import { saveState } from './stateLoader.js';
 import { addRecipe } from "./actions/Actions";
+
+const realmApp = new Realm.App({ id: REALM_APP_ID });
 
 store.subscribe(throttle(() => {
   saveState({
