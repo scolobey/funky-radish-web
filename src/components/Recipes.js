@@ -4,6 +4,8 @@ import { withRouter, Link } from "react-router-dom";
 import { getToken } from "../actions/Actions";
 import { Helmet } from "react-helmet";
 
+import RecipeList from "./RecipeList";
+
 export class Recipes extends Component {
 
   componentDidMount() {
@@ -12,6 +14,7 @@ export class Recipes extends Component {
 
   render() {
     return !this.props.user ? ([
+        <div><RecipeList/></div>,
         <div className="not-logged-in-banner"><a href="./login">Login</a> or <a href="./signup">Signup</a></div>,
         <div className="download-icons">
           <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
@@ -25,6 +28,8 @@ export class Recipes extends Component {
             <title>Funky Radish Professional Recipe Repository</title>
             <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
           </Helmet>
+
+          <RecipeList/>
 
           <div className="RecipeList">
             {this.props.filteredRecipes.length > 0 ? <div></div> : <div className="no-recipes-banner">To add a recipe, click the '+' button below.</div> }
@@ -66,7 +71,6 @@ export class Recipes extends Component {
         </div>
     );
   }
-
 }
 
 function mapStateToProps(state) {

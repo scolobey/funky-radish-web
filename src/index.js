@@ -13,10 +13,15 @@ import App from './App';
 import { Provider } from "react-redux";
 import * as serviceWorker from './serviceWorker';
 
+import RealmApolloProvider from "./graphql/RealmApolloProvider";
+import { useRealmApp, RealmAppProvider } from "./RealmApp";
+
 import store from "./store/index";
 import throttle from "lodash/throttle";
 import { saveState } from './stateLoader.js';
 import { addRecipe } from "./actions/Actions";
+
+export const APP_ID = "funky_radish_app-aarlp";
 
 store.subscribe(throttle(() => {
   saveState({
@@ -30,11 +35,15 @@ window.store = store;
 window.addRecipe = addRecipe;
 
 ReactDOM.render(
-    <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
-    </Provider>
+  <RealmAppProvider appId={APP_ID}>
+    <RealmApolloProvider>
+      <Provider store={store}>
+        <Router>
+          <App />
+        </Router>
+      </Provider>
+    </RealmApolloProvider>
+  </RealmAppProvider>
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
