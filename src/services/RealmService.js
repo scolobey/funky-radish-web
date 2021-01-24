@@ -1,49 +1,58 @@
-import { Credentials, User, GraphQLConfig } from 'realm-graphql-client';
-import gql from 'graphql-tag'
+import * as Realm from "realm-web";
+import { REALM_APP_ID } from "../constants/api";
+
+const realmApp = new Realm.App({ id: REALM_APP_ID });
 
 export default class RealmService {
 
-  authenticate = (user) => {
-    const credentials = Credentials.usernamePassword(user.email, user.password, user.newUser);
-    return User.authenticate(credentials, 'https://recipe-realm.us1.cloud.realm.io')
-  }
+  authenticate = (token) => {
+    const credentials = Realm.Credentials.jwt(token);
 
-  tokenAuthenticate = (token) => {
-    const credentials = Credentials.jwt(token);
-    return User.authenticate(credentials, 'https://recipe-realm.us1.cloud.realm.io')
-  }
-
-  async getRecipes(user) {
-    const config = await GraphQLConfig.create(
-      user,
-      '/~/recipes'
-    );
-    const client = config.createApolloClient();
-
-    const response = await client.query({
-      query: gql`
-        query {
-          recipes {
-            title
-            ingredients {
-              name
-            }
-            directions {
-              text
-            }
-          }
-        }`
+    realmApp.logIn(credentials)
+    .then(user => {
+      return user
+    })
+    .catch(error => {
+      return error
     });
-
-    const recipes = response.data.recipes;
-    return response;
   }
 
-  async createRecipe(recipe, user) {
-
-    console.log("create Recipe")
-    console.log("Recipe: %s", recipe.title)
-    console.log(user)
+  // tokenAuthenticate = (token) => {
+  //   const credentials = Credentials.jwt(token);
+  //   return User.authenticate(credentials, 'https://recipe-realm.us1.cloud.realm.io')
+  // }
+  //
+  // async getRecipes(user) {
+  //   const config = await GraphQLConfig.create(
+  //     user,
+  //     '/~/recipes'
+  //   );
+  //   const client = config.createApolloClient();
+  //
+  //   const response = await client.query({
+  //     query: gql`
+  //       query {
+  //         recipes {
+  //           title
+  //           ingredients {
+  //             name
+  //           }
+  //           directions {
+  //             text
+  //           }
+  //         }
+  //       }`
+  //   });
+  //
+  //   const recipes = response.data.recipes;
+  //   return response;
+  // }
+  //
+  // async createRecipe(recipe, user) {
+  //
+  //   console.log("create Recipe")
+  //   console.log("Recipe: %s", recipe.title)
+  //   console.log(user)
 
     // const config = await GraphQLConfig.create(
     //   user,
@@ -72,6 +81,6 @@ export default class RealmService {
     // console.log(response)
     //
     // const addedCompany = response.data.result;
-  }
+  // }
 
 }

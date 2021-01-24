@@ -29,7 +29,9 @@ import {
 import {v1 as uuid} from "uuid";
 
 import Auth from '../Auth'
+import RealmService from '../services/RealmService'
 const auth = new Auth();
+const realmService = new RealmService();
 
 var moment = require('moment');
 
@@ -73,11 +75,8 @@ export function signupMiddleware({ dispatch }) {
         }
 
         var params = {
-          name: action.user.username,
           email: action.user.email,
-          password: action.user.password,
-          admin: false,
-          recipes: []
+          password: action.user.password
         };
 
         dispatch(toggleLoader(true));
@@ -94,19 +93,16 @@ export function signupMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
-          if (data.message !== "User created successfully.") {
+          if (data.message == "Verification email sent.") {
             dispatch(toggleLoader(false));
-            dispatch(data.message);
+            return dispatch(warning("Check your email for a link to help complete your signup."))
           } else {
-            auth.setSession(data.token, action.user.email);
-            dispatch(setUsername(action.user.email));
             dispatch(toggleLoader(false));
-            // go to main recipe list.
-            var recipes = [];
-            return dispatch(recipesLoaded(recipes));
+            return dispatch(warning(data.message))
           }
         })
         .catch(err => {
+          dispatch(toggleLoader(false));
           return dispatch(warning('Error: ' + err))
         })
       }
@@ -127,7 +123,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
           return dispatch(getRecipes(token));
         }
 
-        if (!action.authData || !action.authData) {
+        if (!action.authData) {
           return dispatch(authFailed("not logged in."));
         }
 
@@ -153,17 +149,43 @@ export function tokenCollectionMiddleware({ dispatch }) {
           }),
           body: formBody
         })
-        .then(response => response.json())
+        .then(res => {
+          return res.clone().json()
+        })
         .then(data => {
-          if (!data.success) {
+          if (data.message === "Enjoy your token, ya filthy animal!") {
+            RealmService.authenticate(data.token)
+            .then(user => {
+              auth.setSession(data.token, action.authData.email);
+              auth.setRealmUser(user);
+              dispatch(setUsername(action.authData.email));
+              dispatch(warning("Welcome! Hold on while we collect your recipes."));
+              dispatch(setRedirect("/"));
+              //TODO: We don't need to pass a parameter. Should be able to get user
+              return dispatch(getRecipes(user.refresh_token));
+            })
+            .catch(error => {
+              dispatch(toggleLoader(false));
+              return dispatch(warning("Realm connect failed: " + error.message));
+            });
+          }
+          else if (data.message === "Email not verified.") {
             dispatch(toggleLoader(false));
             dispatch(setRedirect("/login"));
-            return dispatch(warning("welcome back."));
-          } else {
-            auth.setSession(data.token, action.authData.email);
-            return dispatch(getRecipes(data.token));
+            return dispatch(warning("Check your email to verify your account."));
+          }
+          else {
+            dispatch(toggleLoader(false));
+            dispatch(setRedirect("/login"));
+            console.log("error: ", data);
+            return dispatch(warning(data.message));
           }
         })
+        .catch(error => {
+          dispatch(toggleLoader(false));
+          console.log("error: ", error.message);
+          return dispatch(warning("Auth failed: " + error.message));
+        });
       }
       return next(action);
     };
@@ -186,7 +208,7 @@ export function emailVerificationMiddleware({ dispatch }) {
           console.log("fetch returned.")
           console.log(data)
           dispatch(toggleLoader(false));
-          if ( data.message == "Email verified.") {
+          if ( data.message === "Email verified.") {
             return dispatch(setVerified("Welcome to Funky Radish! You can now login from any device."));
           }
           else {
@@ -210,33 +232,35 @@ export function recipeLoadingMiddleware({ dispatch }) {
       if (action.type === GET_RECIPES) {
 
         dispatch(toggleLoader(true));
+        console.log("get recipes action called")
+        return dispatch(warning("getting recipes"))
 
-        return fetch("https://funky-radish-api.herokuapp.com/recipes", {
-          method: 'get',
-          headers: new Headers({
-            'x-access-token': action.token
-          })
-        })
-        .then(response => response.json())
-        .then(json => {
-          if (json.message) {
-            dispatch(warning(json.message))
-            dispatch(toggleLoader(false));
-            auth.setToken("");
-            return dispatch(getToken());
-          }
-
-          let user = auth.getUser();
-          dispatch(setUsername(user));
-          dispatch(toggleLoader(false));
-
-          json.forEach(recipe => recipe.clientID = uuid());
-          return dispatch(recipesLoaded(json));
-        })
-        .catch(error => {
-          dispatch(toggleLoader(false));
-          return dispatch(warning("Recipe load failed."));
-        });
+        // return fetch("https://funky-radish-api.herokuapp.com/recipes", {
+        //   method: 'get',
+        //   headers: new Headers({
+        //     'x-access-token': action.token
+        //   })
+        // })
+        // .then(response => response.json())
+        // .then(json => {
+        //   if (json.message) {
+        //     dispatch(warning(json.message))
+        //     dispatch(toggleLoader(false));
+        //     auth.setToken("");
+        //     return dispatch(getToken());
+        //   }
+        //
+        //   let user = auth.getUser();
+        //   dispatch(setUsername(user));
+        //   dispatch(toggleLoader(false));
+        //
+        //   json.forEach(recipe => recipe.clientID = uuid());
+        //   return dispatch(recipesLoaded(json));
+        // })
+        // .catch(error => {
+        //   dispatch(toggleLoader(false));
+        //   return dispatch(warning("Recipe load failed."));
+        // });
       }
       return next(action);
     };
