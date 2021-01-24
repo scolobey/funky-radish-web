@@ -5,6 +5,10 @@ export default class Auth {
     localStorage.setItem('user', user);
   }
 
+  setRealmUser = (realmUser) => {
+    localStorage.setItem('realm_user', realmUser);
+  }
+
   setToken = (token) => {
     localStorage.setItem('access_token', token);
   }

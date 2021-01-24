@@ -16,7 +16,6 @@ class AuthView extends Component {
     this.state = {
       login: login,
       email: '',
-      user: '',
       password: ''
     }
   }
@@ -32,15 +31,14 @@ class AuthView extends Component {
       this.props.login({email: this.state.email, password: this.state.password});
     }
     else {
-      this.props.signup({email: this.state.email, password: this.state.password, username: this.state.user});
+      this.props.signup({email: this.state.email, password: this.state.password});
     }
   }
 
   toggleMode = (event) => {
     event.preventDefault();
     this.setState({
-      login: !this.state.login,
-      user: ''
+      login: !this.state.login
     });
   }
 
@@ -52,7 +50,6 @@ class AuthView extends Component {
             <a href='./'>Dismiss.</a>
             {this.state.login ? <h1>Login</h1> : <h1>Sign up</h1> }
             <form onSubmit={this.onSubmit}>
-              {this.state.login ? '' : <input placeholder='Username...' name='user' value={this.state.user} onChange={this.onChange} /> }
               <input placeholder='Email...' name='email' value={this.state.email} onChange={this.onChange} />
               <input type='password' placeholder='Password...' name='password' value={this.state.password} onChange={this.onChange} />
               {this.state.login ? <button>Login</button> : <button>Signup</button> }
@@ -68,8 +65,7 @@ class AuthView extends Component {
 function mapStateToProps(state) {
   return {
     email: state.email,
-    password: state.password,
-    user: state.user
+    password: state.password
   };
 }
 
