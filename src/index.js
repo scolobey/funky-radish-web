@@ -21,7 +21,9 @@ import throttle from "lodash/throttle";
 import { saveState } from './stateLoader.js';
 import { addRecipe } from "./actions/Actions";
 
-export const APP_ID = "funky_radish_app-aarlp";
+// export const APP_ID = "funky_radish_app-aarlp";
+export const APP_ID = "funky-radish-twdxv";
+
 
 store.subscribe(throttle(() => {
   saveState({

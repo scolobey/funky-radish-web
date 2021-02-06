@@ -15,11 +15,13 @@ const createRealmApolloClient = (app) => {
     // A custom fetch handler adds the logged in user's access token to GraphQL requests
     fetch: async (uri, options) => {
       if (!app.currentUser) {
+        console.log(app)
         throw new Error(`Must be logged in to use the GraphQL API`);
       }
       // Refreshing a user's custom data also refreshes their access token
       await app.currentUser.refreshCustomData();
       options.headers.Authorization = `Bearer ${app.currentUser.accessToken}`;
+
       return fetch(uri, options);
     },
   });
@@ -33,6 +35,7 @@ export default function RealmApolloProvider({ children }) {
   const app = useRealmApp();
   const [client, setClient] = React.useState(createRealmApolloClient(app))
   React.useEffect(() => {
+    console.log("apollo provider creation")
     setClient(createRealmApolloClient(app));
   }, [app]);
 

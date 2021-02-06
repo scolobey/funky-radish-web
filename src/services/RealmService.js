@@ -7,14 +7,11 @@ export default class RealmService {
 
   authenticate = (token) => {
     const credentials = Realm.Credentials.jwt(token);
+    return realmApp.logIn(credentials)
+  }
 
-    realmApp.logIn(credentials)
-    .then(user => {
-      return user
-    })
-    .catch(error => {
-      return error
-    });
+  getRealm = () => {
+    return realmApp
   }
 
   // tokenAuthenticate = (token) => {

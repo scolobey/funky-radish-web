@@ -93,7 +93,7 @@ export function signupMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
-          if (data.message == "Verification email sent.") {
+          if (data.message === "Verification email sent.") {
             dispatch(toggleLoader(false));
             return dispatch(warning("Check your email for a link to help complete your signup."))
           } else {
@@ -117,11 +117,11 @@ export function tokenCollectionMiddleware({ dispatch }) {
     return function(action) {
       // do your stuff
       if (action.type === GET_TOKEN) {
-        let token = auth.getToken();
-
-        if (token) {
-          return dispatch(getRecipes(token));
-        }
+        // let token = auth.getToken();
+        //
+        // if (token) {
+        //   return dispatch(getRecipes(token));
+        // }
 
         if (!action.authData) {
           return dispatch(authFailed("not logged in."));
@@ -154,15 +154,15 @@ export function tokenCollectionMiddleware({ dispatch }) {
         })
         .then(data => {
           if (data.message === "Enjoy your token, ya filthy animal!") {
-            RealmService.authenticate(data.token)
+            realmService.authenticate(data.token)
             .then(user => {
               auth.setSession(data.token, action.authData.email);
               auth.setRealmUser(user);
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
-              dispatch(setRedirect("/"));
+              dispatch(toggleLoader(false));
               //TODO: We don't need to pass a parameter. Should be able to get user
-              return dispatch(getRecipes(user.refresh_token));
+              return dispatch(setRedirect("/"));
             })
             .catch(error => {
               dispatch(toggleLoader(false));
@@ -233,6 +233,7 @@ export function recipeLoadingMiddleware({ dispatch }) {
 
         dispatch(toggleLoader(true));
         console.log("get recipes action called")
+        dispatch(toggleLoader(false));
         return dispatch(warning("getting recipes"))
 
         // return fetch("https://funky-radish-api.herokuapp.com/recipes", {
