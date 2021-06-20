@@ -21,7 +21,11 @@ import {
   SET_RECIPE,
   WARNING_TOGGLE,
   SET_REDIRECT,
-  SEARCH
+  SEARCH,
+  SET_IMPORT_QUEUE,
+  EXTERNAL_RECIPE_SEARCH,
+  AUTOCOMPLETE,
+  SET_SEARCH_SUGGESTIONS
 } from "../constants/action-types"
 
 /* other constants */
@@ -122,4 +126,20 @@ export function setRedirect(redirect) {
 
 export function search(query) {
   return { type: SEARCH, query }
+};
+
+export function setImportQueue(queue) {
+  return { type: SET_IMPORT_QUEUE, queue }
+};
+
+export function externalRecipeSearch(query) {
+  return { type: EXTERNAL_RECIPE_SEARCH, query }
+};
+
+export function autocomplete(query) {
+  return { type: AUTOCOMPLETE, query }
+};
+
+export function setSearchSuggestions(suggestions) {
+  return { type: SET_SEARCH_SUGGESTIONS, suggestions }
 };

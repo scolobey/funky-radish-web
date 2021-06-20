@@ -10,7 +10,9 @@ import {
   deleteRecipeMiddleware,
   loginMiddleware,
   signupMiddleware,
-  warningCycleMiddleware
+  warningCycleMiddleware,
+  externalSearchMiddleware,
+  autocompleteMiddleware
 } from "../middleware";
 
 import thunk from "redux-thunk";
@@ -34,6 +36,8 @@ const store = createStore(
       loginMiddleware,
       signupMiddleware,
       warningCycleMiddleware,
+      externalSearchMiddleware,
+      autocompleteMiddleware,
       thunk
   ))
 );

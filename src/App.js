@@ -4,6 +4,12 @@ import { withRouter } from 'react-router-dom'
 
 import Navigation from './components/Navigation';
 
+import Admin from './components/admin/Admin';
+import ImporterAdmin from './components/admin/Importer';
+import GraphAdmin from './components/admin/Graph';
+import RecipesAdmin from './components/admin/Recipes';
+import UsersAdmin from './components/admin/Users';
+
 import PrivacyPolicy from './components/PrivacyPolicy';
 import RoadMap from './components/RoadMap';
 import About from './components/About';
@@ -47,6 +53,11 @@ class App extends Component {
           <Route path="/verify/:token?" component={Verification} />
           <Route path="/builder/:clientID?" component={Builder} />
           <Route path="/recipes/:recipeTitle?" component={Recipe} />
+          <Route path="/admin/" component={Admin} />
+          <Route path="/admin/importer" component={ImporterAdmin} />
+          <Route path="/admin/graph" component={GraphAdmin} />
+          <Route path="/admin/recipes" component={RecipesAdmin} />
+          <Route path="/admin/users" component={UsersAdmin} />
         </div>
       </div>
     );

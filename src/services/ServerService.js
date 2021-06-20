@@ -56,7 +56,37 @@ export default class ServerService {
 
     let data = await response.json()
     return data;
+  }
 
+  async searchRecipes(query) {
+    let endpoint = BASE_URL + "collector?query=" + query
+
+    console.log("calling: " + endpoint)
+
+    let response = await fetch(endpoint, { method: 'post' })
+    .catch(err => {
+      console.log('Error: ' + err)
+      return err
+    })
+
+    let data = await response.json()
+    return data;
+  }
+
+  async searchAutocomplete(query) {
+    let endpoint = BASE_URL + "collector/autocomplete?query=" + query
+
+    console.log("calling: " + endpoint)
+
+    let response = await fetch(endpoint, { method: 'get' })
+    .catch(err => {
+      console.log('Error: ' + err)
+      return err
+    })
+
+    let data = await response.json()
+    console.log(data)
+    return data;
   }
 
 }

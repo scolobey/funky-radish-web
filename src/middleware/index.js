@@ -7,7 +7,9 @@ import {
   LOGIN,
   SIGNUP,
   WARNING,
-  GET_RECIPE
+  GET_RECIPE,
+  EXTERNAL_RECIPE_SEARCH,
+  AUTOCOMPLETE
 } from "../constants/action-types";
 
 import {
@@ -23,15 +25,21 @@ import {
   toggleLoader,
   warningToggle,
   setRedirect,
-  setRecipe
+  setRecipe,
+  importRecipes,
+  setImportQueue,
+  setSearchSuggestions
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
 
 import Auth from '../Auth'
 import RealmService from '../services/RealmService'
+import ServerService from '../services/ServerService'
+import Recipe from '../models/RecipeModel'
 const auth = new Auth();
 const realmService = new RealmService();
+const serverService = new ServerService();
 
 var moment = require('moment');
 
@@ -415,6 +423,99 @@ export function warningCycleMiddleware({ dispatch }) {
         setInterval(() => {
           return dispatch(warningToggle());
         }, 3000);
+      }
+      return next(action);
+    };
+  };
+}
+
+// export function importRecipesMiddleware({ dispatch }) {
+//   return function(next) {
+//     return function(action) {
+//       if (action.type === IMPORT_RECIPES) {
+//         console.log("importing recipes - query: " + action.query)
+//
+//         dispatch(toggleLoader(true));
+//         const endpoint = "https://api.spoonacular.com/recipes/complexSearch?apiKey=baf6ca65c5e6461cbdb8f3cc87e1a730&query=" + action.query
+//
+//         fetch(endpoint, { method: 'get' })
+//         .then(res=> {
+//           return res.clone().json()
+//         })
+//         .then(data => {
+//           //handle overloaded api code.
+//
+//           console.log("fetch returned.")
+//
+//           data.results.forEach(myFunction);
+//
+//           function myFunction(value, index, array) {
+//             var rec = new Recipe(value.title)
+//             console.log(rec.title)
+//             console.log(value.title)
+//           }
+//
+//
+//
+//           dispatch(toggleLoader(false));
+//           // if ( data.message === "Email verified.") {
+//           //   return dispatch(setVerified("Welcome to Funky Radish! You can now login from any device."));
+//           // }
+//           // else {
+//           //   return dispatch(setVerified(data.message));
+//           // }
+//         })
+//         .catch(error => {
+//           dispatch(toggleLoader(false));
+//           return dispatch(setVerified("Verification failed: " + error.message));
+//         });
+//
+//         // dispatch(setImportQueue(["coookies", "butter"]));
+//       }
+//       return next(action);
+//     };
+//   };
+// }
+
+export function externalSearchMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === EXTERNAL_RECIPE_SEARCH) {
+
+        console.log("external search")
+
+        dispatch(toggleLoader(true))
+
+        serverService.searchRecipes(action.query)
+        .then(res=> {
+          console.log(res.recipes.results)
+          return dispatch(toggleLoader(false))
+        })
+        .catch(err => {
+          dispatch(toggleLoader(false));
+          return dispatch(warning('Error: ' + err))
+        })
+
+
+        // dispatch(toggleLoader(false));
+
+      }
+      return next(action);
+    };
+  };
+}
+
+export function autocompleteMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === AUTOCOMPLETE) {
+        serverService.searchAutocomplete(action.query)
+        .then(res=> {
+          return dispatch(setSearchSuggestions(res.suggestions))
+        })
+        .catch(err => {
+          return dispatch(warning('Error: ' + err))
+        })
       }
       return next(action);
     };

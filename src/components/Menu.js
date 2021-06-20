@@ -34,8 +34,8 @@ class Menu extends Component {
     else {
       return(
         [
-          <li key='3'><a href='./login'>Login</a></li>,
-          <li key='4'><a href='./signup'>Signup</a></li>
+          <li key='3'><a href='/login'>Login</a></li>,
+          <li key='4'><a href='/signup'>Signup</a></li>
         ]
       )
     }
