@@ -14,20 +14,37 @@ export default class ServerService {
     return data;
   }
 
-  async searchAutocomplete(query) {
-    let endpoint = BASE_URL + "collector/autocomplete?query=" + query
+  searchAutocomplete(query) {
+    return new Promise(function(resolve, reject) {
 
-    let response = await fetch(endpoint, { method: 'get' })
+      let data
+      console.log("querying autocomplete: ", query)
 
-    let data = await response.json()
-    return data;
+      if ( query === "") {
+        setTimeout(function(){
+          let obj = {message: "Here ya go, punk!", suggestions: [], error: ""}
+          console.log("returning response: ", obj)
+          resolve(obj)
+        }, 500);
+      }
+      else {
+        let endpoint = BASE_URL + "collector/autocomplete?query=" + query
+         console.log("caling: ", endpoint)
+        fetch(endpoint, {
+          method: 'GET'
+        })
+        .then(function(response) {
+          console.log(response)
+          resolve(response);
+        })
+        .catch(function(err) {
+            console.log('fetch failed: ', err);
+            reject(err);
+        });
+      }
+    })
+
   }
-
-
-
-
-
-
 
   async createUser(user) {
     var params = {
@@ -114,4 +131,5 @@ function fetchWithTimeout(endpoint) {
           reject(err);
       });
   })
+
 }

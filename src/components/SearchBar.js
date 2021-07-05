@@ -24,7 +24,7 @@ class SearchBar extends Component {
   }
 
   handleChange(event) {
-    console.log(event.target.value)
+    console.log("handling change: ", event.target.value)
     this.throttleHandleChange(event)
   }
 
