@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { debounce } from 'lodash';
-import { search, autocomplete, externalRecipeSearch } from "../actions/Actions";
+import { search, autocomplete, setSearchSuggestions, externalRecipeSearch } from "../actions/Actions";
 
 class SearchBar extends Component {
 
@@ -24,6 +24,7 @@ class SearchBar extends Component {
   }
 
   handleChange(event) {
+    console.log(event.target.value)
     this.throttleHandleChange(event)
   }
 
@@ -32,19 +33,30 @@ class SearchBar extends Component {
     console.log(this.state.cursor)
     console.log(this.state.suggestions)
 
+    if (event.keyCode === 8) {
+      console.log("backspace")
+    }
 
     // arrow up/down button should select next/previous list element
     if (event.keyCode === 13) {
       // search for recipes
-      console.log("searching: ", event.target.value)
-      //this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
+      console.log("enter")
+      console.log("searching: ", this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
+      this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
 
-      this.props.externalRecipeSearch(event.target.value)
+      event.target.value = this.props.suggestions[this.state.cursor].title
 
-      // this.setState({
-      //   cursor: 0,
-      //   suggestions: []
-      // });
+      console.log("state: ", this.state.suggestions)
+      console.log("prop: ", this.props.suggestions)
+
+      this.setState({
+        cursor: 0
+      });
+
+      this.props.setSearchSuggestions([])
+
+      console.log("state: ", this.state.suggestions)
+      console.log("prop: ", this.props.suggestions)
     }
     else if (event.keyCode === 38) {
       if(this.state.cursor === 0) {
@@ -79,7 +91,7 @@ class SearchBar extends Component {
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input type="text" placeholder="Search.." onChange={this.handleChange} onKeyDown={ this.handleKeyDown } onSubmit={this.handleClick} />
 
-        { this.props.suggestions ?
+        { this.props.suggestions && this.props.suggestions.length > 0 ?
           <div className="Suggestions">
             <ul>
               { this.props.suggestions.map((suggestion, index) => (
@@ -114,4 +126,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { search, autocomplete, externalRecipeSearch } )(SearchBar);
+export default connect(mapStateToProps, { search, autocomplete, setSearchSuggestions, externalRecipeSearch } )(SearchBar);

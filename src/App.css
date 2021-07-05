@@ -164,7 +164,7 @@
     position: fixed;
     top: 20vh;
     right: 0px;
-    height: 75%;
+    height: 100%;
     border-style: solid;
     border-radius: 20px;
     border-width: thin;
@@ -184,7 +184,6 @@
     #menu.open {
       transform: translateX(5%);
     }
-
   }
 
   #menu ul {
@@ -576,7 +575,9 @@ button[type=delete]:hover {
   border: 1px solid #eeeeee;
   border-radius: 4px;
   background-color: #fff;
-  box-shadow: 0px 1px 6px 1px rgba(0, 0, 0, 0.4);
+  margin-left: 35px;
+  padding: 8px;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
 .Suggestions li {
@@ -587,8 +588,7 @@ button[type=delete]:hover {
 
 .Suggestions .active-suggestion,
 .Suggestions li:hover {
-  background-color: #008f68;
-  color: #fae042;
+  background: #efefef;
   cursor: pointer;
   font-weight: 700;
 }
