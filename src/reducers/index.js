@@ -14,10 +14,17 @@ function rootReducer(state, action) {
   }
 
   if (action.type === RECIPES_LOADED) {
+    let recList = action.recipes.map(rec => {
+       let recipeObject = {}
+       recipeObject["_id"] = rec.id
+       recipeObject["title"] = rec.title
+       return recipeObject
+    })
+
+    console.log("setting recipes to: ", recList)
     return Object.assign({}, state, {
-      redirect: "/",
-      recipes: action.payload,
-      filteredRecipes: action.payload
+      recipes: recList,
+      filteredRecipes: recList
     });
   }
 

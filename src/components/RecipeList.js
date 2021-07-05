@@ -5,9 +5,6 @@ import { useRealmApp } from "../RealmApp";
 export default function RecipeList() {
 
   const app = useRealmApp();
-
-  console.log("loading the realm recipe list.")
-
   const { loading, data } = useRecipes();
 
   if(data) {

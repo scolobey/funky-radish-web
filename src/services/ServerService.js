@@ -3,8 +3,33 @@ var path = require('path');
 
 export default class ServerService {
 
-  async createUser(user) {
+  async searchRecipes(query) {
+    let endpoint = BASE_URL + "collector?query=" + query
 
+    console.log(endpoint)
+
+    let response = await fetch(endpoint, { method: 'get' })
+
+    let data = await response.json()
+    return data;
+  }
+
+  async searchAutocomplete(query) {
+    let endpoint = BASE_URL + "collector/autocomplete?query=" + query
+
+    let response = await fetch(endpoint, { method: 'get' })
+
+    let data = await response.json()
+    return data;
+  }
+
+
+
+
+
+
+
+  async createUser(user) {
     var params = {
       name: user.username,
       email: user.email,
@@ -30,7 +55,6 @@ export default class ServerService {
 
     let data = await response.json()
     return data;
-
   }
 
   async loginUser(user) {
@@ -58,35 +82,36 @@ export default class ServerService {
     return data;
   }
 
-  async searchRecipes(query) {
-    let endpoint = BASE_URL + "collector?query=" + query
+}
 
-    console.log("calling: " + endpoint)
+function fetchWithTimeout(endpoint) {
+  const FETCH_TIMEOUT = 8000;
+  let didTimeOut = false;
 
-    let response = await fetch(endpoint, { method: 'post' })
-    .catch(err => {
-      console.log('Error: ' + err)
-      return err
+  return new Promise(function(resolve, reject) {
+    const timeout = setTimeout(function() {
+      didTimeOut = true;
+      reject(new Error('Request timed out'));
+    }, FETCH_TIMEOUT);
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
     })
-
-    let data = await response.json()
-    return data;
-  }
-
-  async searchAutocomplete(query) {
-    let endpoint = BASE_URL + "collector/autocomplete?query=" + query
-
-    console.log("calling: " + endpoint)
-
-    let response = await fetch(endpoint, { method: 'get' })
-    .catch(err => {
-      console.log('Error: ' + err)
-      return err
-    })
-
-    let data = await response.json()
-    console.log(data)
-    return data;
-  }
-
+      .then(function(response) {
+        // Clear the timeout as cleanup
+        clearTimeout(timeout);
+        if(!didTimeOut) {
+          console.log('fetch successfull: ', response);
+          resolve(response);
+        }
+      })
+      .catch(function(err) {
+          console.log('fetch failed: ', err);
+          // Rejection already happened with setTimeout
+          if(didTimeOut) return;
+          // Reject with error
+          reject(err);
+      });
+  })
 }

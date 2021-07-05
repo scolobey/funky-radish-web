@@ -84,8 +84,8 @@ export function updateRecipe(recipe) {
   return { type: UPDATE_RECIPE, recipe }
 };
 
-export function recipesLoaded(payload) {
-  return { type: RECIPES_LOADED, payload }
+export function recipesLoaded(recipes) {
+  return { type: RECIPES_LOADED, recipes }
 };
 
 export function clearRecipes() {

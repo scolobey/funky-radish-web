@@ -481,24 +481,18 @@ export function externalSearchMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
       if (action.type === EXTERNAL_RECIPE_SEARCH) {
-
-        console.log("external search")
-
-        dispatch(toggleLoader(true))
+        // dispatch(toggleLoader(true))
 
         serverService.searchRecipes(action.query)
         .then(res=> {
-          console.log(res.recipes.results)
-          return dispatch(toggleLoader(false))
+          console.log("recipes: ", res.recipes)
+          // dispatch(toggleLoader(false))
+          return dispatch(recipesLoaded(res.recipes))
         })
         .catch(err => {
-          dispatch(toggleLoader(false));
+          // dispatch(toggleLoader(false))
           return dispatch(warning('Error: ' + err))
         })
-
-
-        // dispatch(toggleLoader(false));
-
       }
       return next(action);
     };
@@ -509,6 +503,10 @@ export function autocompleteMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
       if (action.type === AUTOCOMPLETE) {
+        if (action.query == "") {
+          return dispatch(setSearchSuggestions([]))
+        }
+
         serverService.searchAutocomplete(action.query)
         .then(res=> {
           return dispatch(setSearchSuggestions(res.suggestions))

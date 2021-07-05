@@ -8,6 +8,15 @@ import RecipeList from "./RecipeList";
 
 export class Recipes extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      recipes: [],
+      filteredRecipes: []
+    };
+  }
+
   componentDidMount() {
     this.props.getToken();
   }
@@ -19,6 +28,16 @@ export class Recipes extends Component {
         <div className="download-icons">
           <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
           <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
+        </div>,
+        <div>
+          <ul>
+            <li>
+              {this.props.filteredRecipes.map(recipe => (
+                <b>{recipe.title}</b>
+              ))}
+            </li>
+          </ul>
+
         </div>
       ]
       ) : (
@@ -75,6 +94,7 @@ export class Recipes extends Component {
 
 function mapStateToProps(state) {
   return {
+    recipes: state.recipes,
     filteredRecipes: state.filteredRecipes,
     user: state.user
   };
