@@ -24,18 +24,23 @@ export class Recipes extends Component {
   render() {
     return !this.props.user ? ([
         <div><RecipeList/></div>,
-        <div className="not-logged-in-banner"><a href="./login">Login</a> or <a href="./signup">Signup</a></div>,
+        <div className="not-logged-in-banner">
+            <a href="./login"><img src="/thought_bubble.png" height="150" alt="Login"/>
+              <div class="login-text">Login</div>
+            </a>
+            <a href="./signup"><img src="/speech_bubble.png" height="150" alt="Signup"/>
+              <div class="signup-text">Signup</div>
+            </a>
+        </div>,
         <div className="download-icons">
           <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
           <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
         </div>,
         <div>
           <ul>
-            <li>
-              {this.props.filteredRecipes.map(recipe => (
-                <b>{recipe.title}</b>
-              ))}
-            </li>
+            {this.props.filteredRecipes.map(recipe => (
+              <li>{recipe.title}</li>
+            ))}
           </ul>
 
         </div>

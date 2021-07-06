@@ -18,9 +18,7 @@ export default function RecipeList() {
     ) : (
       <div>
       { !data?.recipes ? (
-        <div>
-          <h1>No Recipes</h1>
-        </div>
+        <div></div>
       ) : (
           data.recipes.map((recipe) => (
             <div key={recipe._id}>

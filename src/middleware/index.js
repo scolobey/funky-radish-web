@@ -521,7 +521,6 @@ export function autocompleteMiddleware({ dispatch }) {
           }
         })
         .then(data => {
-          console.log("setting: ", data)
           return dispatch(setSearchSuggestions(data.suggestions))
         })
         .catch(err => {

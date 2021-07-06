@@ -24,43 +24,25 @@ class SearchBar extends Component {
   }
 
   handleChange(event) {
-    console.log("handling change: ", event.target.value)
     this.throttleHandleChange(event)
   }
 
   handleKeyDown(event) {
-    console.log(event.keyCode)
-    console.log(this.state.cursor)
-    console.log(this.state.suggestions)
-
-    if (event.keyCode === 8) {
-      console.log("backspace")
-    }
-
     // arrow up/down button should select next/previous list element
     if (event.keyCode === 13) {
       // search for recipes
-      console.log("enter")
-      console.log("searching: ", this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
       this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
 
       event.target.value = this.props.suggestions[this.state.cursor].title
-
-      console.log("state: ", this.state.suggestions)
-      console.log("prop: ", this.props.suggestions)
 
       this.setState({
         cursor: 0
       });
 
       this.props.setSearchSuggestions([])
-
-      console.log("state: ", this.state.suggestions)
-      console.log("prop: ", this.props.suggestions)
     }
     else if (event.keyCode === 38) {
       if(this.state.cursor === 0) {
-        console.log("its zero")
         return
       }
       else {
@@ -69,18 +51,15 @@ class SearchBar extends Component {
           cursor: this.state.cursor - 1
         })
       }
-
-      console.log("up key: ", this.state.cursor)
-    } else if (event.keyCode === 40) {
+    }
+    else if (event.keyCode === 40) {
       if(this.state.cursor === this.props.suggestions.length - 1) {
-        console.log("bottom of the list")
         return
       }
       else {
         this.setState({
           cursor: this.state.cursor + 1
         })
-        console.log("down key: ", this.state.cursor)
       }
     }
   }

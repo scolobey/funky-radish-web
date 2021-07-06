@@ -17,19 +17,22 @@ export default class ServerService {
   searchAutocomplete(query) {
     return new Promise(function(resolve, reject) {
 
+      // When the search input is removed,
+      // there can exist a state where the autocomplete is set to "" before a previous autocomplete query returns.
+      // my solution is to use setTimeout to delay setting to "" and wait for any hanging fetch returns.
+      // I don't like this solution, but it works.
+
       let data
-      console.log("querying autocomplete: ", query)
 
       if ( query === "") {
         setTimeout(function(){
           let obj = {message: "Here ya go, punk!", suggestions: [], error: ""}
-          console.log("returning response: ", obj)
           resolve(obj)
         }, 500);
       }
       else {
         let endpoint = BASE_URL + "collector/autocomplete?query=" + query
-         console.log("caling: ", endpoint)
+
         fetch(endpoint, {
           method: 'GET'
         })
@@ -38,12 +41,10 @@ export default class ServerService {
           resolve(response);
         })
         .catch(function(err) {
-            console.log('fetch failed: ', err);
             reject(err);
         });
       }
     })
-
   }
 
   async createUser(user) {
