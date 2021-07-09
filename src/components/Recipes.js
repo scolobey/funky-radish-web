@@ -26,7 +26,7 @@ export class Recipes extends Component {
         <div><RecipeList/></div>,
         <div className="not-logged-in-banner">
             <a href="./login"><img src="/thought_bubble.png" height="150" alt="Login"/>
-              <div class="login-text">Login</div>
+              <div class="login-text login-text--pushDown login-text--shadow">Login</div>
             </a>
             <a href="./signup"><img src="/speech_bubble.png" height="150" alt="Signup"/>
               <div class="signup-text">Signup</div>
@@ -89,8 +89,8 @@ export class Recipes extends Component {
                 </Link>
               ))}
             </ul>
-          </div>
 
+          </div>
           <div className="create-button"><a href="./builder">+</a></div>
         </div>
     );

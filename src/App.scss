@@ -1,3 +1,113 @@
+
+// Colors
+$grayLight	: #cac6c5;
+$offWhite	: #e7e7e7;
+
+@import url('https://fonts.googleapis.com/css?family=Mr+Dafoe');
+@import url('https://fonts.googleapis.com/css?family=Francois+One');
+
+
+/* Functions */
+@function cos($angle) {
+  $cos: 0;
+  $angle: rad($angle);
+  // Iterate a bunch of times.
+  @for $i from 0 through 10 {
+    $cos: $cos + pow(-1, $i) * pow($angle, 2 * $i) / fact(2 * $i);
+  }
+  @return $cos;
+}
+
+@function sin($angle) {
+  $sin: 0;
+  $angle: rad($angle);
+  // Iterate a bunch of times.
+  @for $i from 0 through 10 {
+    $sin: $sin + pow(-1, $i) * pow($angle, (2 * $i + 1)) / fact(2 * $i + 1);
+  }
+  @return $sin;
+}
+
+@function pow($number, $exp) {
+  $value: 1;
+  @if $exp > 0 {
+    @for $i from 1 through $exp {
+      $value: $value * $number;
+    }
+  }
+  @else if $exp < 0 {
+    @for $i from 1 through -$exp {
+      $value: $value / $number;
+    }
+  }
+  @return $value;
+}
+
+@function rad($angle) {
+  $unit: unit($angle);
+  $unitless: $angle / ($angle * 0 + 1);
+  // If the angle has 'deg' as unit, convert to radians.
+  @if $unit == deg {
+    $unitless: $unitless / 180 * pi();
+  }
+  @return $unitless;
+}
+
+@function pi() {
+  @return 3.14159265359;
+}
+
+@function fact($number) {
+  $value: 1;
+  @if $number > 0 {
+    @for $i from 1 through $number {
+      $value: $value * $i;
+    }
+  }
+  @return $value;
+}
+
+
+/* Mixins */
+//basic outline for the text
+@mixin outline($color: #fff) {
+	text-shadow: 1.5px 1.5px 0 $color,
+    			 -1.5px -1.5px 0 $color,
+    			 -1.5px -1.5px 0 $color,
+    			 -1.5px 1.5px 0 $color,
+    			 1.5px -1.5px 0 $color;
+}
+
+@mixin shade($type, $color: #3498db, $borderColor: #fff, $depth: 20, $angle: 135deg, $long: false, $fade: false) {
+    $angle: ($angle - 90);
+    $x: 1.1 * cos($angle) + 0px;
+    $y: 1.1 * sin($angle) + 0px;
+    $darken: (lightness($color)/$depth)/2;
+    $opacify: 0;
+    $shadow: ();
+
+    @if $long == true{
+      $darken:0;
+    }
+
+    @if $fade == true {
+      $opacify: (opacity($color)/$depth) ;
+        // added this for rendering in some browsers, remove if you like.
+      @include translateZ(0);
+    }
+
+    @for $i from 1 through $depth {
+      $shadow: $shadow, $i*$x $i*$y 0 hsla(hue($color) , saturation($color), (lightness($color) - ($i * $darken)), 1 - ($i * $opacify));
+    }
+    #{$type}-shadow:  1.5px 1.5px 0 $borderColor,
+                      0px 1.5px 0 $borderColor,
+                      -1.5px -1.5px 0 $borderColor,
+                      -1.5px -1.5px 0 $borderColor,
+                      -1.5px 1.5px 0 $borderColor,
+                       1.5px -1.5px 0 $borderColor,
+                       $shadow;
+}
+
 /* Static */
 
   /* Header */
@@ -168,7 +278,7 @@
     border-style: solid;
     border-radius: 20px;
     border-width: thin;
-    border-color: rgb(168,168,168,.5);
+    border-color: rgba(168,168,168,.5);
     width: 20%;
     z-index: 1;
     background-color: white;
@@ -435,17 +545,49 @@
 }
 
 .login-text {
+  z-index: 0;
   position: absolute;
   top: 2%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  padding: 10px;
+  font-family: 'Francois One';
+
+  font-size: 96px;
+  color: $offWhite;
+  text-decoration: none;
+
+  @include outline($grayLight);
+
+  transition: all 400ms ease-in-out;
+}
+
+.login-text--pushDown {
+	@include shade(text, #aaa, #333, 10, 135deg, true);
+
+	&:hover {
+		transform: translate(2px, 2px);
+		@include outline($grayLight);
+	}
+}
+
+.login-text--shadow {
+	&:hover {
+		transform: translate(5px, 0);
+	}
 }
 
 .signup-text {
   position: absolute;
-  top: 2%;
-  right: -50%;
+  top: 0%;
+  right: 35%;
   transform: translate(-50%, -100%);
+  font-family: 'Mr Dafoe';
+  margin: 0;
+  font-size: 2.5em;
+  margin-top: -0.6em;
+  color: white;
+  text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
+  transform: rotate(-7deg);
 }
 
 .no-recipes-banner {

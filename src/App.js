@@ -24,7 +24,7 @@ import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
 
-import './App.css';
+import './App.scss';
 
 import ReactGA from 'react-ga';
 
