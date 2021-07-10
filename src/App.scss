@@ -4,7 +4,9 @@ $grayLight	: #cac6c5;
 $offWhite	: #e7e7e7;
 $white: rgba(255,255,255,1);
 $color1	: rgb(203, 28, 92);
-$color2	: rgb(100, 224, 215);
+$specialBlue	: rgb(100, 224, 215);
+$specialGreen: rgba(162,255,177,1);
+$black: black;
 
 @import url('https://fonts.googleapis.com/css?family=Mr+Dafoe');
 @import url('https://fonts.googleapis.com/css?family=Francois+One');
@@ -347,7 +349,7 @@ $color2	: rgb(100, 224, 215);
   padding-top: 150px;
   min-height: 100vh;
   min-width: 100vh;
-  background: linear-gradient($white 23%, rgba(162,255,177,1) 64%);
+  background: linear-gradient($white 23%, $specialGreen 64%);
   background-attachment: fixed;
   overflow: hidden;
 }
@@ -563,6 +565,10 @@ $color2	: rgb(100, 224, 215);
 }
 
 @media only screen and (min-width: 600px) {
+  .not-logged-in-banner {
+    margin-top: 0px;
+  }
+
   .not-logged-in-banner a {
     padding: 65px;
   }
@@ -579,7 +585,7 @@ $color2	: rgb(100, 224, 215);
   padding-right: 20px;
   font-family: 'Francois One';
   font-size: 56px;
-  color: $color2;
+  color: $specialBlue;
   text-decoration: none;
 
   @include outline($grayLight);
@@ -741,15 +747,39 @@ button[type=delete]:hover {
   padding: 50px;
 }
 
-.Suggestions ul {
+.Suggestions-Dismiss {
+  position: relative;
+  top: 5px;
+  right: -170px;
+  width: 10px;
+  font-size: 20;
+  font-family: 'Luckiest Guy';
+  color: $black;
+  background-color: $specialGreen;
+  border-radius: 4px;
+  margin-right: 20px;
+  padding: 4px;
+  border-style: solid;
+  border-width: thin;
+  cursor: pointer;
+}
+
+.Suggestions-Dismiss:hover {
+  background-color: $specialBlue;
+}
+
+.Suggestions {
   max-width: 200px;
-  list-style-type: none;
   border: 1px solid #eeeeee;
   border-radius: 4px;
   background-color: $white;
-  margin-left: 35px;
-  padding: 8px;
+  margin-left: 15px;
+  margin-top: 12px;
   box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.4);
+}
+
+.Suggestions ul {
+  list-style-type: none;
 }
 
 .Suggestions li {

@@ -16,6 +16,9 @@ class SearchBar extends Component {
     this.throttleHandleChange = debounce(this.throttleHandleChange.bind(this), 100);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.dismissSuggestions = this.dismissSuggestions.bind(this)
+
+    this.searchRef = React.createRef();
   }
 
   throttleHandleChange(event) {
@@ -28,8 +31,7 @@ class SearchBar extends Component {
   }
 
   handleKeyDown(event) {
-    // arrow up/down button should select next/previous list element
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13) { // Enter
       // search for recipes
       this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
 
@@ -41,18 +43,17 @@ class SearchBar extends Component {
 
       this.props.setSearchSuggestions([])
     }
-    else if (event.keyCode === 38) {
+    else if (event.keyCode === 38) { // Up Arrow
       if(this.state.cursor === 0) {
         return
       }
       else {
-        console.log("setting state")
         this.setState({
           cursor: this.state.cursor - 1
         })
       }
     }
-    else if (event.keyCode === 40) {
+    else if (event.keyCode === 40) { // Down Arrow
       if(this.state.cursor === this.props.suggestions.length - 1) {
         return
       }
@@ -64,14 +65,22 @@ class SearchBar extends Component {
     }
   }
 
+  dismissSuggestions(event) {
+    const searchInput = this.searchRef.current;
+    console.log(searchInput)
+    searchInput.value = ""
+    this.props.setSearchSuggestions([])
+  }
+
   render() {
     return (
       <div className="RecipeSearchField">
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
-        <input type="text" placeholder="Search.." onChange={this.handleChange} onKeyDown={ this.handleKeyDown } onSubmit={this.handleClick} />
+        <input ref={this.searchRef} type="text" placeholder="Search.." onChange={this.handleChange} onKeyDown={ this.handleKeyDown } onSubmit={this.handleClick} />
 
         { this.props.suggestions && this.props.suggestions.length > 0 ?
           <div className="Suggestions">
+          <div className="Suggestions-Dismiss" onClick={this.dismissSuggestions}>X</div>
             <ul>
               { this.props.suggestions.map((suggestion, index) => (
                 <Suggestion index={index} key={index} cursor={this.state.cursor} suggestion={suggestion} />
