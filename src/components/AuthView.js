@@ -55,7 +55,9 @@ class AuthView extends Component {
               {this.state.login ? <button>Login</button> : <button>Signup</button> }
             </form>
 
-            Not what you're lookin' for? {this.state.login ? <a href='./signup' >Sign up.</a> : <a href='./login' >Login</a>}
+            Not what you're lookin' for?
+            <br></br>
+            {this.state.login ? <a href='./signup' >Sign up.</a> : <a href='./login' >Login</a>}
           </div>
         </div>
       )

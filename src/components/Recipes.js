@@ -24,15 +24,20 @@ export class Recipes extends Component {
   render() {
     return !this.props.user ? ([
         <div><RecipeList/></div>,
-        <div className="not-logged-in-banner">
-            <a href="./login"><img src="/thought_bubble.png" height="150" alt="Login"/>
+        <ul className="not-logged-in-banner">
+          <li>
+            <a href="./login">
               <div class="login-text login-text--pushDown login-text--shadow">Login</div>
             </a>
-            <a href="./signup"><img src="/speech_bubble.png" height="150" alt="Signup"/>
-              <div class="signup-text">Signup</div>
+          </li>
+          <li>
+            <a href="./signup">
+              <div class="login-text login-text--pushDown login-text--shadow">Signup</div>
             </a>
-        </div>,
+          </li>
+        </ul>,
         <div className="download-icons">
+          <h2>Or download the apps...</h2>
           <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
           <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
         </div>,
