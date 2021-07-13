@@ -21,6 +21,7 @@ import {
   setVerified,
   warning,
   recipesLoaded,
+  externalRecipesLoaded,
   setUsername,
   toggleLoader,
   warningToggle,
@@ -487,7 +488,7 @@ export function externalSearchMiddleware({ dispatch }) {
         .then(res=> {
           console.log("recipes: ", res.recipes)
           // dispatch(toggleLoader(false))
-          return dispatch(recipesLoaded(res.recipes))
+          return dispatch(externalRecipesLoaded(res.recipes))
         })
         .catch(err => {
           // dispatch(toggleLoader(false))

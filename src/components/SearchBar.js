@@ -22,7 +22,7 @@ class SearchBar extends Component {
   }
 
   throttleHandleChange(event) {
-    // TODO: finding a way to cancel debounce and override here may help performance
+    // TODO: finding a way to cancel debounce and override here may help performance?
     this.props.autocomplete(event.target.value)
   }
 
@@ -32,6 +32,10 @@ class SearchBar extends Component {
 
   handleKeyDown(event) {
     if (event.keyCode === 13) { // Enter
+
+      //If there are no suggestions.
+      //If the cursor is still 0
+
       // search for recipes
       this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
 

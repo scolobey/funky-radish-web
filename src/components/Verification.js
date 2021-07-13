@@ -43,5 +43,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { verifyEmail })(Verification);
-
-// export default Verification;

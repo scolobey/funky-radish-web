@@ -1,4 +1,4 @@
-import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT, SEARCH, SET_VERIFIED, SET_IMPORT_QUEUE, SET_SEARCH_SUGGESTIONS } from "../constants/action-types";
+import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, EXTERNAL_RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT, SEARCH, SET_VERIFIED, SET_IMPORT_QUEUE, SET_SEARCH_SUGGESTIONS } from "../constants/action-types";
 
 function rootReducer(state, action) {
   if (action.type === ADD_RECIPE) {
@@ -25,6 +25,23 @@ function rootReducer(state, action) {
     return Object.assign({}, state, {
       recipes: recList,
       filteredRecipes: recList
+    });
+  }
+
+  if (action.type === EXTERNAL_RECIPES_LOADED) {
+    console.log("external recipe loader")
+
+    let recList = action.recipes.map(rec => {
+       let recipeObject = {}
+       recipeObject["_id"] = rec.id
+       recipeObject["title"] = rec.title
+       return recipeObject
+    })
+
+    console.log("setting external recipes to: ", recList)
+
+    return Object.assign({}, state, {
+      externalRecipes: recList
     });
   }
 

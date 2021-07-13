@@ -4,6 +4,7 @@ import {
   ADD_RECIPE,
   UPDATE_RECIPE,
   RECIPES_LOADED,
+  EXTERNAL_RECIPES_LOADED,
   CLEAR_RECIPES,
   DELETE_REMOTE_RECIPE,
   DELETE_LOCAL_RECIPE,
@@ -86,6 +87,10 @@ export function updateRecipe(recipe) {
 
 export function recipesLoaded(recipes) {
   return { type: RECIPES_LOADED, recipes }
+};
+
+export function externalRecipesLoaded(recipes) {
+  return { type: EXTERNAL_RECIPES_LOADED, recipes }
 };
 
 export function clearRecipes() {

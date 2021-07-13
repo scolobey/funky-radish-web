@@ -13,6 +13,7 @@ export class Recipes extends Component {
 
     this.state = {
       recipes: [],
+      externalRecipes: [],
       filteredRecipes: []
     };
   }
@@ -24,6 +25,16 @@ export class Recipes extends Component {
   render() {
     return !this.props.user ? ([
         <div><RecipeList/></div>,
+        <div>
+          {this.props.externalRecipes && this.props.externalRecipes.length > 0 ?
+            <ul>
+              {this.props.externalRecipes.map(recipe => (
+                <li>{recipe.title}</li>
+              ))}
+            </ul>
+          : <div></div>
+          }
+        </div>,
         <ul className="not-logged-in-banner">
           <li>
             <a href="./login">
@@ -40,14 +51,6 @@ export class Recipes extends Component {
           <h2>Or download the apps...</h2>
           <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
           <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
-        </div>,
-        <div>
-          <ul>
-            {this.props.filteredRecipes.map(recipe => (
-              <li>{recipe.title}</li>
-            ))}
-          </ul>
-
         </div>
       ]
       ) : (
@@ -105,6 +108,7 @@ export class Recipes extends Component {
 function mapStateToProps(state) {
   return {
     recipes: state.recipes,
+    externalRecipes: state.externalRecipes,
     filteredRecipes: state.filteredRecipes,
     user: state.user
   };
