@@ -11,6 +11,7 @@ class RecipeView extends Component {
     super(props);
 
     let recipeTitle = props.match.params.recipeTitle;
+    console.log("prepping recipe view.")
     this.props.getRecipe(recipeTitle);
   }
 

@@ -284,10 +284,12 @@ $black: black;
     border-style: solid;
     border-radius: 20px;
     border-width: thin;
-    border-color: rgba(168,168,168,.5);
+    background-color: rgba(159, 242, 250, 1);
+    box-shadow: -2px 0px 2px $specialBlue;
+    font-family: "Luckiest Guy";
+    color: $specialBlue;
     width: 20%;
     z-index: 1;
-    background-color: $white;
     transform: translateX(100%);
     transition: transform 300ms;
   }
@@ -304,12 +306,12 @@ $black: black;
 
   #menu ul {
     list-style: none;
-    font-size: 20px;
+    font-size: 30px;
   }
 
   #menu li {
-    padding-top: 45px;
-    padding-left: 15px;
+    padding-top: 35px;
+    padding-left: 0px;
   }
 
   #menu .user-label {
@@ -317,7 +319,12 @@ $black: black;
   }
 
   #menu a {
-    text-decoration: none;
+    text-decoration: underline;
+    color: black;
+  }
+
+  #menu a:hover {
+    color: gray;
   }
 
   #menu.open {
@@ -800,4 +807,32 @@ button[type=delete]:hover {
   font-family: "Francois One";
   font-size: 30px;
   text-align: center;
+}
+
+.externalRecipeView {
+  font-family: "Francois One";
+  list-style-type: none;
+  list-style: none;
+  display: inline-block;
+  padding: 10px;
+}
+
+.externalRecipeListing {
+  display: inline-block;
+  list-style-type: none;
+  text-align: center;
+  list-style: none;
+  background: $white;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  min-width: 100px;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.externalRecipeView a:hover {
+  box-shadow: 0 0 2px gray;
 }

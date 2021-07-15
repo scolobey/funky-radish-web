@@ -355,6 +355,9 @@ export function getRecipeMiddleware({dispatch}) {
   return function(next) {
     return function(action) {
       if (action.type === GET_RECIPE) {
+
+        console.log("fetching recipe: " + action.recipeTitle)
+
         fetch("https://funky-radish-api.herokuapp.com/recipes/" + action.recipeTitle , {
           method: 'get'
         })

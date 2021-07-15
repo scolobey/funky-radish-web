@@ -5,6 +5,7 @@ import { getToken } from "../actions/Actions";
 import { Helmet } from "react-helmet";
 
 import RecipeList from "./RecipeList";
+import ExternalRecipeList from "./ExternalRecipeList";
 
 export class Recipes extends Component {
 
@@ -25,6 +26,7 @@ export class Recipes extends Component {
   render() {
     return !this.props.user ? ([
         <div><RecipeList/></div>,
+        <div><ExternalRecipeList externalRecipes={this.props.externalRecipes}/></div>,
         <div>
           {this.props.externalRecipes && this.props.externalRecipes.length > 0 ?
             <ul>
