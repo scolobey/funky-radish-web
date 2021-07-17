@@ -32,20 +32,27 @@ class SearchBar extends Component {
 
   handleKeyDown(event) {
     if (event.keyCode === 13) { // Enter
+      // TODO: It would be nice to have some more clarity in the indices here. It gets confusing using index 0 to mean that no selection has been made.
 
-      //If there are no suggestions.
-      //If the cursor is still 0
+      if (this.state.cursor === 0) {
+        if (event.target.value === "") {
+          return
+        }
+        else {
+          this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '-'))
+          this.props.setSearchSuggestions([])
+        }
+      }
+      else {
+        this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor-1].title.replace(/\s+/g, '-'))
+        event.target.value = this.props.suggestions[this.state.cursor-1].title
 
-      // search for recipes
-      this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor].title.replace(/\s+/g, '-'))
+        this.setState({
+          cursor: 0
+        });
 
-      event.target.value = this.props.suggestions[this.state.cursor].title
-
-      this.setState({
-        cursor: 0
-      });
-
-      this.props.setSearchSuggestions([])
+        this.props.setSearchSuggestions([])
+      }
     }
     else if (event.keyCode === 38) { // Up Arrow
       if(this.state.cursor === 0) {
@@ -58,7 +65,7 @@ class SearchBar extends Component {
       }
     }
     else if (event.keyCode === 40) { // Down Arrow
-      if(this.state.cursor === this.props.suggestions.length - 1) {
+      if(this.state.cursor === this.props.suggestions.length) {
         return
       }
       else {
@@ -101,7 +108,7 @@ class SearchBar extends Component {
 function Suggestion(props) {
   let classLabel;
 
-  if (props.cursor == props.index) {
+  if (props.cursor-1 == props.index) {
     classLabel = "active-suggestion";
   }
 

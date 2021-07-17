@@ -6,8 +6,6 @@ export default class ServerService {
   async searchRecipes(query) {
     let endpoint = BASE_URL + "collector?query=" + query
 
-    console.log(endpoint)
-
     let response = await fetch(endpoint, { method: 'get' })
 
     let data = await response.json()
