@@ -12,9 +12,17 @@ class ExternalRecipeListView extends Component {
       <div class="externalRecipeView">
       <ul>
         {this.props.externalRecipes.map((recipe, index) => (
-          <a href={"/recipe/sp-" + recipe._id}  class="externalRecipeListing">
+          <a href={"/recipes/sp-" + recipe._id}  class="externalRecipeListing">
             <li key={recipe._id}>
                 {recipe.title}
+
+                <ul>
+                {recipe.missedIngredients.map((ingredient, index) => (
+                  <li key={ingredient.id}>
+                    {ingredient.originalStringß}
+                  </li>
+                ))}
+                </ul>
             </li>
           </a>
         ))}
