@@ -9,20 +9,13 @@ class ExternalRecipeListView extends Component {
 
   render() {
     return this.props.externalRecipes ? (
-      <div class="externalRecipeView">
+      <div className="externalRecipeView">
       <ul>
         {this.props.externalRecipes.map((recipe, index) => (
-          <a href={"/recipes/sp-" + recipe._id}  class="externalRecipeListing">
+          // sp- is just a reference to sporctacular. If you ever add a different api, change this model.
+          <a href={"/recipes/sp-" + recipe._id}  class="externalRecipeListing" key={recipe._id}>
             <li key={recipe._id}>
                 {recipe.title}
-
-                <ul>
-                {recipe.missedIngredients.map((ingredient, index) => (
-                  <li key={ingredient.id}>
-                    {ingredient.originalStringß}
-                  </li>
-                ))}
-                </ul>
             </li>
           </a>
         ))}

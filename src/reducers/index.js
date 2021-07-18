@@ -29,7 +29,7 @@ function rootReducer(state, action) {
   }
 
   if (action.type === EXTERNAL_RECIPES_LOADED) {
-    console.log("external recipe loader")
+    console.log("external recipe loader: " + action)
 
     let recList = action.recipes.map(rec => {
        let recipeObject = {}

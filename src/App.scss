@@ -116,7 +116,6 @@ $black: black;
 /* Static */
 
   /* Header */
-
   .header {
     z-index: 6;
     position: fixed;
@@ -765,10 +764,16 @@ button[type=delete]:hover {
   background-color: $specialGreen;
   border-radius: 4px;
   margin-right: 20px;
-  padding: 4px;
+  padding: 6px;
   border-style: solid;
   border-width: thin;
   cursor: pointer;
+}
+
+.Suggestions-Dismiss p{
+    margin: 0px;
+    padding-top: 4px;
+    padding-left: 1px;
 }
 
 .Suggestions-Dismiss:hover {
@@ -833,6 +838,6 @@ button[type=delete]:hover {
   cursor: pointer;
 }
 
-// .externalRecipeView a:hover {
-//   box-shadow: 0 0 2px gray;
-// }
+.externalRecipeView a:hover {
+  box-shadow: 0 0 2px red;
+}

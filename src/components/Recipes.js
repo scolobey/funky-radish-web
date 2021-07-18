@@ -27,25 +27,15 @@ export class Recipes extends Component {
     return !this.props.user ? ([
         <div><RecipeList/></div>,
         <div><ExternalRecipeList externalRecipes={this.props.externalRecipes}/></div>,
-        <div>
-          {this.props.externalRecipes && this.props.externalRecipes.length > 0 ?
-            <ul>
-              {this.props.externalRecipes.map(recipe => (
-                <li>{recipe.title}</li>
-              ))}
-            </ul>
-          : <div></div>
-          }
-        </div>,
         <ul className="not-logged-in-banner">
           <li>
             <a href="./login">
-              <div class="login-text login-text--pushDown login-text--shadow">Login</div>
+              <div className="login-text login-text--pushDown login-text--shadow">Login</div>
             </a>
           </li>
           <li>
             <a href="./signup">
-              <div class="login-text login-text--pushDown login-text--shadow">Signup</div>
+              <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
             </a>
           </li>
         </ul>,

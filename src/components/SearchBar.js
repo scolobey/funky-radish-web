@@ -17,6 +17,7 @@ class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this)
     this.dismissSuggestions = this.dismissSuggestions.bind(this)
+    this.clickSuggestion = this.clickSuggestion.bind(this)
 
     this.searchRef = React.createRef();
   }
@@ -78,8 +79,22 @@ class SearchBar extends Component {
 
   dismissSuggestions(event) {
     const searchInput = this.searchRef.current;
-    console.log(searchInput)
     searchInput.value = ""
+    this.props.setSearchSuggestions([])
+  }
+
+  clickSuggestion(index) {
+    console.log("index: " + index)
+
+    this.props.externalRecipeSearch(this.props.suggestions[index].title.replace(/\s+/g, '-'))
+
+    const searchInput = this.searchRef.current;
+    searchInput.value = this.props.suggestions[index].title
+
+    this.setState({
+      cursor: 0
+    });
+
     this.props.setSearchSuggestions([])
   }
 
@@ -91,10 +106,12 @@ class SearchBar extends Component {
 
         { this.props.suggestions && this.props.suggestions.length > 0 ?
           <div className="Suggestions">
-          <div className="Suggestions-Dismiss" onClick={this.dismissSuggestions}>X</div>
+          <div className="Suggestions-Dismiss" onClick={this.dismissSuggestions}><p>X</p></div>
             <ul>
               { this.props.suggestions.map((suggestion, index) => (
-                <Suggestion index={index} key={index} cursor={this.state.cursor} suggestion={suggestion} />
+                <div onClick={() => this.clickSuggestion(index)}>
+                  <Suggestion index={index} key={index} cursor={this.state.cursor} suggestion={suggestion}/>
+                </div>
               ))}
             </ul>
           </div>

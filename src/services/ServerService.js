@@ -8,7 +8,10 @@ export default class ServerService {
 
     let response = await fetch(endpoint, { method: 'get' })
 
+    //error seems to be here. Maybe not json?
+    console.log(response)
     let data = await response.json()
+    console.log(data)
     return data;
   }
 

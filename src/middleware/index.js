@@ -487,14 +487,17 @@ export function externalSearchMiddleware({ dispatch }) {
       if (action.type === EXTERNAL_RECIPE_SEARCH) {
         // dispatch(toggleLoader(true))
 
+        console.log("calling search")
+
         serverService.searchRecipes(action.query)
         .then(res=> {
           console.log("recipes: ", res.recipes)
           // dispatch(toggleLoader(false))
-          return dispatch(externalRecipesLoaded(res.recipes))
+          return dispatch(externalRecipesLoaded(res.recipes.results))
         })
         .catch(err => {
           // dispatch(toggleLoader(false))
+          console.log("here's the error: " + err)
           return dispatch(warning('Error: ' + err))
         })
       }

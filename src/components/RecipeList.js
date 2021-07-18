@@ -7,10 +7,6 @@ export default function RecipeList() {
   const app = useRealmApp();
   const { loading, data } = useRecipes();
 
-  if(data) {
-    console.log("hereweare: " + data.recipes)
-  }
-
   return loading ? (
       <div>
         Loading
