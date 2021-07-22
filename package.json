@@ -25,7 +25,8 @@
     "redux-thunk": "^2.3.0",
     "url-search-params-polyfill": "^8.1.0",
     "uuid": "^8.3.2",
-    "whatwg-fetch": "^3.5.0"
+    "whatwg-fetch": "^3.5.0",
+    "regenerator-runtime": "0.13.5"
   },
   "scripts": {
     "start": "set HTTPS=true&&react-scripts start",
@@ -43,7 +44,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "core-js": "3.8.2",
-    "regenerator-runtime": "0.13.5"
+    "core-js": "3.8.2"
   }
 }
