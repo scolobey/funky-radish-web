@@ -363,8 +363,8 @@ export function getRecipeMiddleware({dispatch}) {
         })
         .then(response => response.json())
         .then(json => {
-          if (json.message) {
-            dispatch(warning(json.message))
+          if (json.error.length > 0) {
+            dispatch(warning(json.error))
             return dispatch(toggleLoader(false));
           }
           else {
@@ -372,7 +372,8 @@ export function getRecipeMiddleware({dispatch}) {
           }
         })
         .catch(error => {
-          return dispatch(warning("I can't find that recipe."));
+          console.log("a error here: " + error)
+          return dispatch(warning("the error"));
         });
       }
       return next(action);

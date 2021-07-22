@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from 'react-router-dom';
 
 class ExternalRecipeListView extends Component {
 
@@ -13,11 +14,20 @@ class ExternalRecipeListView extends Component {
       <ul>
         {this.props.externalRecipes.map((recipe, index) => (
           // sp- is just a reference to sporctacular. If you ever add a different api, change this model.
-          <a href={"/recipes/sp-" + recipe._id}  class="externalRecipeListing" key={recipe._id}>
-            <li key={recipe._id}>
-                {recipe.title}
-            </li>
-          </a>
+          <li key={recipe._id}>
+            <Link
+              class="externalRecipeListing"
+              key={recipe._id}
+              to={{
+                pathname: "/recipes/sp-" + recipe._id,
+                state: {
+                  title: recipe.title,
+                  ingredients: recipe.ingredients
+                }
+              }}
+            > {recipe.title} </Link>
+          </li>
+
         ))}
       </ul>
       </div>

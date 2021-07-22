@@ -10,6 +10,14 @@ class RecipeView extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      title: props.location.state.title,
+      ingredients: props.location.state.ingredients
+    };
+
+    console.log(props)
+    console.log(this.state)
+
     let recipeTitle = props.match.params.recipeTitle;
     console.log("prepping recipe view.")
     this.props.getRecipe(recipeTitle);
@@ -22,16 +30,17 @@ class RecipeView extends Component {
         <Helmet>
           <meta charSet="utf-8" />
           <title>{this.props.recipe.title}</title>
-          <meta name="description" content= {"Recipe for " + this.props.recipe.title + ". "} />
+          <meta name="description" content= {"Recipe for: " + this.props.recipe.title + ". "} />
         </Helmet>
 
-        <li key={this.props.recipe.clientID}>
+        <li>
           <div className="Title">
-            <b>{this.props.recipe.title}</b>
+            <b>{this.state.title}</b>
+
           </div>
           <div className="Ingredients">
             <ul>
-              {this.props.recipe.ingredients.map((ingredient, index) => (
+              {this.state.ingredients.map((ingredient, index) => (
                 <li key={index}>
                   {ingredient}
                 </li>
@@ -40,7 +49,7 @@ class RecipeView extends Component {
           </div>
           <div className="Directions">
             <ol>
-              {this.props.recipe.directions.map((direction, index) => (
+              {this.props.recipe.map((direction, index) => (
                 <li key={index}>
                   {direction}
                 </li>
@@ -50,14 +59,31 @@ class RecipeView extends Component {
         </li>
       </div>
     ) : (
-      <div />
+
+      <div className="Recipe">
+
+        <b>{this.state.title}</b>
+
+        <div className="Ingredients">
+          <ul>
+            {this.state.ingredients.map((ingredient, index) => (
+              <li key={index}>
+                {ingredient}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+      </div>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    recipe: state.recipe
+    recipe: state.recipe,
+    title: state.title,
+    ingredients: state.ingredients
   };
 }
 

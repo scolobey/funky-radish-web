@@ -35,6 +35,9 @@ function rootReducer(state, action) {
        let recipeObject = {}
        recipeObject["_id"] = rec.id
        recipeObject["title"] = rec.title
+       recipeObject["ingredients"] = rec.missedIngredients.map(ing => {
+         return ing.originalString
+       })
        return recipeObject
     })
 
@@ -79,8 +82,9 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_RECIPE ) {
+    console.log("recipe here: " + JSON.stringify(action.recipe.recipe))
     return Object.assign({}, state, {
-      recipe: action.recipe
+      recipe: action.recipe.recipe
     });
   }
 
