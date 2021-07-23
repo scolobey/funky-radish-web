@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 
 class Loader extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loader: props.loader || false
+    };
+  }
+
   render() {
     return ( !this.props.loader ? (<div></div>) : (
       <div className="loader-container">
