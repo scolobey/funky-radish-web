@@ -1,7 +1,6 @@
 "use strict";
 
 import "core-js/stable";
-import "regenerator-runtime/runtime.js";
 import 'url-search-params-polyfill';
 import 'whatwg-fetch'
 
