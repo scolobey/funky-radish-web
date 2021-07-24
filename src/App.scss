@@ -816,17 +816,19 @@ button[type=delete]:hover {
 
 .externalRecipeView {
   font-family: "Francois One";
-  list-style-type: none;
-  list-style: none;
   display: inline-block;
   padding: 10px;
 }
 
+.externalRecipeView li {
+
+  list-style-type: none;
+
+}
+
 .externalRecipeListing {
   display: inline-block;
-  list-style-type: none;
   text-align: center;
-  list-style: none;
   background: $white;
   border-style: solid;
   border-width: 1px;
