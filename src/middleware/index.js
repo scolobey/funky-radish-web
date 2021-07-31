@@ -39,6 +39,7 @@ import Auth from '../Auth'
 import RealmService from '../services/RealmService'
 import ServerService from '../services/ServerService'
 import Recipe from '../models/RecipeModel'
+import useRecipe from "../graphql/useRecipe";
 const auth = new Auth();
 const realmService = new RealmService();
 const serverService = new ServerService();
@@ -399,6 +400,8 @@ export function getRecipeMiddleware({dispatch}) {
         }
         else {
           console.log("here we must retrieve the gql")
+
+          const { loading, data } = useRecipe();
         }
 
       }

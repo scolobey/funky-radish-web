@@ -23,10 +23,7 @@ export default function RecipeList() {
                 class="recipeListing"
                 key={recipe._id}
                 to={{
-                  pathname: "/recipes/" + recipe._id,
-                  state: {
-                    title: recipe.title
-                  }
+                  pathname: "/myrecipes/" + recipe._id
                 }}
               > {recipe.title} </Link>
             </li>

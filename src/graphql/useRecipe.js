@@ -6,9 +6,10 @@ import gql from "graphql-tag";
 // TODO: implement mutations for the editor.
 
 const useRecipe = (project) => {
-  const { loading, data } = useRecipeInProject();
+  console.log("here, we've at least called the method.")
+  const { loading, error, data } = useRecipeInProject();
 
-  return { loading, data };
+  return { loading, error, data };
 };
 
 export default useRecipe;
@@ -20,23 +21,27 @@ function useRecipeInProject() {
   let id = "60e396cde6c060bf7f0fb294"
 
   const RECIPE_QUERY = gql`
-    query Recipe($_id: String!){
-      recipe(query: { id: $id }) {
+    query Recipe($id: String!){
+      recipe(query: { _id: $id }) {
         title
-        ingredients
-        directions
+        ingredients {
+          name
+        }
+        directions {
+          text
+        }
       }
     }`;
 
-  const { loading, data } = useQuery(RECIPE_QUERY, {
+  const { loading, error, data } = useQuery(RECIPE_QUERY, {
     variables: { id },
   });
 
   const recipe = data ? data.recipe : null;
   if (recipe) {
-    console.log("returned recipe: " + recipe)
+    console.log("returned recipe: " + recipe.directions)
   }
 
   //TODO: Set the user and adjust the menu.
-  return { loading, data};
+  return { loading, error, data};
 }

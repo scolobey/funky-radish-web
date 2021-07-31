@@ -20,7 +20,6 @@ class RecipeView extends Component {
   }
 
   render() {
-
     return this.props.recipe ? (
       <div className="Recipe" key={this.props.recipe.clientID}>
         <Helmet>
@@ -35,13 +34,16 @@ class RecipeView extends Component {
 
           </div>
           <div className="Ingredients">
-            <ul>
-              {this.state.ingredients.map((ingredient, index) => (
-                <li key={index}>
-                  {ingredient}
-                </li>
-              ))}
-            </ul>
+            {this.state.ingredients ? (
+              <ul>
+                {this.state.ingredients.map((ingredient, index) => (
+                  <li key={index}>
+                    {ingredient}
+                  </li>
+                ))}
+              </ul>
+            ):
+            (<div></div>)}
           </div>
           <div className="Directions">
             <ol>
@@ -55,7 +57,6 @@ class RecipeView extends Component {
         </li>
       </div>
     ) : (
-
       <div className="Recipe">
 
         <b>{this.state.title}</b>

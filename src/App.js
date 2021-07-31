@@ -17,6 +17,7 @@ import Support from './components/Support';
 import Builder from "./components/Builder";
 import Recipes from "./components/Recipes.js";
 import Recipe from "./components/Recipe.js";
+import MyRecipe from "./components/MyRecipe.js";
 import Verification from './components/Verification.js';
 
 import AuthView from './components/AuthView';
@@ -53,6 +54,7 @@ class App extends Component {
           <Route path="/verify/:token?" component={Verification} />
           <Route path="/builder/:clientID?" component={Builder} />
           <Route path="/recipes/:recipeTitle?" component={Recipe} />
+          <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
           <Route path="/admin/" component={Admin} />
           <Route path="/admin/importer" component={ImporterAdmin} />
           <Route path="/admin/graph" component={GraphAdmin} />
