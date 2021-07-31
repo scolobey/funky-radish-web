@@ -14,6 +14,12 @@ export default class RealmService {
     return realmApp
   }
 
+  logoutRealm = () => {
+    const user = realmApp.currentUser;
+    realmApp.removeUser(user);
+    return
+  }
+
   // tokenAuthenticate = (token) => {
   //   const credentials = Credentials.jwt(token);
   //   return User.authenticate(credentials, 'https://recipe-realm.us1.cloud.realm.io')

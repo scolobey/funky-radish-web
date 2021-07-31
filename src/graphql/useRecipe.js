@@ -5,36 +5,36 @@ import gql from "graphql-tag";
 // TODO: handle error from gql  https://www.apollographql.com/docs/react/data/queries/#caching-query-results
 // TODO: implement mutations for the editor.
 
-const useRecipes = (project) => {
-  const { loading, data } = useAllRecipesInProject();
+const useRecipe = (project) => {
+  const { loading, data } = useRecipeInProject();
 
   return { loading, data };
 };
 
-export default useRecipes;
+export default useRecipe;
 
-function useAllRecipesInProject() {
+function useRecipeInProject() {
 
   console.log("gql recipe request.")
 
-  let author = "60e1376b5b3ed43677ea58d2"
+  let id = "60e396cde6c060bf7f0fb294"
 
   const RECIPE_QUERY = gql`
-    query Recipes($author: String!){
-      recipes(query: { author: $author }) {
-        _id
-        author
+    query Recipe($_id: String!){
+      recipe(query: { id: $id }) {
         title
+        ingredients
+        directions
       }
     }`;
 
   const { loading, data } = useQuery(RECIPE_QUERY, {
-    variables: { author },
+    variables: { id },
   });
 
-  const recipes = data ? data.recipes : null;
-  if (recipes) {
-    console.log(recipes)
+  const recipe = data ? data.recipe : null;
+  if (recipe) {
+    console.log("returned recipe: " + recipe)
   }
 
   //TODO: Set the user and adjust the menu.

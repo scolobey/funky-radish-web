@@ -12,7 +12,8 @@ import {
   signupMiddleware,
   warningCycleMiddleware,
   externalSearchMiddleware,
-  autocompleteMiddleware
+  autocompleteMiddleware,
+  logoutMiddleware
 } from "../middleware";
 
 import thunk from "redux-thunk";
@@ -38,6 +39,7 @@ const store = createStore(
       warningCycleMiddleware,
       externalSearchMiddleware,
       autocompleteMiddleware,
+      logoutMiddleware,
       thunk
   ))
 );

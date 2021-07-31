@@ -63,6 +63,7 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_USERNAME) {
+    console.log("setting user: " + action.user)
     return Object.assign({}, state, {
       user: action.user
     });

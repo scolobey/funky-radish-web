@@ -18,6 +18,7 @@ class ExternalRecipeListView extends Component {
             <Link
               class="externalRecipeListing"
               key={recipe._id}
+              onClick={this.handleClick}
               to={{
                 pathname: "/recipes/sp-" + recipe._id,
                 state: {

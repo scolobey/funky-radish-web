@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { setUsername, clearRecipes, toggleMenu } from "../actions/Actions";
+import { setUsername, clearRecipes, toggleMenu, logout } from "../actions/Actions";
 
 import Auth from '../Auth'
 
@@ -9,6 +9,10 @@ const auth = new Auth();
 class Menu extends Component {
   constructor(props) {
     super(props);
+
+    console.log("loading the menu" )
+    console.log("props: " + this.props.user)
+    console.log("state: " + this.state)
 
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -19,6 +23,7 @@ class Menu extends Component {
     this.props.setUsername("");
     this.props.clearRecipes();
     this.props.toggleMenu();
+    this.props.logout();
     auth.logout();
   }
 
@@ -69,4 +74,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { setUsername, clearRecipes, toggleMenu })(Menu);
+export default connect(mapStateToProps, { setUsername, clearRecipes, toggleMenu, logout })(Menu);

@@ -15,12 +15,8 @@ class RecipeView extends Component {
       ingredients: props.location.state.ingredients
     };
 
-    console.log(props)
-    console.log(this.state)
-
     let recipeTitle = props.match.params.recipeTitle;
-    console.log("prepping recipe view.")
-    this.props.getRecipe(recipeTitle);
+    this.props.getRecipe(recipeTitle)
   }
 
   render() {

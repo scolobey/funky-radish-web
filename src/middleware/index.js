@@ -9,7 +9,8 @@ import {
   WARNING,
   GET_RECIPE,
   EXTERNAL_RECIPE_SEARCH,
-  AUTOCOMPLETE
+  AUTOCOMPLETE,
+  LOGOUT
 } from "../constants/action-types";
 
 import {
@@ -167,6 +168,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
             .then(user => {
               auth.setSession(data.token, action.authData.email);
               auth.setRealmUser(user);
+              console.log("Here's where we set the user: " + action.authData)
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
               dispatch(toggleLoader(false));
@@ -196,6 +198,20 @@ export function tokenCollectionMiddleware({ dispatch }) {
           return dispatch(warning("Auth failed: " + error.message));
         });
       }
+      return next(action);
+    };
+  };
+}
+
+export function logoutMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === LOGOUT) {
+        console.log("loggin out man")
+        realmService.logoutRealm()
+      }
+
       return next(action);
     };
   };
@@ -358,23 +374,33 @@ export function getRecipeMiddleware({dispatch}) {
 
         console.log("fetching recipe: " + action.recipeTitle)
 
-        fetch("https://funky-radish-api.herokuapp.com/recipes/" + action.recipeTitle , {
-          method: 'get'
-        })
-        .then(response => response.json())
-        .then(json => {
-          if (json.error.length > 0) {
-            dispatch(warning(json.error))
-            return dispatch(toggleLoader(false));
-          }
-          else {
-            return dispatch(setRecipe(json));
-          }
-        })
-        .catch(error => {
-          console.log("a error here: " + error)
-          return dispatch(warning("the error"));
-        });
+        // TODO: This isn't the prettiest solution, but it would take some thought to find a better one.
+        // Currently, prepending with '-sp' means it's a recipe from the spoonacular API.
+        // Otherwise, it's a recipe that's in your Realm account, and so we don't have to hit the funkyradish api
+        //
+        if (action.recipeTitle.substring(0, 3) === "sp-") {
+          fetch("https://funky-radish-api.herokuapp.com/recipes/" + action.recipeTitle , {
+            method: 'get'
+          })
+          .then(response => response.json())
+          .then(json => {
+            if (json.error.length > 0) {
+              dispatch(warning(json.error))
+              return dispatch(toggleLoader(false));
+            }
+            else {
+              return dispatch(setRecipe(json));
+            }
+          })
+          .catch(error => {
+            console.log("a error here: " + error)
+            return dispatch(warning("the error"));
+          });
+        }
+        else {
+          console.log("here we must retrieve the gql")
+        }
+
       }
       return next(action);
     };
@@ -488,7 +514,7 @@ export function externalSearchMiddleware({ dispatch }) {
       if (action.type === EXTERNAL_RECIPE_SEARCH) {
         // dispatch(toggleLoader(true))
 
-        console.log("calling search")
+        console.log("calling search: " + action.query)
 
         serverService.searchRecipes(action.query)
         .then(res=> {

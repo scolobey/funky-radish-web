@@ -15,6 +15,7 @@ import {
   CREATE_USER,
   LOGIN,
   SIGNUP,
+  LOGOUT,
   WARNING,
   SET_USERNAME,
   TOGGLE_MENU,
@@ -50,6 +51,10 @@ export function signup(user) {
 
 export function getToken(authData) {
   return { type: GET_TOKEN, authData }
+};
+
+export function logout() {
+  return { type: LOGOUT }
 };
 
 export function authFailed(message) {

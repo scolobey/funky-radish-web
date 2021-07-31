@@ -14,6 +14,7 @@ export const DELETE_LOCAL_RECIPE = 'DELETE_LOCAL_RECIPE';
 export const LOGIN = 'LOGIN';
 export const SIGNUP = 'SIGNUP';
 export const GET_TOKEN = 'GET_TOKEN';
+export const LOGOUT = 'LOGOUT';
 export const AUTH_FAILED = 'AUTH_FAILED';
 export const TOKEN_STORED = 'TOKEN_STORED';
 export const VERIFY_EMAIL = 'VERIFY_EMAIL';

@@ -814,6 +814,8 @@ button[type=delete]:hover {
   text-align: center;
 }
 
+// Exernal recipe listings
+
 .externalRecipeView {
   font-family: "Francois One";
   display: inline-block;
@@ -821,13 +823,16 @@ button[type=delete]:hover {
 }
 
 .externalRecipeView li {
-
   list-style-type: none;
+}
 
+.externalRecipeView a {
+  text-decoration: none;
 }
 
 .externalRecipeListing {
   display: inline-block;
+
   text-align: center;
   background: $white;
   border-style: solid;
@@ -841,5 +846,40 @@ button[type=delete]:hover {
 }
 
 .externalRecipeView a:hover {
+  box-shadow: 0 0 2px red;
+}
+
+// Internal recipe listings
+
+.recipeView {
+  font-family: "Francois One";
+  display: inline-block;
+  padding: 10px;
+}
+
+.recipeView li {
+  list-style-type: none;
+}
+
+.recipeView a {
+  text-decoration: none;
+}
+
+.recipeListing {
+  display: inline-block;
+
+  text-align: center;
+  background: $white;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  min-width: 100px;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.recipeView a:hover {
   box-shadow: 0 0 2px red;
 }
