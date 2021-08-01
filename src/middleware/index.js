@@ -10,7 +10,8 @@ import {
   GET_RECIPE,
   EXTERNAL_RECIPE_SEARCH,
   AUTOCOMPLETE,
-  LOGOUT
+  LOGOUT,
+  GRAPHQL
 } from "../constants/action-types";
 
 import {
@@ -556,6 +557,17 @@ export function autocompleteMiddleware({ dispatch }) {
         .catch(err => {
           return dispatch(warning('Error: ' + err))
         })
+      }
+      return next(action);
+    };
+  };
+}
+
+export function graphqlMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === GRAPHQL) {
+        console.log("graph callin middleware")
       }
       return next(action);
     };
