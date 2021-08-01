@@ -16,7 +16,7 @@ class ExternalRecipeListView extends Component {
           // sp- is just a reference to sporctacular. If you ever add a different api, change this model.
           <li key={recipe._id}>
             <Link
-              class="externalRecipeListing"
+              className="externalRecipeListing"
               key={recipe._id}
               onClick={this.handleClick}
               to={{
@@ -28,7 +28,6 @@ class ExternalRecipeListView extends Component {
               }}
             > {recipe.title} </Link>
           </li>
-
         ))}
       </ul>
       </div>

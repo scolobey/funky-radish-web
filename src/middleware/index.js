@@ -128,12 +128,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
     return function(action) {
       // do your stuff
       if (action.type === GET_TOKEN) {
-        // let token = auth.getToken();
-        //
-        // if (token) {
-        //   return dispatch(getRecipes(token));
-        // }
-
         if (!action.authData) {
           return dispatch(authFailed("not logged in."));
         }
@@ -169,7 +163,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
             .then(user => {
               auth.setSession(data.token, action.authData.email);
               auth.setRealmUser(user);
-              console.log("Here's where we set the user: " + action.authData)
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
               dispatch(toggleLoader(false));

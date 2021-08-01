@@ -12,10 +12,13 @@ export class Recipes extends Component {
   constructor(props) {
     super(props);
 
+    let user = localStorage.getItem('user');
+
     this.state = {
       recipes: [],
       externalRecipes: [],
-      filteredRecipes: []
+      filteredRecipes: [],
+      user: user
     };
   }
 
@@ -24,8 +27,21 @@ export class Recipes extends Component {
   }
 
   render() {
-    return !this.props.user ? ([
-        <div><RecipeList/></div>,
+    return (this.state.user && this.state.user.length) > 0 ? (
+      <div className="RecipeListContainer">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Funky Radish Professional Recipe Repository</title>
+          <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
+        </Helmet>
+
+        <RecipeList/>
+
+        <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
+
+        <div className="create-button"><a href="./builder">+</a></div>
+      </div>
+    ):([
         <div><ExternalRecipeList externalRecipes={this.props.externalRecipes}/></div>,
         <ul className="not-logged-in-banner">
           <li>
@@ -44,63 +60,11 @@ export class Recipes extends Component {
           <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
           <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
         </div>
-      ]
-      ) : (
-        <div className="RecipeListContainer">
-          <Helmet>
-            <meta charSet="utf-8" />
-            <title>Funky Radish Professional Recipe Repository</title>
-            <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
-          </Helmet>
-
-          <RecipeList/>
-
-          <div className="RecipeList">
-            {this.props.filteredRecipes.length > 0 ? <div></div> : <div className="no-recipes-banner">To add a recipe, click the '+' button below.</div> }
-            <ul>
-              {this.props.filteredRecipes.map(recipe => (
-                <Link to= {"/builder/" + recipe.clientID}>
-                  <div className="Recipe" key={recipe.clientID}>
-                    <li key={recipe.clientID}>
-                      <div className="Title">
-
-                        <b>{recipe.title}</b>
-                      </div>
-                      {recipe.ingredients.length == 0 ? <div></div> :
-                        <div className="Ingredients">
-                          <ul>
-                            {recipe.ingredients.map((ingredient, index) => (
-                              <li key={index}>
-                                {ingredient}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      }
-                      {recipe.directions.length == 0 ? <div></div> :
-                        <div className="Directions">
-                          <ol>
-                            {recipe.directions.map((direction, index) => (
-                              <li key={index}>
-                                {direction}
-                              </li>
-                            ))}
-                          </ol>
-                        </div>
-                      }
-                    </li>
-                  </div>
-                </Link>
-              ))}
-            </ul>
-
-          </div>
-          <div className="create-button"><a href="./builder">+</a></div>
-        </div>
-    );
+      ]);
   }
 }
 
+//TODO: Fixing this problem. Doing it right. User object get set on login and signup. getUser is a reducer
 function mapStateToProps(state) {
   return {
     recipes: state.recipes,

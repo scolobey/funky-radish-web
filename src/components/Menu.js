@@ -10,10 +10,12 @@ class Menu extends Component {
   constructor(props) {
     super(props);
 
-    console.log("loading the menu" )
-    console.log("props: " + this.props.user)
-    console.log("state: " + this.state)
+    let theUser = auth.getUser()
+    this.state = {
+      userData: theUser
+    }
 
+    console.log("state: " + this.state.userData)
     this.handleLogout = this.handleLogout.bind(this);
   }
 
@@ -28,7 +30,7 @@ class Menu extends Component {
   }
 
   renderUserState() {
-    if (this.props.user && this.props.user.length > 0) {
+    if (this.state.userData && this.state.userData.length > 0) {
         return (
           [
             <li key='1' className="user-label">{this.props.user}</li>,

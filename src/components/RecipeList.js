@@ -20,7 +20,7 @@ export default function RecipeList() {
           data.recipes.map((recipe) => (
             <li key={recipe._id}>
               <Link
-                class="recipeListing"
+                className="recipeListing"
                 key={recipe._id}
                 to={{
                   pathname: "/myrecipes/" + recipe._id
