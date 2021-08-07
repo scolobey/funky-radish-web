@@ -1,11 +1,9 @@
 import React from "react";
 import useRecipes from "../graphql/useRecipes";
-import { useRealmApp } from "../RealmApp";
 import { Link } from 'react-router-dom';
 
-export default function RecipeList() {
+export default function RecipeList(props) {
 
-  const app = useRealmApp();
   const { loading, data } = useRecipes();
 
   return loading ? (

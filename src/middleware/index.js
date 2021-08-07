@@ -40,7 +40,9 @@ import Auth from '../Auth'
 import RealmService from '../services/RealmService'
 import ServerService from '../services/ServerService'
 import Recipe from '../models/RecipeModel'
+import useRecipes from "../graphql/useRecipes";
 import useRecipe from "../graphql/useRecipe";
+
 const auth = new Auth();
 const realmService = new RealmService();
 const serverService = new ServerService();
@@ -159,14 +161,26 @@ export function tokenCollectionMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
+          console.log("data: " + JSON.stringify(data))
           if (data.message === "Enjoy your token, ya filthy animal!") {
+
             realmService.authenticate(data.token)
             .then(user => {
               auth.setSession(data.token, action.authData.email);
               auth.setRealmUser(user);
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
+
+              const { loading, recipeData } = useRecipes();
+              if(loading) {
+                console.log("loading")
+              }
+              if(recipeData) {
+                console.log("recipes: " + recipeData)
+              }
+
               dispatch(toggleLoader(false));
+
               //TODO: We don't need to pass a parameter. Should be able to get user
               return dispatch(setRedirect("/"));
             })
