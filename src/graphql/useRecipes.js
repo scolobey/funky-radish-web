@@ -6,17 +6,23 @@ import gql from "graphql-tag";
 // TODO: handle error from gql  https://www.apollographql.com/docs/react/data/queries/#caching-query-results
 // TODO: implement mutations for the editor.
 
-const useRecipes = (project) => {
+
+const useRecipes = () => {
+
   const { loading, error, data } = useAllRecipesInProject();
+
   return { loading, error, data };
 };
 
 export default useRecipes;
 
 function useAllRecipesInProject() {
-  let author = "60e1376b5b3ed43677ea58d2"
+  let author = localStorage.getItem('realm_user');
+  //need to find the current author
 
-  console.log("querying gql")
+
+// You're not logged in yet!
+  console.log("querying gql. Should be loged in by now, for sure: " + author)
 
   const RECIPE_QUERY = gql`
     query Recipes($author: String!){

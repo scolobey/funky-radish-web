@@ -4,6 +4,8 @@ import { setUsername, clearRecipes, toggleMenu, logout } from "../actions/Action
 
 import Auth from '../Auth'
 
+import { RealmAppContext } from "../RealmApp";
+
 const auth = new Auth();
 
 class Menu extends Component {
@@ -11,12 +13,21 @@ class Menu extends Component {
     super(props);
 
     let theUser = auth.getUser()
+
     this.state = {
       userData: theUser
     }
 
-    console.log("state: " + this.state.userData)
+    console.log("state : " + this.state)
+
+
+    console.log("state [userData]: " + this.state.userData)
     this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("menu context: " + this.context.currentUser._profile.data.name)
+    console.log("menu user: " + this.context.currentUser)
   }
 
   handleLogout(event) {
@@ -30,7 +41,7 @@ class Menu extends Component {
   }
 
   renderUserState() {
-    if (this.state.userData && this.state.userData.length > 0) {
+    if (this.context.currentUser._profile.data.name && this.context.currentUser._profile.data.name.length > 0) {
         return (
           [
             <li key='1' className="user-label">{this.props.user}</li>,
@@ -68,6 +79,8 @@ class Menu extends Component {
     )
   }
 }
+
+Menu.contextType = RealmAppContext;
 
 function mapStateToProps(state) {
   return {

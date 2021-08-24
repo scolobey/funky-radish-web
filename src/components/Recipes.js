@@ -7,6 +7,8 @@ import { Helmet } from "react-helmet";
 import RecipeList from "./RecipeList";
 import ExternalRecipeList from "./ExternalRecipeList";
 
+import { RealmAppContext } from "../RealmApp";
+
 export class Recipes extends Component {
 
   constructor(props) {
@@ -23,11 +25,17 @@ export class Recipes extends Component {
   }
 
   componentDidMount() {
+    console.log("mounting recipe page")
+    // No auth data forwarded here!
+
+    console.log("recipe page context: " + Object.keys(this.context))
+    console.log("user: " + this.context.currentUser)
+
     this.props.getToken();
   }
 
   render() {
-    return (this.state.user && this.state.user.length) > 0 ? (
+    return this.context.currentUser ? (
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
@@ -42,7 +50,6 @@ export class Recipes extends Component {
         <div className="create-button"><a href="./builder">+</a></div>
       </div>
     ):([
-        <div><ExternalRecipeList externalRecipes={this.props.externalRecipes}/></div>,
         <ul className="not-logged-in-banner">
           <li>
             <a href="./login">
@@ -63,6 +70,8 @@ export class Recipes extends Component {
       ]);
   }
 }
+
+Recipes.contextType = RealmAppContext;
 
 //TODO: Fixing this problem. Doing it right. User object get set on login and signup. getUser is a reducer
 function mapStateToProps(state) {

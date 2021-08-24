@@ -132,6 +132,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
       // do your stuff
       if (action.type === GET_TOKEN) {
         if (!action.authData) {
+          console.log("token time... Not logged in.")
           return dispatch(authFailed("not logged in."));
         }
 
@@ -163,28 +164,24 @@ export function tokenCollectionMiddleware({ dispatch }) {
         .then(data => {
           console.log("data: " + JSON.stringify(data))
           if (data.message === "Enjoy your token, ya filthy animal!") {
-
+            console.log("about to call authenticate.")
             realmService.authenticate(data.token)
             .then(user => {
+              console.log("probably should be logged in at this point. Since this is the callback from login")
               auth.setSession(data.token, action.authData.email);
               auth.setRealmUser(user);
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
 
-              const { loading, recipeData } = useRecipes();
-              if(loading) {
-                console.log("loading")
-              }
-              if(recipeData) {
-                console.log("recipes: " + recipeData)
-              }
+              // Call useRecipes here?... After logging in.
+
 
               dispatch(toggleLoader(false));
 
-              //TODO: We don't need to pass a parameter. Should be able to get user
               return dispatch(setRedirect("/"));
             })
             .catch(error => {
+              console.log("Realm connect failed: " + error.message)
               dispatch(toggleLoader(false));
               return dispatch(warning("Realm connect failed: " + error.message));
             });
@@ -217,8 +214,8 @@ export function logoutMiddleware({ dispatch }) {
     return function(action) {
 
       if (action.type === LOGOUT) {
-        console.log("loggin out man")
         realmService.logoutRealm()
+        return dispatch(setRedirect("/"));
       }
 
       return next(action);

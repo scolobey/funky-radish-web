@@ -6,7 +6,8 @@ export default class Auth {
   }
 
   setRealmUser = (realmUser) => {
-    localStorage.setItem('realm_user', realmUser);
+    console.log("setting realm user. Logged in, but now the user is set: ", realmUser.id)
+    localStorage.setItem('realm_user', realmUser.id);
   }
 
   setToken = (token) => {
