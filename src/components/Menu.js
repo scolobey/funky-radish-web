@@ -25,13 +25,10 @@ class Menu extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
-  componentDidMount() {
-    console.log("menu context: " + this.context.currentUser._profile.data.name)
-    console.log("menu user: " + this.context.currentUser)
-  }
-
   handleLogout(event) {
     event.preventDefault();
+    console.log("logging out")
+    this.context.setCurrentUser(null)
 
     this.props.setUsername("");
     this.props.clearRecipes();
@@ -41,7 +38,7 @@ class Menu extends Component {
   }
 
   renderUserState() {
-    if (this.context.currentUser._profile.data.name && this.context.currentUser._profile.data.name.length > 0) {
+    if (this.context.currentUser && this.context.currentUser._profile.data.name && this.context.currentUser._profile.data.name.length > 0) {
         return (
           [
             <li key='1' className="user-label">{this.props.user}</li>,
