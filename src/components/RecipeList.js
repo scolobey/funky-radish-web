@@ -2,20 +2,31 @@ import React, { useState, useEffect } from "react";
 import useRecipes from "../graphql/useRecipes";
 import { Link } from 'react-router-dom';
 
-export default function RecipeList() {
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
 
-  const { loading, error, data } = useRecipes();
+export default function RecipeList(props) {
 
-  if(error) {console.log("gql error: " + error)}
-  if(loading) {
-    console.log("loading")
+  const { loading, error, data } = useRecipes(props.author);
+
+  let rec = data?.recipes ?? []
+  let realmObj = realmService.getRealm()
+
+  if (rec) {
+    console.log("user: " + realmObj.currentUser.accessToken)
+    console.log("recipes: " + rec)
+  }
+  if (error) {
+    console.log("error on apollo hook: " + error )
+    console.log("user: " + Object.keys(realmObj.currentUser))
+  }
+  if (loading) {
+    console.log("loading apollo hook")
   }
 
-  let rec = data?.recipes ?? [];
-
-  return (
+  return data?.recipes? (
       <div className="recipeView">
-        {rec.map((recipe) =>
+        {data.recipes.map((recipe) =>
           <li key={recipe._id}>
               <Link
                 className="recipeListing"
@@ -25,5 +36,8 @@ export default function RecipeList() {
           </li>
         )}
       </div>
-    )
+    ): (
+        <div> Loading... </div>
+
+    );
   }

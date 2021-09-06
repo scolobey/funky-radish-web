@@ -27,7 +27,6 @@ class Menu extends Component {
 
   handleLogout(event) {
     event.preventDefault();
-    console.log("logging out")
     this.context.setCurrentUser(null)
 
     this.props.setUsername("");

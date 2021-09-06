@@ -43,6 +43,8 @@ import Recipe from '../models/RecipeModel'
 import useRecipes from "../graphql/useRecipes";
 import useRecipe from "../graphql/useRecipe";
 
+import { RealmAppContext } from "../RealmApp";
+
 const auth = new Auth();
 const realmService = new RealmService();
 const serverService = new ServerService();
@@ -56,7 +58,7 @@ export function loginMiddleware({ dispatch }) {
       if (action.type === LOGIN) {
         switch (auth.validateCredentials(action.user.email, action.user.password)) {
           case 1:
-            return dispatch(getToken({email: action.user.email, password: action.user.password}));
+            return dispatch(getToken({email: action.user.email, password: action.user.password, context: action.context}));
           case 2:
             return dispatch(warning('Invalid password.'));
           case 3:
@@ -131,8 +133,10 @@ export function tokenCollectionMiddleware({ dispatch }) {
     return function(action) {
       // do your stuff
       if (action.type === GET_TOKEN) {
+
+        console.log("Get_TOKEN called")
+
         if (!action.authData) {
-          console.log("token time... Not logged in.")
           return dispatch(authFailed("not logged in."));
         }
 
@@ -162,19 +166,24 @@ export function tokenCollectionMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
-          console.log("data: " + JSON.stringify(data))
           if (data.message === "Enjoy your token, ya filthy animal!") {
             console.log("about to call authenticate.")
             realmService.authenticate(data.token)
             .then(user => {
-              console.log("probably should be logged in at this point. Since this is the callback from login")
-              auth.setSession(data.token, action.authData.email);
-              auth.setRealmUser(user);
+              console.log("This is the callback from login")
+              console.log("user: " + user.id + " app: " + user.app.id)
+              auth.setSession(data.token, action.authData.email)
+              auth.setRealmUser(user)
+
+              let relam = realmService.getRealm
+              console.log("relam: " + relam)
+
+              console.log("relam user: " + realmService.currentUser)
+
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
 
               // Call useRecipes here?... After logging in.
-
 
               dispatch(toggleLoader(false));
 
@@ -200,7 +209,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
         })
         .catch(error => {
           dispatch(toggleLoader(false));
-          console.log("error: ", error.message);
+          console.log("error FR API fail: ", error.message);
           return dispatch(warning("Auth failed: " + error.message));
         });
       }

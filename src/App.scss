@@ -4,7 +4,7 @@ $grayLight	: #cac6c5;
 $offWhite	: #e7e7e7;
 $white: rgba(255,255,255,1);
 $color1	: rgb(203, 28, 92);
-$specialBlue	: rgb(100, 224, 215);
+$specialBlue	: rgb(100,224,215);
 $specialGreen: rgba(162,255,177,1);
 $black: black;
 
@@ -650,7 +650,7 @@ $black: black;
   font-size: 16px;
   overflow: auto;
   text-align: center;
-  z-index: 5;
+  z-index: 7;
 }
 
 .loader-container {
@@ -658,7 +658,7 @@ $black: black;
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.9);
-  z-index: 4;
+  z-index: 8;
 }
 
 .svg-loader{

@@ -8,6 +8,12 @@ import RecipeList from "./RecipeList";
 import ExternalRecipeList from "./ExternalRecipeList";
 
 import { RealmAppContext } from "../RealmApp";
+import useRecipes from "../graphql/useRecipes";
+
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
+
+
 
 export class Recipes extends Component {
 
@@ -15,27 +21,41 @@ export class Recipes extends Component {
     super(props);
 
     let user = localStorage.getItem('user');
+    let author = localStorage.getItem('realm_user');
 
     this.state = {
       recipes: [],
       externalRecipes: [],
       filteredRecipes: [],
-      user: user
+      author: author
     };
   }
 
   componentDidMount() {
     console.log("mounting recipe page")
-    // No auth data forwarded here!
 
-    console.log("recipe page context: " + Object.keys(this.context))
-    console.log("user: " + this.context.currentUser)
+    let realmUser = realmService.getUser()
+    let userObject = localStorage.getItem('realm_user');
 
-    this.props.getToken();
+    this.setState({ author: userObject })
+
+    if (realmUser) {
+      console.log("setting current user: " + realmUser)
+      this.context.setCurrentUser(realmUser)
+    }
+    else {
+      this.props.getToken();
+    }
+
+
+  }
+
+  componentDidUpdate(prevProps) {
+    console.log("did update called: " + JSON.stringify(this.context.currentUser))
   }
 
   render() {
-    return this.context.currentUser ? (
+    return this.context.currentUser && this.context.currentUser._profile.data.name && this.context.currentUser._profile.data.name.length > 0 ? (
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
@@ -43,7 +63,7 @@ export class Recipes extends Component {
           <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
         </Helmet>
 
-        <RecipeList/>
+        <RecipeList author={this.state.author}/>
 
         <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
 
@@ -79,7 +99,7 @@ function mapStateToProps(state) {
     recipes: state.recipes,
     externalRecipes: state.externalRecipes,
     filteredRecipes: state.filteredRecipes,
-    user: state.user
+    author: state.author
   };
 }
 

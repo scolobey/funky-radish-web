@@ -6,7 +6,7 @@ const realmApp = new Realm.App({ id: REALM_APP_ID });
 export default class RealmService {
 
   authenticate = (token) => {
-    console.log("authenticating with token: " + token)
+    console.log("authenticating with token. : " + token)
     //Try to extract this to a class
     const credentials = Realm.Credentials.jwt(token);
     return realmApp.logIn(credentials)
@@ -20,6 +20,11 @@ export default class RealmService {
     const user = realmApp.currentUser;
     realmApp.removeUser(user);
     return
+  }
+
+  getUser = () => {
+    const user = realmApp.currentUser
+    return user
   }
 
   // tokenAuthenticate = (token) => {

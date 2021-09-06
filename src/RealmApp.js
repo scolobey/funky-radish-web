@@ -7,6 +7,7 @@ const realmService = new RealmService();
 export const RealmAppContext = React.createContext();
 
 export const useRealmApp = () => {
+  console.log("using that realm app baby")
   const app = React.useContext(RealmAppContext);
   if (!app) {
     throw new Error(
@@ -19,7 +20,11 @@ export const useRealmApp = () => {
 export const RealmAppProvider = ({ appId, children }) => {
   const [app, setApp] = React.useState(realmService.getRealm);
   // Wrap the Realm.App object's user state with React state
-  console.log("setting realm user: " + Object.keys(app))
+  console.log("setting realm: " + app.id)
+  for (const x in app.users) {
+    console.log("user" + x + ": " + app.users[x].id)
+  }
+
   const [currentUser, setCurrentUser] = React.useState(app.currentUser);
 
   React.useEffect(() => {

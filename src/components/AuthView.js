@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { login, signup } from "../actions/Actions";
 
+import { RealmAppContext } from "../RealmApp";
+
 class AuthView extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,10 @@ class AuthView extends Component {
     event.preventDefault();
 
     if (this.state.login) {
-      this.props.login({email: this.state.email, password: this.state.password});
+      this.props.login({email: this.state.email, password: this.state.password, context: this.context});
+
+      // Then set this.context.setCurrentUser(null)
+
     }
     else {
       this.props.signup({email: this.state.email, password: this.state.password});
@@ -63,6 +68,8 @@ class AuthView extends Component {
       )
   }
 }
+
+AuthView.contextType = RealmAppContext;
 
 function mapStateToProps(state) {
   return {
