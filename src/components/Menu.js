@@ -4,7 +4,7 @@ import { setUsername, clearRecipes, toggleMenu, logout } from "../actions/Action
 
 import Auth from '../Auth'
 
-import { RealmAppContext } from "../RealmApp";
+import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
 const auth = new Auth();
 
@@ -76,7 +76,7 @@ class Menu extends Component {
   }
 }
 
-Menu.contextType = RealmAppContext;
+Menu.contextType = RealmApolloContext;
 
 function mapStateToProps(state) {
   return {

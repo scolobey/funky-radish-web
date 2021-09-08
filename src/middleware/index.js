@@ -43,8 +43,6 @@ import Recipe from '../models/RecipeModel'
 import useRecipes from "../graphql/useRecipes";
 import useRecipe from "../graphql/useRecipe";
 
-import { RealmAppContext } from "../RealmApp";
-
 const auth = new Auth();
 const realmService = new RealmService();
 const serverService = new ServerService();
@@ -134,10 +132,8 @@ export function tokenCollectionMiddleware({ dispatch }) {
       // do your stuff
       if (action.type === GET_TOKEN) {
 
-        console.log("Get_TOKEN called")
-
         if (!action.authData) {
-          return dispatch(authFailed("not logged in."));
+          return dispatch(authFailed("Get failed. Not logged in."));
         }
 
         var params = {
@@ -167,30 +163,20 @@ export function tokenCollectionMiddleware({ dispatch }) {
         })
         .then(data => {
           if (data.message === "Enjoy your token, ya filthy animal!") {
-            console.log("about to call authenticate.")
+
             realmService.authenticate(data.token)
             .then(user => {
-              console.log("This is the callback from login")
-              console.log("user: " + user.id + " app: " + user.app.id)
               auth.setSession(data.token, action.authData.email)
               auth.setRealmUser(user)
 
-              let relam = realmService.getRealm
-              console.log("relam: " + relam)
-
-              console.log("relam user: " + realmService.currentUser)
-
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
-
-              // Call useRecipes here?... After logging in.
 
               dispatch(toggleLoader(false));
 
               return dispatch(setRedirect("/"));
             })
             .catch(error => {
-              console.log("Realm connect failed: " + error.message)
               dispatch(toggleLoader(false));
               return dispatch(warning("Realm connect failed: " + error.message));
             });
@@ -203,13 +189,11 @@ export function tokenCollectionMiddleware({ dispatch }) {
           else {
             dispatch(toggleLoader(false));
             dispatch(setRedirect("/login"));
-            console.log("error: ", data);
             return dispatch(warning(data.message));
           }
         })
         .catch(error => {
           dispatch(toggleLoader(false));
-          console.log("error FR API fail: ", error.message);
           return dispatch(warning("Auth failed: " + error.message));
         });
       }

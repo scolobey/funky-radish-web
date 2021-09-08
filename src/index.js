@@ -13,7 +13,6 @@ import { Provider } from "react-redux";
 import * as serviceWorker from './serviceWorker';
 
 import RealmApolloProvider from "./graphql/RealmApolloProvider";
-import { RealmAppProvider } from "./RealmApp";
 
 import store from "./store/index";
 import throttle from "lodash/throttle";
@@ -34,15 +33,13 @@ window.store = store;
 window.addRecipe = addRecipe;
 
 ReactDOM.render(
-  <RealmAppProvider appId={APP_ID}>
-    <RealmApolloProvider>
-      <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
-      </Provider>
-    </RealmApolloProvider>
-  </RealmAppProvider>
+  <RealmApolloProvider>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </RealmApolloProvider>
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

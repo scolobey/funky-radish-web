@@ -7,13 +7,11 @@ import { Helmet } from "react-helmet";
 import RecipeList from "./RecipeList";
 import ExternalRecipeList from "./ExternalRecipeList";
 
-import { RealmAppContext } from "../RealmApp";
+import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 import useRecipes from "../graphql/useRecipes";
 
 import RealmService from '../services/RealmService'
 const realmService = new RealmService();
-
-
 
 export class Recipes extends Component {
 
@@ -48,10 +46,6 @@ export class Recipes extends Component {
     }
 
 
-  }
-
-  componentDidUpdate(prevProps) {
-    console.log("did update called: " + JSON.stringify(this.context.currentUser))
   }
 
   render() {
@@ -91,7 +85,7 @@ export class Recipes extends Component {
   }
 }
 
-Recipes.contextType = RealmAppContext;
+Recipes.contextType = RealmApolloContext;
 
 //TODO: Fixing this problem. Doing it right. User object get set on login and signup. getUser is a reducer
 function mapStateToProps(state) {

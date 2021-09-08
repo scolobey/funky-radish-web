@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { login, signup } from "../actions/Actions";
 
-import { RealmAppContext } from "../RealmApp";
+// import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
 class AuthView extends Component {
   constructor(props) {
@@ -30,10 +30,7 @@ class AuthView extends Component {
     event.preventDefault();
 
     if (this.state.login) {
-      this.props.login({email: this.state.email, password: this.state.password, context: this.context});
-
-      // Then set this.context.setCurrentUser(null)
-
+      this.props.login({email: this.state.email, password: this.state.password});
     }
     else {
       this.props.signup({email: this.state.email, password: this.state.password});
@@ -69,7 +66,7 @@ class AuthView extends Component {
   }
 }
 
-AuthView.contextType = RealmAppContext;
+// AuthView.contextType = RealmApolloContext;
 
 function mapStateToProps(state) {
   return {
