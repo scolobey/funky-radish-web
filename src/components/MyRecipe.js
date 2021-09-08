@@ -2,9 +2,12 @@ import React from "react";
 import useRecipe from "../graphql/useRecipe";
 import { Helmet } from "react-helmet";
 
-export default function MyRecipe() {
+export default function MyRecipe(props) {
 
-  const { loading, error, data } = useRecipe();
+  console.log(typeof props.match.params.recipeId)
+  let recId = props.match.params.recipeId
+
+  const { loading, error, data } = useRecipe(recId);
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;

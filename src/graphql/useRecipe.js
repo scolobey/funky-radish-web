@@ -5,20 +5,21 @@ import gql from "graphql-tag";
 // TODO: handle error from gql  https://www.apollographql.com/docs/react/data/queries/#caching-query-results
 // TODO: implement mutations for the editor.
 
-const useRecipe = (project) => {
-  console.log("here, we've at least called the method.")
-  const { loading, error, data } = useRecipeInProject();
+const useRecipe = (recId) => {
+  console.log("let's collect the recipe with ID: " + recId)
+  const { loading, error, data } = useRecipeInProject(recId);
 
   return { loading, error, data };
 };
 
 export default useRecipe;
 
-function useRecipeInProject() {
+function useRecipeInProject(recId) {
 
-  console.log("gql recipe request.")
+  // Terribly annoying that this is necesarry. We need to do this, either to convert the id to a const string?
+  // Or because somehow the query expects a parameter called id?
+  let id = recId
 
-  let id = "60e396cde6c060bf7f0fb294"
 
   const RECIPE_QUERY = gql`
     query Recipe($id: String!){
