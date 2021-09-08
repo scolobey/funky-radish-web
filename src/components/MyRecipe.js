@@ -35,7 +35,7 @@ export default function MyRecipe(props) {
           </ul>
         ):
         (<div></div>)}
-      </div>)
+      </div>
 
       <div className="Directions">
         {data.recipe.directions ? (
