@@ -166,6 +166,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
 
             realmService.authenticate(data.token)
             .then(user => {
+              console.log("because you have logged in... " + user)
               auth.setSession(data.token, action.authData.email)
               auth.setRealmUser(user)
 

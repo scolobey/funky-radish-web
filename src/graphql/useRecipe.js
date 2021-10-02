@@ -7,6 +7,7 @@ import gql from "graphql-tag";
 
 const useRecipe = (recId) => {
   console.log("let's collect the recipe with ID: " + recId)
+
   const { loading, error, data } = useRecipeInProject(recId);
 
   return { loading, error, data };
@@ -26,9 +27,11 @@ function useRecipeInProject(recId) {
       recipe(query: { _id: $id }) {
         title
         ingredients {
+          _id
           name
         }
         directions {
+          _id
           text
         }
       }

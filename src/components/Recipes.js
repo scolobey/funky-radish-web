@@ -21,6 +21,8 @@ export class Recipes extends Component {
     let user = localStorage.getItem('user');
     let author = localStorage.getItem('realm_user');
 
+    console.log("realm user: " + author)
+
     this.state = {
       recipes: [],
       externalRecipes: [],

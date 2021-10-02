@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 
 const useRecipes = (author) => {
   const { loading, error, data } = useAllRecipesInProject(author);
+
   return { loading, error, data };
 };
 

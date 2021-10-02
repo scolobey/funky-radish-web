@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from 'react';
+
 import useRecipe from "../graphql/useRecipe";
+import EditRecipe from "../graphql/editRecipe";
+import Builder from "./Builder";
+
+
 import { Helmet } from "react-helmet";
 
 export default function MyRecipe(props) {
 
   console.log(typeof props.match.params.recipeId)
   let recId = props.match.params.recipeId
+  console.log("rec id: " + recId)
 
   const { loading, error, data } = useRecipe(recId);
+
+  if (recId == null || recId == 'undefined') return <Builder />
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;

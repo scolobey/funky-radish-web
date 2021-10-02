@@ -10,6 +10,11 @@ export default class Auth {
     localStorage.setItem('realm_user', realmUser.id);
   }
 
+  getRealmUser = () => {
+    console.log("getting the realm user")
+    let user = localStorage.getItem('realm_user');
+  }
+
   setToken = (token) => {
     localStorage.setItem('access_token', token);
   }
