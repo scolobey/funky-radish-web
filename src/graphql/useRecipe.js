@@ -20,7 +20,8 @@ function useRecipeInProject(recId) {
   // Terribly annoying that this is necesarry. We need to do this, either to convert the id to a const string?
   // Or because somehow the query expects a parameter called id?
   let id = recId
-
+  let skipSelector = false
+  console.log("let's collect the recipe with ID: " + recId)
 
   const RECIPE_QUERY = gql`
     query Recipe($id: String!){
@@ -39,12 +40,8 @@ function useRecipeInProject(recId) {
 
   const { loading, error, data } = useQuery(RECIPE_QUERY, {
     variables: { id },
+    skip: !id || id.length < 4 
   });
-
-  const recipe = data ? data.recipe : null;
-  if (recipe) {
-    console.log("returned recipe: " + recipe.directions)
-  }
 
   //TODO: Set the user and adjust the menu.
   return { loading, error, data};
