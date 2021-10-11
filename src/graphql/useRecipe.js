@@ -6,8 +6,6 @@ import gql from "graphql-tag";
 // TODO: implement mutations for the editor.
 
 const useRecipe = (recId) => {
-  console.log("let's collect the recipe with ID: " + recId)
-
   const { loading, error, data } = useRecipeInProject(recId);
 
   return { loading, error, data };
@@ -21,7 +19,6 @@ function useRecipeInProject(recId) {
   // Or because somehow the query expects a parameter called id?
   let id = recId
   let skipSelector = false
-  console.log("let's collect the recipe with ID: " + recId)
 
   const RECIPE_QUERY = gql`
     query Recipe($id: String!){
@@ -40,7 +37,7 @@ function useRecipeInProject(recId) {
 
   const { loading, error, data } = useQuery(RECIPE_QUERY, {
     variables: { id },
-    skip: !id || id.length < 4 
+    skip: !id || id.length < 4
   });
 
   //TODO: Set the user and adjust the menu.

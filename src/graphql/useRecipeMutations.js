@@ -3,7 +3,6 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 
 export default function useRecipeMutations(recipe) {
-  console.log("bringing in the mutations: " + recipe)
   return {
     addRecipe: useAddRecipe(recipe),
     updateRecipe: useUpdateRecipe(recipe),
@@ -55,8 +54,6 @@ const RecipeFieldsFragment = gql`
 `;
 
 function useAddRecipe(recipe) {
-  console.log("using recipe adder function: " + JSON.stringify(recipe))
-  //Check if this worked? Check if it's needed, or if we
 
   const [addRecipeMutation] = useMutation(AddRecipeMutation, {
     // Manually save added Recipes into the Apollo cache so that Recipe queries automatically update
@@ -77,7 +74,6 @@ function useAddRecipe(recipe) {
   });
 
   const addRecipe = async (recipe) => {
-    console.log("using recipe adder: " + JSON.stringify(recipe))
     const { addedRecipe } = await addRecipeMutation({
       variables: {
         recipe: {

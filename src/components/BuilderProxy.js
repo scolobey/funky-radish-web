@@ -6,7 +6,7 @@ import useRecipe from "../graphql/useRecipe";
 let currentRealmUser = localStorage.getItem('realm_user');
 let newID = new ObjectId()
 
-function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
+function useDraftRecipe({ addRecipe, updateRecipe }, [ draftRecipe, setDraftRecipe ]) {
 
   const createDraftRecipe = () => {
     setDraftRecipe({
@@ -39,6 +39,7 @@ function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
   };
 
   const setDraftRecipeTitle = (title) => {
+    console.log("title set: " + title)
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -49,6 +50,8 @@ function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
+    console.log("ingredients set")
+
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
       console.log(ingredientName)
       return { _id: new ObjectId(), author: currentRealmUser, name: ingredientName }
@@ -69,6 +72,8 @@ function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
   };
 
   const setDraftRecipeDirections = (directions) => {
+    console.log("directions set")
+
     let dirList = directions.split(/\r?\n/).map(directionText => {
       return { _id: new ObjectId(), author: currentRealmUser, text: directionText }
     });
@@ -98,7 +103,6 @@ function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
     }
 
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
-      console.log(ingredientName)
       return { _id: new ObjectId(), author: currentRealmUser, name: ingredientName }
     });
 
@@ -117,16 +121,31 @@ function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
   };
 
   const submitDraftRecipe = async () => {
+    if (draftRecipe._id == newID) {
+      console.log("this is a new recipe. On the return, we should set newID to something new again.")
+      let returnedRecipe = await addRecipe(draftRecipe).then(() => {console.log("some kinda returnage I guess")});
+      console.log("returned recipe is: " + returnedRecipe)
+      newID = new ObjectId()
+    }
+    else {
+      console.log("this should be a not a new recipe. This shoudl be a recipe downloadeded from the ole internet.")
+      let returnedRecipe = await updateRecipe(draftRecipe).then(() => {console.log("some kinda returnage I guess")});
+      console.log("returned recipe is: " + returnedRecipe)
+    }
+  };
 
+  const submitDeleteRecipe = async () => {
 
-    // console.log(targ.target[2].value)
-    // console.log(targ.target[3].value)
-    // console.log(targ.target[4].value)
+    if (window.confirm('Are you sure you wish to delete this item?')) {
+      console.log("deleting: " + draftRecipe._id)
+    } else {
+      console.log("deleting canceled")
+    }
+    // prompt to check if you're sure.
 
-    console.log(draftRecipe)
+    //If it's a new recipe, just clear it out.
 
-    // let returnedRecipe = await addRecipe(draftRecipe);
-    // console.log(returnedRecipe)
+    // let returnedRecipe = await addRecipe(draftRecipe).then(() => {console.log("some kinda returnage I guess")});
   };
 
   return {
@@ -137,7 +156,8 @@ function useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]) {
     setDraftRecipeIngredients,
     setDraftRecipeDirections,
     submitDraftRecipe,
-    setDraftRecipeComplete
+    setDraftRecipeComplete,
+    submitDeleteRecipe
   };
 }
 
@@ -156,7 +176,7 @@ export default function BuilderProxy(props) {
     }
   )
 
-  const { addRecipe } = useNewRecipe(draftRecipe);
+  const { addRecipe, updateRecipe } = useNewRecipe(draftRecipe);
 
   const {
     resetDraftRecipe,
@@ -166,8 +186,9 @@ export default function BuilderProxy(props) {
     setDraftRecipeIngredients,
     setDraftRecipeDirections,
     submitDraftRecipe,
-    setDraftRecipeComplete
-  } = useDraftRecipe({ addRecipe }, [ draftRecipe, setDraftRecipe ]);
+    setDraftRecipeComplete,
+    submitDeleteRecipe
+  } = useDraftRecipe({ addRecipe, updateRecipe }, [ draftRecipe, setDraftRecipe ]);
 
   if (loading) {
     return 'Loading...';
@@ -195,6 +216,19 @@ export default function BuilderProxy(props) {
           submitDraftRecipe();
         }}
       >
+
+      <button type="clear" onClick={e => {
+          e.preventDefault();
+          console.log("clearing")
+
+          if (window.confirm('Are you sure you want to clear the form? Unsaved changes will be lost.')) {
+            resetDraftRecipe()
+          } else {
+            console.log("clear canceled")
+          }
+        }}>
+        Clear
+      </button>
 
       <button type="delete" onClick={e => {
           e.preventDefault();

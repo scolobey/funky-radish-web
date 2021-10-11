@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { connect, useSelector, useDispatch } from 'react-redux'
 
 import useRecipe from "../graphql/useRecipe";
 import EditRecipe from "../graphql/editRecipe";
 import Builder from "./Builder";
+import { setRedirect } from "../actions/Actions";
 
 
 import { Helmet } from "react-helmet";
 
 export default function MyRecipe(props) {
 
-  console.log(typeof props.match.params.recipeId)
+  const redirector = useSelector((state) => state.redirect)
+
+  const dispatch = useDispatch()
+
+
   let recId = props.match.params.recipeId
   console.log("rec id: " + recId)
 
@@ -19,6 +25,11 @@ export default function MyRecipe(props) {
 
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
+
+  const segueToEdit = () => {
+    console.log("seuquendo")
+    dispatch(setRedirect("1234"))
+  };
 
   return (
     <div className="Recipe">
@@ -30,6 +41,10 @@ export default function MyRecipe(props) {
 
       <div className="Title">
         <b>{data.recipe.title}</b>
+        <img src="/edit_icon.svg" height="30" alt="Funky Radish" onClick={e => {
+            e.preventDefault();
+            segueToEdit();
+          }}/>
       </div>
 
       <div className="Ingredients">

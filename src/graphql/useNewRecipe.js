@@ -10,7 +10,7 @@ const useNewRecipe = (rec) => {
 
   const { addRecipe, updateRecipe, deleteRecipe } = useRecipeMutations(rec);
 
-  return { addRecipe };
+  return { addRecipe, updateRecipe };
 };
 
 export default useNewRecipe;

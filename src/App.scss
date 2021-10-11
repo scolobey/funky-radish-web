@@ -396,6 +396,15 @@ $black: black;
 
 .Title {
   margin-bottom: 15px;
+  position: relative;
+}
+
+.Title img {
+  position: absolute;
+  top: -20px;
+  right: -15px;
+  min-width: 70px;
+  min-height: 70px;
 }
 
 .Ingredients {
@@ -736,6 +745,21 @@ button[type=delete] {
 
 button[type=delete]:hover {
   background-color: #dc0b2e;
+}
+
+button[type=clear] {
+  background-color: #28A4F3;
+  color: $white;
+  padding: 12px 20px;
+  margin: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+button[type=clear]:hover {
+  background-color: #73C5F8;
 }
 
 .download-icons {
