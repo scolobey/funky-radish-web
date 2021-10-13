@@ -15,7 +15,6 @@ export default function MyRecipe(props) {
 
   const dispatch = useDispatch()
 
-
   let recId = props.match.params.recipeId
   console.log("rec id: " + recId)
 
@@ -27,8 +26,7 @@ export default function MyRecipe(props) {
   if (error) return `Error! ${error.message}`;
 
   const segueToEdit = () => {
-    console.log("seuquendo")
-    dispatch(setRedirect("1234"))
+    dispatch(setRedirect("/builder/" + recId))
   };
 
   return (
