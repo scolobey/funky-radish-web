@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { useMutation } from "@apollo/client";
+import { compose } from 'recompose';
 import gql from "graphql-tag";
 
 export default function useRecipeMutations(recipe) {
@@ -11,16 +12,24 @@ export default function useRecipeMutations(recipe) {
 }
 
 const AddRecipeMutation = gql`
-  mutation AddRecipe($recipe: RecipeInsertInput!) {
-    addedRecipe: insertOneRecipe(data: $recipe) {
-      _id
+  mutation DeleteRecipe(
+    $recipeId: String!
+  	$ingredients: [String!]
+    $directions: [String!]
+  ){
+    deletedRecipe: deleteOneRecipe(query: { _id: $recipeId }) {
+    	_id
       author
       title
       ingredients {
         _id
-        author
-        name
       }
+    }
+    deletedIngredients: deleteManyIngredients(query: { _id_in: $ingredients }) {
+      deletedCount
+    }
+    deletedDirections: deleteManyDirections(query: { _id_in: $directions }) {
+      deletedCount
     }
   }
 `;
@@ -36,11 +45,20 @@ const UpdateRecipeMutation = gql`
 `;
 
 const DeleteRecipeMutation = gql`
-  mutation DeleteRecipe($recipeId: ObjectId!) {
-    deletedRecipe: deleteOneRecipe(query: { _id: recipeId }) {
-      _id
+  mutation DeleteRecipe(
+    $recipeId: String!
+  	$ingredients: [String!]
+  ){
+  	deletedRecipe: deleteOneRecipe(query: { _id: $recipeId }) {
+    	_id
       author
       title
+      ingredients {
+        _id
+      }
+    }
+    deletedIngredients: deleteManyIngredients(query: { _id_in: $ingredients }) {
+      deletedCount
     }
   }
 `;
@@ -101,11 +119,16 @@ function useUpdateRecipe(recipe) {
   return updateRecipe;
 }
 
-function useDeleteRecipe(recipeId) {
+function useDeleteRecipe(recipe) {
   const [deleteRecipeMutation] = useMutation(DeleteRecipeMutation);
   const deleteRecipe = async (recipe) => {
+    console.log("useDeleteRecipe: " + JSON.stringify(recipe))
     const { deletedRecipe } = await deleteRecipeMutation({
-      variables: { recipeId: recipe._id },
+      variables: {
+        recipeId: recipe._id,
+        ingredients: recipe.ingredients.create.map(ing => ing._id) || [],
+        directions: recipe.directions.create.map(dir => dir._id) || []
+      }
     });
     return deletedRecipe;
   };

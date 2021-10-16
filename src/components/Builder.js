@@ -6,7 +6,7 @@ import useRecipe from "../graphql/useRecipe";
 let currentRealmUser = localStorage.getItem('realm_user');
 let newID = new ObjectId()
 
-function useDraftRecipe({ addRecipe, updateRecipe }, [ draftRecipe, setDraftRecipe ]) {
+function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]) {
 
   const createDraftRecipe = () => {
     setDraftRecipe({
@@ -138,14 +138,25 @@ function useDraftRecipe({ addRecipe, updateRecipe }, [ draftRecipe, setDraftReci
 
     if (window.confirm('Are you sure you wish to delete this item?')) {
       console.log("deleting: " + draftRecipe._id)
+
+      //If it's a new recipe, just clear it out.
+      if (draftRecipe._id == newID) {
+        console.log("a new recipe. We'll just clear the form")
+        // If this doesn't work, maybe this.resetDraftRecipe() will work. Or we just do it the easy way and reuse code.
+        resetDraftRecipe()
+      }
+      else {
+        // here we gotta delete for real.
+        console.log("deleting recipe: " + draftRecipe._id)
+        let deletedResponse = await deleteRecipe(draftRecipe).then((obj) => {console.log("some kinda returnage from rec delete: " + obj)});
+        console.log("returned recipe is: " + deletedResponse)
+
+        //After deleting, we should set newID to something new again.
+        newID = new ObjectId()
+      }
     } else {
       console.log("deleting canceled")
     }
-    // prompt to check if you're sure.
-
-    //If it's a new recipe, just clear it out.
-
-    // let returnedRecipe = await addRecipe(draftRecipe).then(() => {console.log("some kinda returnage I guess")});
   };
 
   return {
@@ -166,6 +177,8 @@ export default function Builder(props) {
 
   const { loading, error, data } = useRecipe(recipeIdentification);
 
+  // We have this issue where a recipe being edited maintains a different state than what has been saved to Realm cloud.
+  // In progress means we've disabled the seamless reloading from cloud.
   const [ recipeInProgress, setRecipeInProgress ] = React.useState(false)
 
   const [ draftRecipe, setDraftRecipe ] = React.useState(
@@ -178,7 +191,7 @@ export default function Builder(props) {
     }
   )
 
-  const { addRecipe, updateRecipe } = useNewRecipe(draftRecipe);
+  const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
 
   const {
     resetDraftRecipe,
@@ -190,7 +203,7 @@ export default function Builder(props) {
     submitDraftRecipe,
     setDraftRecipeComplete,
     submitDeleteRecipe
-  } = useDraftRecipe({ addRecipe, updateRecipe }, [ draftRecipe, setDraftRecipe ]);
+  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]);
 
   if (loading) {
     return 'Loading...';
@@ -219,9 +232,8 @@ export default function Builder(props) {
 
       <button type="clear" onClick={e => {
           e.preventDefault();
-          console.log("clearing")
-
           if (window.confirm('Are you sure you want to clear the form? Unsaved changes will be lost.')) {
+            setRecipeInProgress(true)
             resetDraftRecipe()
           } else {
             console.log("clear canceled")
@@ -233,7 +245,7 @@ export default function Builder(props) {
       <button type="delete" onClick={e => {
           e.preventDefault();
           console.log("deleting")
-          resetDraftRecipe()
+          submitDeleteRecipe()
         }}>
         Delete
       </button>
