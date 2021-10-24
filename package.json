@@ -21,7 +21,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "realm-web": "^1.2.0",
-    "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "0.13.5",

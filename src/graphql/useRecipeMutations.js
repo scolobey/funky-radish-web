@@ -1,6 +1,5 @@
 import { ObjectId } from "bson";
 import { useMutation } from "@apollo/client";
-import { compose } from 'recompose';
 import gql from "graphql-tag";
 
 export default function useRecipeMutations(recipe) {
@@ -12,13 +11,60 @@ export default function useRecipeMutations(recipe) {
 }
 
 const AddRecipeMutation = gql`
+  mutation AddRecipe($recipe: RecipeInsertInput!) {
+    addedRecipe: insertOneRecipe(data: $recipe) {
+    	_id
+      author
+      title
+      ingredients {
+        _id
+        author
+        name
+      }
+      directions {
+        _id
+        author
+        text
+      }
+    }
+  }
+`;
+
+const UpdateRecipeMutation = gql`
+  mutation UpdateRecipe(
+    $recipeId: String!,
+    $updates: RecipeUpdateInput!,
+    $oldIngredients: [String],
+    $oldDirections: [String]
+  ){
+    deletedIngredients: deleteManyIngredients(query: { _id_in: $oldIngredients }){
+      deletedCount
+    }
+    deletedDirections: deleteManyDirections(query: { _id_in: $oldDirections }){
+      deletedCount
+    }
+    updatedRecipe: updateOneRecipe(query: { _id: $recipeId }, set: $updates) {
+      _id
+      author
+      title
+      ingredients {
+        name
+      }
+      directions {
+        text
+      }
+    }
+  }
+`;
+
+const DeleteRecipeMutation = gql`
   mutation DeleteRecipe(
     $recipeId: String!
-  	$ingredients: [String!]
+    $ingredients: [String!]
     $directions: [String!]
   ){
     deletedRecipe: deleteOneRecipe(query: { _id: $recipeId }) {
-    	_id
+      _id
       author
       title
       ingredients {
@@ -29,35 +75,6 @@ const AddRecipeMutation = gql`
       deletedCount
     }
     deletedDirections: deleteManyDirections(query: { _id_in: $directions }) {
-      deletedCount
-    }
-  }
-`;
-
-const UpdateRecipeMutation = gql`
-  mutation UpdateRecipe($recipeId: ObjectId!, $updates: RecipeUpdateInput!) {
-    updatedRecipe: updateOneRecipe(query: { _id: $recipeId }, set: $updates) {
-      _id
-      author
-      title
-    }
-  }
-`;
-
-const DeleteRecipeMutation = gql`
-  mutation DeleteRecipe(
-    $recipeId: String!
-  	$ingredients: [String!]
-  ){
-  	deletedRecipe: deleteOneRecipe(query: { _id: $recipeId }) {
-    	_id
-      author
-      title
-      ingredients {
-        _id
-      }
-    }
-    deletedIngredients: deleteManyIngredients(query: { _id_in: $ingredients }) {
       deletedCount
     }
   }
@@ -110,9 +127,14 @@ function useAddRecipe(recipe) {
 
 function useUpdateRecipe(recipe) {
   const [updateRecipeMutation] = useMutation(UpdateRecipeMutation);
-  const updateRecipe = async (recipe, updates) => {
+  const updateRecipe = async (recipe) => {
     const { updatedRecipe } = await updateRecipeMutation({
-      variables: { recipeId: recipe._id, updates },
+      variables: {
+        recipeId: recipe.recipeId,
+        oldIngredients: recipe.oldIngredients,
+        oldDirections: recipe.oldDirections,
+        updates: recipe.updates
+      }
     });
     return updatedRecipe;
   };
@@ -122,7 +144,6 @@ function useUpdateRecipe(recipe) {
 function useDeleteRecipe(recipe) {
   const [deleteRecipeMutation] = useMutation(DeleteRecipeMutation);
   const deleteRecipe = async (recipe) => {
-    console.log("useDeleteRecipe: " + JSON.stringify(recipe))
     const { deletedRecipe } = await deleteRecipeMutation({
       variables: {
         recipeId: recipe._id,

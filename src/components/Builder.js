@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+
 import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
+import { setRedirect } from "../actions/Actions";
+
+
 let currentRealmUser = localStorage.getItem('realm_user');
+
+// newID is rather confusing...
+// Because...
+// 1. this id is not new in the case of editing an existing recipe.
+// 2. Sometimes I cpitalize D, sometimes lowercase d
 let newID = new ObjectId()
 
 function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]) {
 
+  const dispatch = useDispatch()
+
   const createDraftRecipe = () => {
+    console.log("setting to newId")
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -19,6 +32,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const deleteDraftRecipe = () => {
+    console.log("setting to newId")
+
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -29,6 +44,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const resetDraftRecipe = () => {
+    console.log("setting to newId")
+
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -41,7 +58,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   const setDraftRecipeTitle = (title) => {
     console.log("title set: " + title)
     setDraftRecipe({
-      _id: newID,
+      _id: draftRecipe._id,
       author: currentRealmUser,
       title: title,
       ingredients: draftRecipe.ingredients,
@@ -50,20 +67,18 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
-    console.log("ingredients set")
 
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
-      console.log(ingredientName)
       return { _id: new ObjectId(), author: currentRealmUser, name: ingredientName }
     });
 
     let ingObject = {
       create: ingList,
-      link: [newID]
+      link: [draftRecipe._id]
     }
 
     setDraftRecipe({
-      _id: newID,
+      _id: draftRecipe._id,
       author: currentRealmUser,
       title: draftRecipe.title,
       ingredients:  ingObject,
@@ -72,7 +87,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeDirections = (directions) => {
-    console.log("directions set")
 
     let dirList = directions.split(/\r?\n/).map(directionText => {
       return { _id: new ObjectId(), author: currentRealmUser, text: directionText }
@@ -80,11 +94,11 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     let dirObject = {
       create: dirList,
-      link: [newID]
+      link: [draftRecipe._id]
     }
 
     setDraftRecipe({
-      _id: newID,
+      _id: draftRecipe._id,
       author: currentRealmUser,
       title: draftRecipe.title,
       ingredients: draftRecipe.ingredients,
@@ -120,42 +134,50 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     });
   };
 
-  const submitDraftRecipe = async () => {
-    if (draftRecipe._id == newID) {
-      console.log("this is a new recipe. On the return, we should set newID to something new again.")
-      let returnedRecipe = await addRecipe(draftRecipe).then(() => {console.log("some kinda returnage I guess")});
-      console.log("returned recipe is: " + returnedRecipe)
-      newID = new ObjectId()
+  const submitDraftRecipe = async (id, ing, dir) => {
+    draftRecipe._id = draftRecipe._id.toString()
+
+    console.log("inspecting with prop id: " + id)
+
+    if (!id || id == "") {
+      await addRecipe(draftRecipe).then((rec) => {
+        dispatch(setRedirect("/builder/" + draftRecipe._id))
+        console.log("returned recipe is: " + rec)
+      });
     }
     else {
-      console.log("this should be a not a new recipe. This shoudl be a recipe downloadeded from the ole internet.")
-      let returnedRecipe = await updateRecipe(draftRecipe).then(() => {console.log("some kinda returnage I guess")});
-      console.log("returned recipe is: " + returnedRecipe)
+
+      let rec = {
+        recipeId: draftRecipe._id,
+        oldIngredients: ing,
+        oldDirections: dir,
+        updates: draftRecipe
+      }
+
+      console.log("passing this: " + JSON.stringify(rec))
+
+      // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
+      let returnedRecipe = await updateRecipe(rec).then((resp) => {
+        console.log("recipe updated I think")
+      });
     }
   };
 
   const submitDeleteRecipe = async () => {
-
-    if (window.confirm('Are you sure you wish to delete this item?')) {
-      console.log("deleting: " + draftRecipe._id)
-
+    if (window.confirm('Are you sure you wish to delete this recipe?')) {
       //If it's a new recipe, just clear it out.
       if (draftRecipe._id == newID) {
-        console.log("a new recipe. We'll just clear the form")
-        // If this doesn't work, maybe this.resetDraftRecipe() will work. Or we just do it the easy way and reuse code.
         resetDraftRecipe()
       }
       else {
-        // here we gotta delete for real.
-        console.log("deleting recipe: " + draftRecipe._id)
-        let deletedResponse = await deleteRecipe(draftRecipe).then((obj) => {console.log("some kinda returnage from rec delete: " + obj)});
-        console.log("returned recipe is: " + deletedResponse)
-
-        //After deleting, we should set newID to something new again.
-        newID = new ObjectId()
+        let deletedResponse = await deleteRecipe(draftRecipe).then((obj) => {
+          dispatch(setRedirect("/builder/"))
+          newID = new ObjectId()
+          resetDraftRecipe()
+        });
       }
     } else {
-      console.log("deleting canceled")
+      console.log("delete canceled")
     }
   };
 
@@ -175,6 +197,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 export default function Builder(props) {
   let recipeIdentification = props.match.params.recipeId
 
+  const redirector = useSelector((state) => state.redirect)
+
   const { loading, error, data } = useRecipe(recipeIdentification);
 
   // We have this issue where a recipe being edited maintains a different state than what has been saved to Realm cloud.
@@ -190,6 +214,10 @@ export default function Builder(props) {
       directions: {create: [], link: [newID]}
     }
   )
+
+  const [ baseIngredients, setBaseIngredients ] = React.useState([])
+
+  const [ baseDirections, setBaseDirections ] = React.useState([])
 
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
 
@@ -210,6 +238,8 @@ export default function Builder(props) {
   }
 
   if (data && !recipeInProgress) {
+    console.log("data arrived")
+
     let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
     let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
 
@@ -217,7 +247,18 @@ export default function Builder(props) {
     let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
 
     if ((draftRecipeIngredients != dataRecipeIngredients) || (draftRecipeDirections != dataRecipeDirections) || (draftRecipe.title != data.recipe.title)) {
+
+
       setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
+
+      let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
+      let dirList = data.recipe.directions.map(dirListing => {return dirListing._id})
+
+      setBaseIngredients(ingList)
+      console.log("setting base ing: " + ingList)
+      setBaseDirections(dirList)
+      console.log("setting base ing: " + dirList)
+
     }
   }
 
@@ -225,8 +266,12 @@ export default function Builder(props) {
     <div className="builder">
       <form onSubmit={e => {
           e.preventDefault();
+          console.log("submitting with baseing: " + baseIngredients)
+          console.log("submitting with basedir: " + baseDirections)
+          setBaseIngredients(baseIngredients)
+          setBaseDirections(baseDirections)
 
-          submitDraftRecipe();
+          submitDraftRecipe(recipeIdentification, baseIngredients, baseDirections);
         }}
       >
 
@@ -244,7 +289,6 @@ export default function Builder(props) {
 
       <button type="delete" onClick={e => {
           e.preventDefault();
-          console.log("deleting")
           submitDeleteRecipe()
         }}>
         Delete
