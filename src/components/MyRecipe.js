@@ -60,13 +60,13 @@ export default function MyRecipe(props) {
 
       <div className="Directions">
         {data.recipe.directions ? (
-          <ol>
+          <ul>
             {data.recipe.directions.map((direction, index) => (
               <li key={index}>
                 {direction.text}
               </li>
             ))}
-          </ol>
+          </ul>
         ):
         (<div></div>)}
       </div>

@@ -9,7 +9,7 @@ class RecipeView extends Component {
 
   constructor(props) {
     super(props);
-    //TODO: This probably creates a problem where if recipes share a title, everything breaks. 
+    //TODO: This probably creates a problem where if recipes share a title, everything breaks.
     this.state = {
       title: props.location.state.title,
       ingredients: props.location.state.ingredients
@@ -46,13 +46,13 @@ class RecipeView extends Component {
             (<div></div>)}
           </div>
           <div className="Directions">
-            <ol>
+            <ul>
               {this.props.recipe.map((direction, index) => (
                 <li key={index}>
                   {direction}
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
         </li>
       </div>

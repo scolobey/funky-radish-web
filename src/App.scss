@@ -419,10 +419,22 @@ $black: black;
   float:left;
 }
 
+.Ingredients li {
+  margin-bottom: 10px;
+}
+
 .Directions {
   width: 70%;
   padding-right: 40px;
   float:right;
+}
+
+.Directions ul {
+  list-style-type: none;
+}
+
+.Directions li {
+  margin-bottom: 10px;
 }
 
 /* Privacy policy */
