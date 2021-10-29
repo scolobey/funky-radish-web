@@ -45,6 +45,8 @@ import Recipe from '../models/RecipeModel'
 import useRecipes from "../graphql/useRecipes";
 import useRecipe from "../graphql/useRecipe";
 
+import { ObjectId } from "bson";
+
 const auth = new Auth();
 const realmService = new RealmService();
 const serverService = new ServerService();
@@ -590,7 +592,26 @@ export function recipeImportMiddleware({ dispatch }) {
         serverService.importRecipe(action.address)
         .then(res=> {
           console.log("recipe import middleware called: ", res)
-          return dispatch(setDraftRecipe(res))
+          let currentRealmUser = localStorage.getItem('realm_user')
+          let newRecID = new ObjectId()
+          let protoRecipe = {
+            _id: newRecID,
+            author: currentRealmUser,
+            title: res.title,
+            ingredients: {
+              create: res.ingredients.map((ing) => { return { _id: new ObjectId(), author: currentRealmUser, name: ing }}),
+              link: [newRecID]
+            },
+            directions: {
+              create: res.directions.map((dir) => {return { _id: new ObjectId(), author: currentRealmUser, text: dir }}),
+              link: [newRecID]
+            }
+
+
+
+          }
+
+          return dispatch(setDraftRecipe(protoRecipe))
         })
         .catch(err => {
           // dispatch(toggleLoader(false))

@@ -127,13 +127,9 @@ function rootReducer(state, action) {
 
   if (action.type === SET_DRAFT_RECIPE) {
     console.log("SET_DRAFT_RECIPE reducer called: " + JSON.stringify(action.recipe))
+
     return Object.assign({}, state, {
-      draftRecipe: {
-        author: "maybe",
-        title: "definitely",
-        ingredients: {create: [], link: []},
-        directions: {create: [], link: []}
-      }
+      draftRecipe: action.recipe
     });
   }
 

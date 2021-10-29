@@ -5,7 +5,7 @@ import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
-import { setRedirect, importRecipe } from "../actions/Actions";
+import { setRedirect, importRecipe, setDraftRecipe } from "../actions/Actions";
 
 let currentRealmUser = localStorage.getItem('realm_user');
 
@@ -15,54 +15,61 @@ let currentRealmUser = localStorage.getItem('realm_user');
 // 2. Sometimes I cpitalize D, sometimes lowercase d
 let newID = new ObjectId()
 
-function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress) {
+function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, recipeSetter, importAddress) {
 
   const dispatch = useDispatch()
 
   const createDraftRecipe = () => {
     console.log("setting to newId")
-    setDraftRecipe({
-      _id: newID,
-      author: currentRealmUser,
-      title: "",
-      ingredients: {create: [], link: [newID]},
-      directions: {create: [], link: [newID]}
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: newID,
+        author: currentRealmUser,
+        title: "",
+        ingredients: {create: [], link: [newID]},
+        directions: {create: [], link: [newID]}
+      })
+    );
   };
 
   const deleteDraftRecipe = () => {
     console.log("setting to newId")
 
-    setDraftRecipe({
-      _id: newID,
-      author: currentRealmUser,
-      title: "",
-      ingredients: {create: [], link: [newID]},
-      directions: {create: [], link: [newID]}
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: newID,
+        author: currentRealmUser,
+        title: "",
+        ingredients: {create: [], link: [newID]},
+        directions: {create: [], link: [newID]}
+      })
+    );
   };
 
   const resetDraftRecipe = () => {
     console.log("setting to newId")
-
-    setDraftRecipe({
-      _id: newID,
-      author: currentRealmUser,
-      title: "",
-      ingredients: {create: [], link: [newID]},
-      directions: {create: [], link: [newID]}
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: newID,
+        author: currentRealmUser,
+        title: "",
+        ingredients: {create: [], link: [newID]},
+        directions: {create: [], link: [newID]}
+      })
+    );
   };
 
   const setDraftRecipeTitle = (title) => {
     console.log("title set: " + title)
-    setDraftRecipe({
-      _id: draftRecipe._id,
-      author: currentRealmUser,
-      title: title,
-      ingredients: draftRecipe.ingredients,
-      directions: draftRecipe.directions
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: recipeSetter._id,
+        author: currentRealmUser,
+        title: title,
+        ingredients: recipeSetter.ingredients,
+        directions: recipeSetter.directions
+      })
+    );
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
@@ -73,16 +80,18 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     let ingObject = {
       create: ingList,
-      link: [draftRecipe._id]
+      link: [recipeSetter._id]
     }
 
-    setDraftRecipe({
-      _id: draftRecipe._id,
-      author: currentRealmUser,
-      title: draftRecipe.title,
-      ingredients:  ingObject,
-      directions: draftRecipe.directions
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: recipeSetter._id,
+        author: currentRealmUser,
+        title: recipeSetter.title,
+        ingredients:  ingObject,
+        directions: recipeSetter.directions
+      })
+    );
   };
 
   const setDraftRecipeDirections = (directions) => {
@@ -93,16 +102,18 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     let dirObject = {
       create: dirList,
-      link: [draftRecipe._id]
+      link: [recipeSetter._id]
     }
 
-    setDraftRecipe({
-      _id: draftRecipe._id,
-      author: currentRealmUser,
-      title: draftRecipe.title,
-      ingredients: draftRecipe.ingredients,
-      directions: dirObject
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: recipeSetter._id,
+        author: currentRealmUser,
+        title: recipeSetter.title,
+        ingredients: recipeSetter.ingredients,
+        directions: dirObject
+      })
+    );
   };
 
   const setDraftRecipeComplete = (id, title, ingredients, directions) => {
@@ -124,33 +135,35 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
       link: [id]
     }
 
-    setDraftRecipe({
-      _id: id,
-      author: currentRealmUser,
-      title: title,
-      ingredients: ingObject,
-      directions: dirObject
-    });
+    dispatch(
+      setDraftRecipe({
+        _id: id,
+        author: currentRealmUser,
+        title: title,
+        ingredients: ingObject,
+        directions: dirObject
+      })
+    );
   };
 
   const submitDraftRecipe = async (id, ing, dir) => {
-    draftRecipe._id = draftRecipe._id.toString()
+    recipeSetter._id = recipeSetter._id.toString()
 
     console.log("inspecting with prop id: " + id)
 
     if (!id || id == "") {
-      await addRecipe(draftRecipe).then((rec) => {
-        dispatch(setRedirect("/builder/" + draftRecipe._id))
+      await addRecipe(recipeSetter).then((rec) => {
+        dispatch(setRedirect("/builder/" + recipeSetter._id))
         console.log("returned recipe is: " + rec)
       });
     }
     else {
 
       let rec = {
-        recipeId: draftRecipe._id,
+        recipeId: recipeSetter._id,
         oldIngredients: ing,
         oldDirections: dir,
-        updates: draftRecipe
+        updates: recipeSetter
       }
 
       console.log("passing this: " + JSON.stringify(rec))
@@ -165,11 +178,11 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   const submitDeleteRecipe = async () => {
     if (window.confirm('Are you sure you wish to delete this recipe?')) {
       //If it's a new recipe, just clear it out.
-      if (draftRecipe._id == newID) {
+      if (recipeSetter._id == newID) {
         resetDraftRecipe()
       }
       else {
-        let deletedResponse = await deleteRecipe(draftRecipe).then((obj) => {
+        let deletedResponse = await deleteRecipe(recipeSetter).then((obj) => {
           dispatch(setRedirect("/builder/"))
           newID = new ObjectId()
           resetDraftRecipe()
@@ -211,21 +224,15 @@ function Builder(props) {
   // In progress means we've disabled the seamless reloading from cloud.
   const [ recipeInProgress, setRecipeInProgress ] = React.useState(false)
 
-  const [ draftRecipe, setDraftRecipe ] = React.useState(
-    {
-      _id: newID,
-      author: currentRealmUser,
-      title: "",
-      ingredients: { create: [], link: [newID] },
-      directions: { create: [], link: [newID] }
-    }
-  )
-
-  console.log(props)
-  console.log(recipeSetter)
-
-  const proxyRecipe = useSelector((state) => state.draftRecipe)
-
+  // const [ draftRecipe, setDraftRecipe ] = React.useState(
+  //   {
+  //     _id: newID,
+  //     author: currentRealmUser,
+  //     title: "",
+  //     ingredients: { create: [], link: [newID] },
+  //     directions: { create: [], link: [newID] }
+  //   }
+  // )
 
   const [ baseIngredients, setBaseIngredients ] = React.useState([])
 
@@ -233,7 +240,7 @@ function Builder(props) {
 
   const [ importAddress, setImportAddress ] = React.useState("")
 
-  const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
+  const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(recipeSetter);
 
   const {
     resetDraftRecipe,
@@ -246,38 +253,12 @@ function Builder(props) {
     setDraftRecipeComplete,
     submitDeleteRecipe,
     importFromAddress
-  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress);
+  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, recipeSetter, importAddress);
 
-  if (loading) {
-    return 'Loading...';
-  }
-
-  if (data && !recipeInProgress) {
-    console.log("data arrived")
-
-    let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
-    let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
-
-    let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
-    let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
-
-    if ((draftRecipeIngredients != dataRecipeIngredients) || (draftRecipeDirections != dataRecipeDirections) || (draftRecipe.title != data.recipe.title)) {
-
-
-      setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
-
-      let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
-      let dirList = data.recipe.directions.map(dirListing => {return dirListing._id})
-
-      setBaseIngredients(ingList)
-      console.log("setting base ing: " + ingList)
-      setBaseDirections(dirList)
-      console.log("setting base ing: " + dirList)
-    }
-  }
 
   return (
     <div className="builder">
+     author: {recipeSetter? recipeSetter.author : ""}}
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -290,9 +271,7 @@ function Builder(props) {
         }}
       >
       <div>
-        here should be: {draftRecipe.title}
         here should be: {recipeSetter? recipeSetter.title : "none"}
-
       </div>
 
       <div className="title">
@@ -359,7 +338,7 @@ function Builder(props) {
             className="form-control"
             placeholder="ingredients"
             id="ingredients"
-            value={draftRecipe.ingredients.create.length > 0 ? draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n") : ""}
+            value={recipeSetter && recipeSetter.ingredients.create.length > 0 ? recipeSetter.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n") : ""}
             onChange={(event) => {
               setRecipeInProgress(true)
               setDraftRecipeIngredients(event.target.value);
@@ -373,7 +352,7 @@ function Builder(props) {
             className="form-control"
             placeholder="directions"
             id="directions"
-            value={draftRecipe.directions.create.length > 0 ? draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n") : ""}
+            value={recipeSetter && recipeSetter.directions.create.length > 0 ? recipeSetter.directions.create.map(directionListing => {return directionListing.text}).join("\n") : ""}
             onChange={(event) => {
               setRecipeInProgress(true)
               setDraftRecipeDirections(event.target.value);
