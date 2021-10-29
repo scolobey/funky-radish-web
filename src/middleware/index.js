@@ -11,7 +11,8 @@ import {
   EXTERNAL_RECIPE_SEARCH,
   AUTOCOMPLETE,
   LOGOUT,
-  GRAPHQL
+  GRAPHQL,
+  IMPORT_RECIPE
 } from "../constants/action-types";
 
 import {
@@ -29,6 +30,7 @@ import {
   warningToggle,
   setRedirect,
   setRecipe,
+  setDraftRecipe,
   importRecipes,
   setImportQueue,
   setSearchSuggestions
@@ -377,7 +379,7 @@ export function getRecipeMiddleware({dispatch}) {
         // TODO: This isn't the prettiest solution, but it would take some thought to find a better one.
         // Currently, prepending with '-sp' means it's a recipe from the spoonacular API.
         // Otherwise, it's a recipe that's in your Realm account, and so we don't have to hit the funkyradish api
-        //
+
         if (action.recipeTitle.substring(0, 3) === "sp-") {
           fetch("https://funky-radish-api.herokuapp.com/recipes/" + action.recipeTitle , {
             method: 'get'
@@ -573,6 +575,28 @@ export function graphqlMiddleware({ dispatch }) {
     return function(action) {
       if (action.type === GRAPHQL) {
         console.log("graph callin middleware")
+      }
+      return next(action);
+    };
+  };
+}
+
+export function recipeImportMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === IMPORT_RECIPE) {
+        console.log("importing a recipe: ")
+
+        serverService.importRecipe(action.address)
+        .then(res=> {
+          console.log("recipe import middleware called: ", res)
+          return dispatch(setDraftRecipe(res))
+        })
+        .catch(err => {
+          // dispatch(toggleLoader(false))
+          console.log("here's the error: " + err)
+          return dispatch(warning('Error: ' + err))
+        })
       }
       return next(action);
     };

@@ -3,6 +3,15 @@ var path = require('path');
 
 export default class ServerService {
 
+  async importRecipe(address) {
+    let endpoint = BASE_URL + "collector/inspect/" + address
+    console.log("calling: " + endpoint)
+    let response = await fetch(endpoint, { method: 'get' })
+
+    let data = await response.json()
+    return data;
+  }
+
   async searchRecipes(query) {
     let endpoint = BASE_URL + "collector?query=" + query
 
@@ -131,5 +140,4 @@ function fetchWithTimeout(endpoint) {
           reject(err);
       });
   })
-
 }

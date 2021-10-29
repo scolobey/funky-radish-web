@@ -15,6 +15,7 @@ import RoadMap from './components/RoadMap';
 import About from './components/About';
 import Support from './components/Support';
 import Builder from "./components/Builder";
+import Importer from "./components/Importer";
 
 import Recipes from "./components/Recipes.js";
 import Recipe from "./components/Recipe.js";
@@ -54,6 +55,7 @@ class App extends Component {
           <Route path="/privacy/" component={PrivacyPolicy} />
           <Route path="/verify/:token?" component={Verification} />
           <Route path="/builder/:recipeId?" component={Builder} />
+          <Route path="/importer/" component={Importer} />
           <Route path="/recipes/:recipeTitle?" component={Recipe} />
           <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
           <Route path="/admin/" component={Admin} />

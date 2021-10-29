@@ -1,4 +1,4 @@
-import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, EXTERNAL_RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT, SEARCH, SET_VERIFIED, SET_IMPORT_QUEUE, SET_SEARCH_SUGGESTIONS } from "../constants/action-types";
+import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, EXTERNAL_RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT, SEARCH, SET_VERIFIED, SET_IMPORT_QUEUE, SET_SEARCH_SUGGESTIONS, SET_DRAFT_RECIPE } from "../constants/action-types";
 
 function rootReducer(state, action) {
   if (action.type === ADD_RECIPE) {
@@ -122,6 +122,18 @@ function rootReducer(state, action) {
   if (action.type === SET_REDIRECT) {
     return Object.assign({}, state, {
       redirect: action.redirect
+    });
+  }
+
+  if (action.type === SET_DRAFT_RECIPE) {
+    console.log("SET_DRAFT_RECIPE reducer called: " + JSON.stringify(action.recipe))
+    return Object.assign({}, state, {
+      draftRecipe: {
+        author: "maybe",
+        title: "definitely",
+        ingredients: {create: [], link: []},
+        directions: {create: [], link: []}
+      }
     });
   }
 

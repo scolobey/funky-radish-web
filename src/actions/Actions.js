@@ -27,7 +27,9 @@ import {
   SET_IMPORT_QUEUE,
   EXTERNAL_RECIPE_SEARCH,
   AUTOCOMPLETE,
-  SET_SEARCH_SUGGESTIONS
+  SET_SEARCH_SUGGESTIONS,
+  IMPORT_RECIPE,
+  SET_DRAFT_RECIPE
 } from "../constants/action-types"
 
 /* other constants */
@@ -152,4 +154,13 @@ export function autocomplete(query) {
 
 export function setSearchSuggestions(suggestions) {
   return { type: SET_SEARCH_SUGGESTIONS, suggestions }
+};
+
+export function importRecipe(address) {
+  return { type: IMPORT_RECIPE, address }
+};
+
+export function setDraftRecipe(recipe) {
+  console.log("launching action: " + JSON.stringify(recipe))
+  return { type: SET_DRAFT_RECIPE, recipe }
 };
