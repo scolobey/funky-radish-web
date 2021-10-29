@@ -587,11 +587,8 @@ export function recipeImportMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
       if (action.type === IMPORT_RECIPE) {
-        console.log("importing a recipe: ")
-
         serverService.importRecipe(action.address)
         .then(res=> {
-          console.log("recipe import middleware called: ", res)
           let currentRealmUser = localStorage.getItem('realm_user')
           let newRecID = new ObjectId()
           let protoRecipe = {
@@ -606,17 +603,13 @@ export function recipeImportMiddleware({ dispatch }) {
               create: res.directions.map((dir) => {return { _id: new ObjectId(), author: currentRealmUser, text: dir }}),
               link: [newRecID]
             }
-
-
-
           }
-
           return dispatch(setDraftRecipe(protoRecipe))
         })
         .catch(err => {
           // dispatch(toggleLoader(false))
           console.log("here's the error: " + err)
-          return dispatch(warning('Error: ' + err))
+          return dispatch(warning("Sorry, I can't read that recipe: " + err))
         })
       }
       return next(action);

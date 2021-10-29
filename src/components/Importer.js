@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch, connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
@@ -212,7 +212,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, recipeSetter,
   };
 }
 
-function Builder(props) {
+export default function Builder(props) {
   let recipeIdentification = props.match.params.recipeId
 
   const redirector = useSelector((state) => state.redirect)
@@ -258,7 +258,6 @@ function Builder(props) {
 
   return (
     <div className="builder">
-     author: {recipeSetter? recipeSetter.author : ""}}
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -270,28 +269,6 @@ function Builder(props) {
           submitDraftRecipe(recipeIdentification, baseIngredients, baseDirections);
         }}
       >
-      <div>
-        here should be: {recipeSetter? recipeSetter.title : "none"}
-      </div>
-
-      <div className="title">
-        <input
-          type="text"
-          placeholder="import url"
-          id="import"
-          onChange={(event) => {
-            setImportAddress(event.target.value);
-          }}
-        />
-      </div>
-
-      <button type="import"
-        onClick={e => {
-          e.preventDefault();
-          importFromAddress()
-        }}>
-        Import
-      </button>
 
       <button type="clear" onClick={e => {
           e.preventDefault();
@@ -360,16 +337,27 @@ function Builder(props) {
           />
         </div>
 
+        <div className="title">
+          <input
+            type="text"
+            placeholder="import url"
+            id="import"
+            onChange={(event) => {
+              setImportAddress(event.target.value);
+            }}
+          />
+        </div>
+
+        <button type="import"
+          onClick={e => {
+            e.preventDefault();
+            importFromAddress()
+          }}>
+          Import
+        </button>
+
       </div>
       </form>
     </div>
   )
 }
-
-function mapStateToProps(state) {
-  return {
-    draftRecipe: state.draftRecipe
-  };
-}
-
-export default connect(mapStateToProps)(Builder);
