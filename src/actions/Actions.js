@@ -84,7 +84,7 @@ export function getRecipe(recipeTitle) {
   return { type: GET_RECIPE, recipeTitle }
 };
 
-export function addRecipe(recipe) {
+export function addDatabaseRecipe(recipe) {
   return { type: ADD_RECIPE, recipe }
 };
 
@@ -161,6 +161,5 @@ export function importRecipe(address) {
 };
 
 export function setDraftRecipe(recipe) {
-  console.log("launching action: " + JSON.stringify(recipe))
   return { type: SET_DRAFT_RECIPE, recipe }
 };

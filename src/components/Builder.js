@@ -7,7 +7,6 @@ import useRecipe from "../graphql/useRecipe";
 
 import { setRedirect } from "../actions/Actions";
 
-
 let currentRealmUser = localStorage.getItem('realm_user');
 
 // newID is rather confusing...

@@ -15,7 +15,8 @@ class Menu extends Component {
     let theUser = auth.getUser()
 
     this.state = {
-      userData: theUser
+      userData: theUser,
+      menu: false
     }
 
     console.log("state : " + this.state)

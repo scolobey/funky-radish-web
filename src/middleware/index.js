@@ -303,6 +303,9 @@ export function addRecipeMiddleware({ dispatch }) {
       if (action.type === ADD_RECIPE) {
         let token = auth.getToken();
 
+        console.log("add recipe: " + JSON.stringify(action))
+        console.log("token: " + token)
+
         if (!token) {
           return dispatch(warning("You're not logged in. Recipe will not be saved."));
         }
@@ -313,58 +316,56 @@ export function addRecipeMiddleware({ dispatch }) {
         var params = {
           ingredients: action.recipe.ingredients,
           directions: action.recipe.directions,
-          updatedAt: formattedDate,
-          title: action.recipe.title,
-          clientID: action.recipe.clientID
+          title: action.recipe.title
         }
 
-        if(action.recipe._id) {
-          let url = "https://funky-radish-api.herokuapp.com/recipe/" + action.recipe._id;
+        // if(action.recipe._id) {
+        //   let url = "https://funky-radish-api.herokuapp.com/recipe/" + action.recipe._id;
+        //
+        //   fetch(url, {
+        //     method: 'put',
+        //     headers: new Headers({
+        //       'Accept': 'application/json',
+        //       'Content-Type': 'application/json',
+        //       'x-access-token': token
+        //     }),
+        //     body: JSON.stringify(params)
+        //   })
+        //   .then(res=> {
+        //     return res.clone().json()
+        //   })
+        //   .then(data => {
+        //     if (data.message) {
+        //       return dispatch(warning(data.message))
+        //     }
+        //     return dispatch(updateRecipe(data));
+        //   })
+        //   .catch(error => dispatch(warning(error)))
+        // }
+        params = [params];
 
-          fetch(url, {
-            method: 'put',
-            headers: new Headers({
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'x-access-token': token
-            }),
-            body: JSON.stringify(params)
-          })
-          .then(res=> {
-            return res.clone().json()
-          })
-          .then(data => {
-            if (data.message) {
-              return dispatch(warning(data.message))
-            }
-            return dispatch(updateRecipe(data));
-          })
-          .catch(error => dispatch(warning(error)))
-        }
-        else {
-          params = [params];
+        fetch("https://funky-radish-api.herokuapp.com/recipes", {
+          method: 'post',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          }),
+          body: JSON.stringify(params)
+        })
+        .then(res=> {
+          console.log(res.clone().json())
+          return res.clone().json()
+        })
+        .then(data => {
+          if (data.message) {
+            return dispatch(warning(data.message))
+          }
+          // update recipe to fill in ._id
+          return dispatch(updateRecipe(data));
+        })
+        .catch(error => dispatch(warning(error)));
 
-          fetch("https://funky-radish-api.herokuapp.com/recipes", {
-            method: 'post',
-            headers: new Headers({
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'x-access-token': token
-            }),
-            body: JSON.stringify(params)
-          })
-          .then(res=> {
-            return res.clone().json()
-          })
-          .then(data => {
-            if (data.message) {
-              return dispatch(warning(data.message))
-            }
-            // update recipe to fill in ._id
-            return dispatch(updateRecipe(data));
-          })
-          .catch(error => dispatch(warning(error)))
-        }
       }
       return next(action);
     };

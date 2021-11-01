@@ -5,7 +5,7 @@ import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
-import { setRedirect, importRecipe, setDraftRecipe } from "../actions/Actions";
+import { setRedirect, importRecipe, addDatabaseRecipe, setDraftRecipe } from "../actions/Actions";
 
 let currentRealmUser = localStorage.getItem('realm_user');
 
@@ -146,32 +146,59 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, recipeSetter,
     );
   };
 
-  const submitDraftRecipe = async (id, ing, dir) => {
-    recipeSetter._id = recipeSetter._id.toString()
+  const submitDraftRecipe = async (id, ing, dir, dbToggle) => {
+    // this gets quite unreasonably complex
+    // Handling too many states.
+    // 1. adding recipe to master DB
+    // 2. adding recipe to account
+    // 3. editing recipe in account
+    // 4. editing recipe in master DB (not yet implemented)
+    // And ing and dir params look different depending on this state.
 
-    console.log("inspecting with prop id: " + id)
+    // TODO: Should I add a validation statement to escape all of this when empty recipes are identified?
 
-    if (!id || id == "") {
-      await addRecipe(recipeSetter).then((rec) => {
-        dispatch(setRedirect("/builder/" + recipeSetter._id))
-        console.log("returned recipe is: " + rec)
-      });
-    }
-    else {
+    if (!dbToggle) {
+      // Saving to Master DB
+      // TODO: Enable editing too
+      console.log("time to send to the db.")
+
 
       let rec = {
-        recipeId: recipeSetter._id,
-        oldIngredients: ing,
-        oldDirections: dir,
-        updates: recipeSetter
+        _id: id,
+        title: "noodles",
+        ingredients: ing,
+        directions: dir
       }
 
-      console.log("passing this: " + JSON.stringify(rec))
+      console.log(rec)
 
-      // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
-      let returnedRecipe = await updateRecipe(rec).then((resp) => {
-        console.log("recipe updated I think")
-      });
+      dispatch(addDatabaseRecipe(rec))
+      return
+    }
+    else {
+      recipeSetter._id = recipeSetter._id.toString() || ""
+
+      if (!id || id == "") {
+        await addRecipe(recipeSetter).then((rec) => {
+          dispatch(setRedirect("/builder/" + recipeSetter._id))
+          console.log("returned recipe is: " + rec)
+        });
+      }
+      else {
+        let rec = {
+          recipeId: recipeSetter._id,
+          oldIngredients: ing,
+          oldDirections: dir,
+          updates: recipeSetter
+        }
+
+        console.log("passing this: " + JSON.stringify(rec))
+
+        // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
+        let returnedRecipe = await updateRecipe(rec).then((resp) => {
+          console.log("recipe updated I think")
+        });
+      }
     }
   };
 
@@ -216,7 +243,14 @@ export default function Builder(props) {
   let recipeIdentification = props.match.params.recipeId
 
   const redirector = useSelector((state) => state.redirect)
-  const recipeSetter = useSelector((state) => state.draftRecipe)
+  const recipeSetter = useSelector((state) => {
+
+    return state.draftRecipe
+  })
+
+  React.useEffect(() => {
+     createDraftRecipe()
+  },[])
 
   const { loading, error, data } = useRecipe(recipeIdentification);
 
@@ -239,6 +273,8 @@ export default function Builder(props) {
   const [ baseDirections, setBaseDirections ] = React.useState([])
 
   const [ importAddress, setImportAddress ] = React.useState("")
+
+  const [ masterDatabaseToggle, setMasterDatabaseToggle ] = React.useState(true)
 
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(recipeSetter);
 
@@ -265,10 +301,26 @@ export default function Builder(props) {
           console.log("submitting with basedir: " + baseDirections)
           setBaseIngredients(baseIngredients)
           setBaseDirections(baseDirections)
-
-          submitDraftRecipe(recipeIdentification, baseIngredients, baseDirections);
+          if(!masterDatabaseToggle) {
+            console.log(e)
+            setDraftRecipeComplete(newID, e.target[4].value, e.target[5].value, e.target[6].value)
+            submitDraftRecipe(newID, [], [], masterDatabaseToggle);
+          } else {
+            submitDraftRecipe(recipeIdentification, baseIngredients, baseDirections, masterDatabaseToggle);
+          }
         }}
       >
+
+      <label class="switch" >
+        <input type="checkbox" onClick={e => {
+          setMasterDatabaseToggle(!masterDatabaseToggle)
+        }}></input>
+        <span class="slider round"></span>
+      </label>
+
+      <div class="db_indicator">
+        Import to: {masterDatabaseToggle? "Current User" : "Master DB"}
+      </div>
 
       <button type="clear" onClick={e => {
           e.preventDefault();
