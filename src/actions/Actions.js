@@ -32,9 +32,6 @@ import {
   SET_DRAFT_RECIPE
 } from "../constants/action-types"
 
-/* other constants */
-export const MenuOpen = false
-
 /* action creators */
 
 // Error handling
