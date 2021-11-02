@@ -9,6 +9,10 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      menu: false
+    };
+
     this.toggleMenu = this.toggleMenu.bind(this);
   }
 
@@ -43,6 +47,8 @@ class Navigation extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log("type: " + typeof state)
+  console.log("state: " + JSON.stringify(state))
   return {
     menu: state.menu
   };

@@ -5,14 +5,14 @@ export const loadState = () => {
 
     if (!serializedState || serializedState === undefined || serializedState === "undefined" || serializedState == null) {
       let initialState = initializeState();
-      localStorage.setItem("funkyradish.com:state", JSON.stringify(initialState));
-
-      return JSON.parse(initialState);
+      localStorage.setItem("funkyradish.com:state", initialState);
+      return initialState;
     }
 
     return JSON.parse(serializedState);
   }
   catch (err) {
+    console.log("error loading state: " + err)
     return undefined;
   }
 };
@@ -31,6 +31,7 @@ export const initializeState = () => {
   let initialState = {
     recipes: [],
     filteredRecipes: [],
+    menu: false,
     recipe: null,
     warnings: []
   }

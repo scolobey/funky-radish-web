@@ -25,7 +25,6 @@ store.subscribe(throttle(() => {
   saveState({
     recipes: store.getState().recipes,
     filteredRecipes: store.getState().recipes,
-    menu: false,
     warnings: []
   });
 }, 1000));
