@@ -43,3 +43,5 @@ export const GRAPHQL = 'GRAPHQL';
 
 export const IMPORT_RECIPE = 'IMPORT_RECIPE';
 export const SET_DRAFT_RECIPE = 'SET_DRAFT_RECIPE';
+
+export const UPDATE_USER_RECORD = 'UPDATE_USER_RECORD';

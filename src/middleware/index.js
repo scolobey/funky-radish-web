@@ -12,7 +12,8 @@ import {
   AUTOCOMPLETE,
   LOGOUT,
   GRAPHQL,
-  IMPORT_RECIPE
+  IMPORT_RECIPE,
+  UPDATE_USER_RECORD
 } from "../constants/action-types";
 
 import {
@@ -33,7 +34,8 @@ import {
   setDraftRecipe,
   importRecipes,
   setImportQueue,
-  setSearchSuggestions
+  setSearchSuggestions,
+  updateUserRecord
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
@@ -167,12 +169,23 @@ export function tokenCollectionMiddleware({ dispatch }) {
         })
         .then(data => {
           if (data.message === "Enjoy your token, ya filthy animal!") {
+            console.log("resp: " + JSON.stringify(data))
 
             realmService.authenticate(data.token)
             .then(user => {
-              console.log("because you have logged in... " + user)
+              console.log("Logged in user: " + Object.keys(user))
               auth.setSession(data.token, action.authData.email)
               auth.setRealmUser(user)
+
+              // If the user doesn't have an associated realm user...
+              // This should only happen on first authentication
+              let userPayload = {
+                realmUser: user,
+                email: action.authData.email,
+                token: data.token
+              }
+
+              dispatch(updateUserRecord(userPayload));
 
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
@@ -611,6 +624,55 @@ export function recipeImportMiddleware({ dispatch }) {
           // dispatch(toggleLoader(false))
           console.log("here's the error: " + err)
           return dispatch(warning("Sorry, I can't read that recipe: " + err))
+        })
+      }
+      return next(action);
+    };
+  };
+}
+
+export function updateUserRecordMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === UPDATE_USER_RECORD) {
+        console.log("Hit endpoint to update the realm user: " + JSON.stringify(action.payload))
+
+        let token = auth.getToken();
+        if (!token) {
+          return dispatch(warning("You're not logged in. Recipe will not be saved."));
+        }
+
+        console.log("params... " )
+        console.log("email: " + action.payload.email)
+        console.log("realmUser: " + action.payload.realmUser.id)
+        // And then we need a token in the header
+        let params = {
+          user: action.payload.realmUser.profile.identities[0].id,
+          realmUser: action.payload.realmUser.id,
+          email: action.payload.email
+        }
+
+        console.log("params: " )
+
+        var formBody = [];
+        for (var property in params) {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(params[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
+          method: 'put',
+          headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'x-access-token': token
+          }),
+          body: formBody
+        })
+        .then(res => {
+          console.log("response: " + res)
+          return dispatch(warning("It worked."));
         })
       }
       return next(action);

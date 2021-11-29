@@ -29,7 +29,8 @@ import {
   AUTOCOMPLETE,
   SET_SEARCH_SUGGESTIONS,
   IMPORT_RECIPE,
-  SET_DRAFT_RECIPE
+  SET_DRAFT_RECIPE,
+  UPDATE_USER_RECORD
 } from "../constants/action-types"
 
 /* action creators */
@@ -159,4 +160,8 @@ export function importRecipe(address) {
 
 export function setDraftRecipe(recipe) {
   return { type: SET_DRAFT_RECIPE, recipe }
+};
+
+export function updateUserRecord(payload) {
+  return { type: UPDATE_USER_RECORD, payload }
 };

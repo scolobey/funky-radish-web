@@ -1,3 +1,4 @@
+// TODO: Remove useEffect
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -12,7 +13,7 @@ let currentRealmUser = localStorage.getItem('realm_user');
 // newID is rather confusing...
 // Because...
 // 1. this id is not new in the case of editing an existing recipe.
-// 2. Sometimes I cpitalize D, sometimes lowercase d
+// 2. Sometimes I capitalize D, sometimes lowercase d
 let newID = new ObjectId()
 
 function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]) {
@@ -291,6 +292,14 @@ export default function Builder(props) {
           submitDeleteRecipe()
         }}>
         Delete
+      </button>
+
+      <button type="share" onClick={e => {
+          e.preventDefault();
+          console.log("share the recipe")
+          // Just create a token with recipe access.
+        }}>
+        Clear
       </button>
 
       <button type="submit">

@@ -47,8 +47,6 @@ class Navigation extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log("type: " + typeof state)
-  console.log("state: " + JSON.stringify(state))
   return {
     menu: state.menu
   };

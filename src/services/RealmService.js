@@ -7,6 +7,7 @@ export default class RealmService {
 
   authenticate = (token) => {
     //Try to extract this to a class
+    console.log("sending: " + token)
     const credentials = Realm.Credentials.jwt(token);
     return realmApp.logIn(credentials)
   }

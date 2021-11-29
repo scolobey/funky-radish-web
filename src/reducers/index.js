@@ -1,7 +1,6 @@
 import { ADD_RECIPE, UPDATE_RECIPE, RECIPES_LOADED, EXTERNAL_RECIPES_LOADED, SET_RECIPE, DELETE_LOCAL_RECIPE, CLEAR_RECIPES, SET_USERNAME, TOGGLE_MENU, TOGGLE_LOADER, WARNING, WARNING_TOGGLE, SET_REDIRECT, SEARCH, SET_VERIFIED, SET_IMPORT_QUEUE, SET_SEARCH_SUGGESTIONS, SET_DRAFT_RECIPE } from "../constants/action-types";
 
 function rootReducer(state, action) {
-  console.log("reducer called")
   if (action.type === ADD_RECIPE) {
     return Object.assign({}, state, {
       recipes: state.recipes.concat(action.recipe)
@@ -156,7 +155,6 @@ function rootReducer(state, action) {
     });
   };
 
-  console.log("state: " + JSON.stringify(state))
   return state;
 };
 

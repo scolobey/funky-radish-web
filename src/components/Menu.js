@@ -19,10 +19,6 @@ class Menu extends Component {
       menu: false
     }
 
-    console.log("state : " + this.state)
-
-
-    console.log("state [userData]: " + this.state.userData)
     this.handleLogout = this.handleLogout.bind(this);
   }
 
