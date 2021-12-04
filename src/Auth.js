@@ -51,4 +51,10 @@ export default class Auth {
       return 3;
     }
   }
+
+  validatePassword = (password) => {
+    var passwordRegex = /^(?=.*\d)(?=.*[a-z]).{8,20}$/;
+    return passwordRegex.test(password)
+  }
+
 }

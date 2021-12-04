@@ -27,4 +27,10 @@ export default class RealmService {
     return user
   }
 
+  changePassword = (email, password) => {
+    console.log("cool dawg: " + email + ", " + password )
+
+    realmApp.emailPasswordAuth.callResetPasswordFunction(email, password, {});
+  }
+
 }

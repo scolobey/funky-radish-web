@@ -13,7 +13,8 @@ import {
   LOGOUT,
   GRAPHQL,
   IMPORT_RECIPE,
-  UPDATE_USER_RECORD
+  UPDATE_USER_RECORD,
+  CHANGE_PASSWORD
 } from "../constants/action-types";
 
 import {
@@ -189,7 +190,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
 
               dispatch(setUsername(action.authData.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
-
               dispatch(toggleLoader(false));
 
               return dispatch(setRedirect("/"));
@@ -473,7 +473,7 @@ export function warningCycleMiddleware({ dispatch }) {
       if (action.type === WARNING) {
         setInterval(() => {
           return dispatch(warningToggle());
-        }, 3000);
+        }, 10000);
       }
       return next(action);
     };
@@ -639,20 +639,22 @@ export function updateUserRecordMiddleware({ dispatch }) {
 
         let token = auth.getToken();
         if (!token) {
-          return dispatch(warning("You're not logged in. Recipe will not be saved."));
+          return dispatch(warning("You're not logged in. User will not be saved."));
         }
 
         console.log("params... " )
         console.log("email: " + action.payload.email)
         console.log("realmUser: " + action.payload.realmUser.id)
+        console.log("other: " + Object.keys(action.payload.realmUser._profile))
+
         // And then we need a token in the header
         let params = {
-          user: action.payload.realmUser.profile.identities[0].id,
+          user: action.payload.realmUser._profile.identities[0].id,
           realmUser: action.payload.realmUser.id,
           email: action.payload.email
         }
 
-        console.log("params: " )
+        console.log(params)
 
         var formBody = [];
         for (var property in params) {
@@ -661,6 +663,8 @@ export function updateUserRecordMiddleware({ dispatch }) {
           formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
+
+        console.log("fetching")
 
         fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
           method: 'put',
@@ -674,6 +678,56 @@ export function updateUserRecordMiddleware({ dispatch }) {
           console.log("response: " + res)
           return dispatch(warning("It worked."));
         })
+      }
+      return next(action);
+    };
+  };
+}
+
+//TODO: can we use the same method as above?
+export function updateUserPasswordMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === CHANGE_PASSWORD) {
+
+        console.log("update the user: " + JSON.stringify(action.payload))
+
+        if (!auth.validatePassword(action.payload.newPassword)) {
+          return dispatch(warning('Password needs 8 characters and a number.'))
+        }
+
+
+        // console.log("params... " )
+        // console.log("email: " + action.payload.email)
+        // console.log("realmUser: " + action.payload.realmUser.id)
+        // // And then we need a token in the header
+        // let params = {
+        //   user: action.payload.realmUser.profile.identities[0].id,
+        //   realmUser: action.payload.realmUser.id,
+        //   email: action.payload.email
+        // }
+        //
+        //
+        // var formBody = [];
+        // for (var property in params) {
+        //   var encodedKey = encodeURIComponent(property);
+        //   var encodedValue = encodeURIComponent(params[property]);
+        //   formBody.push(encodedKey + "=" + encodedValue);
+        // }
+        // formBody = formBody.join("&");
+        //
+        // fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
+        //   method: 'put',
+        //   headers: new Headers({
+        //     'Content-Type': 'application/x-www-form-urlencoded',
+        //     'x-access-token': token
+        //   }),
+        //   body: formBody
+        // })
+        // .then(res => {
+        //   console.log("response: " + res)
+        //   return dispatch(warning("It worked."));
+        // })
       }
       return next(action);
     };

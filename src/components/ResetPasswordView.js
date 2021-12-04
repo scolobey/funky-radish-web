@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setRedirect } from "../actions/Actions";
+import { setRedirect, changePassword } from "../actions/Actions";
+
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
 
 export default function ResetPasswordView(props) {
-  let secret = props.match.params.secret
-
+  const dispatch = useDispatch()
   const redirector = useSelector((state) => state.redirect)
 
   const [ newPassword, setNewPassword ] = React.useState("")
@@ -15,8 +17,6 @@ export default function ResetPasswordView(props) {
 
   React.useEffect(() => {
     setToken(props.match.params.token)
-
-     console.log("setting token: " + token)
   },[])
 
   return (
@@ -24,33 +24,43 @@ export default function ResetPasswordView(props) {
       <form onSubmit={e => {
           e.preventDefault();
           console.log("submitting with new password: " + newPassword)
-          console.log("submitting with user email: " + userEmail)
+          console.log("submitting with token: " + token)
 
+          dispatch(changePassword({
+            newPassword: newPassword,
+            token: token
+          }))
         }}
       >
+        <div className="reset_password_form">
+          <div className="reset_password_header">
+            <h2>Wanna change your password?</h2>
+            <h1>Type the new one below.</h1>
+          </div>
 
-      <div className="reset_password_form">
-        <div className="header">
-          <h1>Reset Your Password</h1>
+          <div className="new_password">
+            <input
+              type="password"
+              className="form-control"
+              placeholder="New Password"
+              id="new_password"
+              value={newPassword}
+              onChange={(e) => {
+                e.preventDefault();
+                setNewPassword(e.target.value);
+              }}
+            />
+          </div>
+
+          <button className="submit" value="SUBMIT" onClick={e => {
+              e.preventDefault();
+              console.log("clicked: " + newPassword + ", " + userEmail + ", " + token)
+              realmService.changePassword("minedied@gmail.com", newPassword)
+            }}>
+            BUTTON
+          </button>
+
         </div>
-
-        <div className="new_password">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="New Password"
-            id="new_password"
-            value={newPassword? newPassword.title : ""}
-            onChange={(event) => {
-              setNewPassword(event.target.value);
-            }}
-          />
-        </div>
-      </div>
-
-      <button type="submit" value="SUBMIT">
-        SUBMIT
-      </button>
       </form>
     </div>
   )

@@ -30,7 +30,8 @@ import {
   SET_SEARCH_SUGGESTIONS,
   IMPORT_RECIPE,
   SET_DRAFT_RECIPE,
-  UPDATE_USER_RECORD
+  UPDATE_USER_RECORD,
+  CHANGE_PASSWORD
 } from "../constants/action-types"
 
 /* action creators */
@@ -164,4 +165,8 @@ export function setDraftRecipe(recipe) {
 
 export function updateUserRecord(payload) {
   return { type: UPDATE_USER_RECORD, payload }
+};
+
+export function changePassword(payload) {
+  return { type: CHANGE_PASSWORD, payload }
 };

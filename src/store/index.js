@@ -15,7 +15,8 @@ import {
   autocompleteMiddleware,
   logoutMiddleware,
   recipeImportMiddleware,
-  updateUserRecordMiddleware
+  updateUserRecordMiddleware,
+  updateUserPasswordMiddleware
 } from "../middleware";
 
 import thunk from "redux-thunk";
@@ -44,6 +45,7 @@ const store = createStore(
       logoutMiddleware,
       recipeImportMiddleware,
       updateUserRecordMiddleware,
+      updateUserPasswordMiddleware,
       thunk
   ))
 );
