@@ -651,7 +651,7 @@ export function updateUserRecordMiddleware({ dispatch }) {
         // And then we need a token in the header
         let params = {
           user: action.payload.realmUser._profile.identities[0].id,
-          realmUser: action.payload.realmUser.id,
+          author: action.payload.realmUser.id,
           email: action.payload.email
         }
 
@@ -665,10 +665,12 @@ export function updateUserRecordMiddleware({ dispatch }) {
         }
         formBody = formBody.join("&");
 
+        console.log("fetching")
+
         fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
           method: 'put',
           headers: new Headers({
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
             'x-access-token': token
           }),
           body: formBody
