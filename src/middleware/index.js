@@ -665,19 +665,18 @@ export function updateUserRecordMiddleware({ dispatch }) {
         }
         formBody = formBody.join("&");
 
-        console.log("fetching")
-
         fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
           method: 'put',
           headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
             'x-access-token': token
           }),
           body: formBody
         })
         .then(res => {
-          console.log("response: " + res)
-          return dispatch(warning("It worked."));
+          // This means the realm user should also have been adjusted.
+          // But this isn't necesarilly relevant to the UI.
+          return
         })
       }
       return next(action);
