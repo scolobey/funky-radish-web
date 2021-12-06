@@ -14,7 +14,8 @@ import {
   GRAPHQL,
   IMPORT_RECIPE,
   UPDATE_USER_RECORD,
-  CHANGE_PASSWORD
+  CHANGE_PASSWORD,
+  RESEND_VERIFICATION
 } from "../constants/action-types";
 
 import {
@@ -729,6 +730,45 @@ export function updateUserPasswordMiddleware({ dispatch }) {
         //   return dispatch(warning("It worked."));
         // })
       }
+      return next(action);
+    };
+  };
+}
+
+export function resendVerificationMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === RESEND_VERIFICATION) {
+        var params = {
+          email: action.user.email
+        };
+
+        fetch("https://funky-radish-api.herokuapp.com/resendVerification", {
+          method: 'post',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify(params)
+        })
+        .then(res=> {
+          return res.clone().json()
+        })
+        .then(data => {
+          if (data.message === "Verification email sent.") {
+            return dispatch(warning("Check your email for a link to help complete your signup."))
+          } else {
+            dispatch(toggleLoader(false));
+            return dispatch(warning(data.message))
+          }
+        })
+        .catch(err => {
+          dispatch(toggleLoader(false));
+          return dispatch(warning('Error: ' + err))
+        })
+      }
+
       return next(action);
     };
   };

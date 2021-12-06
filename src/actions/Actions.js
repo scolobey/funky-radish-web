@@ -31,7 +31,8 @@ import {
   IMPORT_RECIPE,
   SET_DRAFT_RECIPE,
   UPDATE_USER_RECORD,
-  CHANGE_PASSWORD
+  CHANGE_PASSWORD,
+  RESEND_VERIFICATION
 } from "../constants/action-types"
 
 /* action creators */
@@ -169,4 +170,8 @@ export function updateUserRecord(payload) {
 
 export function changePassword(payload) {
   return { type: CHANGE_PASSWORD, payload }
+};
+
+export function resendVerification(email) {
+  return { type: RESEND_VERIFICATION, email }
 };

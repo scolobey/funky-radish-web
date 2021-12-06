@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { login, signup } from "../actions/Actions";
+import { login, signup, resendVerification } from "../actions/Actions";
 
 // import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
@@ -26,6 +26,26 @@ class AuthView extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  onClick = (event) => {
+    event.preventDefault();
+    console.log("clicked")
+
+    if(this.state.email.length > 0 && this.state.email.includes('@')) {
+      var email = prompt("Is this your full email?", this.state.email);
+
+      if (email != null) {
+        this.props.resendVerification(email)
+      }
+    }
+    else {
+      var email = prompt("What's your email?");
+
+      if (email != null) {
+        this.props.resendVerification(email)
+      }
+    }
+  }
+
   onSubmit = (event) => {
     event.preventDefault();
 
@@ -39,6 +59,7 @@ class AuthView extends Component {
 
   toggleMode = (event) => {
     event.preventDefault();
+
     this.setState({
       login: !this.state.login
     });
@@ -60,6 +81,8 @@ class AuthView extends Component {
             Not what you're lookin' for?
             <br></br>
             {this.state.login ? <a href='./signup' >Sign up.</a> : <a href='./login' >Login</a>}
+            <br></br>
+            <a className='resend_verification_button' onClick={this.onClick} >Resend Verification</a>
           </div>
         </div>
       )
@@ -75,4 +98,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { login, signup })(AuthView);
+export default connect(mapStateToProps, { login, signup, resendVerification })(AuthView);

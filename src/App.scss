@@ -1064,3 +1064,8 @@ input:checked + .slider:before {
   border-radius: 2px;
   cursor: pointer;
 }
+
+.resend_verification_button {
+  cursor: pointer;
+  text-decoration: underline;
+}
