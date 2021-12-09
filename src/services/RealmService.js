@@ -5,10 +5,12 @@ const realmApp = new Realm.App({ id: REALM_APP_ID });
 
 export default class RealmService {
 
-  authenticate = (token) => {
-    //Try to extract this to a class
-    console.log("sending: " + token)
-    const credentials = Realm.Credentials.jwt(token);
+  authenticate = (email, password) => {
+    const credentials = Realm.Credentials.emailPassword(
+      email,
+      password
+    )
+
     return realmApp.logIn(credentials)
   }
 
@@ -27,10 +29,74 @@ export default class RealmService {
     return user
   }
 
-  changePassword = (email, password) => {
-    console.log("cool dawg: " + email + ", " + password )
+  changePassword = (password, token, tokenId) => {
+    // this.logoutRealm()
+    console.log("cool dawg: " + password + " token: " + token + " tokenId: " + tokenId)
 
-    realmApp.emailPasswordAuth.callResetPasswordFunction(email, password, {});
+
+    realmApp.emailPasswordAuth.resetPassword(token, tokenId, password)
+    .then(res => {
+      // If succesful, also change the freakin other password.
+      console.log("resp: " + res)
+    })
+    .catch(err => {
+      console.log("err: " + err)
+    })
+  }
+
+  customLogin = (payload) => {
+    console.log("payload: " + payload)
+
+    const credentials = Realm.Credentials.function(payload);
+    try {
+      // Authenticate the user
+      realmApp.logIn(credentials)
+      .then(user => {
+        console.log("user returned: " + JSON.stringify(user))
+        if (user.id === realmApp.currentUser.id) {
+          console.log("yes")
+        } else {
+          console.log("no")
+        }
+        return user;
+      })
+      .catch(err => {
+        console.log("err: " + err)
+      })
+    } catch (err) {
+      console.error("Failed to log in", err);
+    }
+  }
+
+  sendPasswordResetEmail = (email) => {
+    // this.logoutRealm()
+    console.log("sending email: " + email)
+
+    realmApp.emailPasswordAuth.sendResetPasswordEmail(email)
+    .then(res => {
+      console.log("resp: " + res)
+    })
+    .catch(err => {
+      console.log("err: " + err)
+    })
+  }
+
+  emailAuthenticate = (email, password) => {
+
+
+    const credentials = Realm.Credentials.emailPassword(
+      email,
+      password
+    )
+
+    return realmApp.logIn(credentials)
+  }
+
+  emailRegister = (email, password) => {
+    console.log("attempt to register: " + email + " password: " + password)
+
+    return realmApp.emailPasswordAuth.registerUser(email, password)
+
   }
 
 }

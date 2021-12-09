@@ -66,7 +66,7 @@ class App extends Component {
           <Route path="/admin/recipes" component={RecipesAdmin} />
           <Route path="/admin/users" component={UsersAdmin} />
           <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
-          <Route path="/resetPassword/:token?" component={ResetPasswordView} />
+          <Route path="/resetPassword" component={ResetPasswordView} />
         </div>
       </div>
     );

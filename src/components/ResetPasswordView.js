@@ -1,6 +1,7 @@
 // TODO: Remove useEffect
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import {useLocation} from "react-router-dom";
 
 import { setRedirect, changePassword } from "../actions/Actions";
 
@@ -11,13 +12,12 @@ export default function ResetPasswordView(props) {
   const dispatch = useDispatch()
   const redirector = useSelector((state) => state.redirect)
 
+  const search = useLocation().search;
+  const token = new URLSearchParams(search).get('token');
+  const tokenId = new URLSearchParams(search).get('tokenId');
+
   const [ newPassword, setNewPassword ] = React.useState("")
   const [ userEmail, setUserEmail ] = React.useState("")
-  const [ token, setToken ] = React.useState("")
-
-  React.useEffect(() => {
-    setToken(props.match.params.token)
-  },[])
 
   return (
     <div className="reset_password_view">
@@ -54,8 +54,32 @@ export default function ResetPasswordView(props) {
 
           <button className="submit" value="SUBMIT" onClick={e => {
               e.preventDefault();
-              console.log("clicked: " + newPassword + ", " + userEmail + ", " + token)
-              realmService.changePassword("minedied@gmail.com", newPassword)
+              console.log("clicked: " + token)
+              // realmService.changePassword(newPassword, token, tokenId)
+
+              // realmService.sendPasswordResetEmail("qemacibi@onekisspresave.com")
+
+              realmService.emailAuthenticate("qemacibi@onekisspresave.com", "tester123")
+              .then(user => {
+                console.log("Logged in user: " + Object.keys(user))
+                console.log("user id: " + user.id)
+                console.log("prof: " + user._profile)
+
+                return
+              })
+              .catch(error => {
+                console.log(error)
+                return
+              });
+
+              // realmService.emailRegister("qemacibi@onekisspresave.com", "password123")
+              // .then(res => {
+              //   console.log("resp: " + res)
+              // })
+              // .catch(err => {
+              //   console.log("err: " + err)
+              // })
+
             }}>
             BUTTON
           </button>
