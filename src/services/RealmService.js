@@ -14,6 +14,11 @@ export default class RealmService {
     return realmApp.logIn(credentials)
   }
 
+  jwtLogin = (token) => {
+    const credentials = Realm.Credentials.jwt(token)
+    return realmApp.logIn(credentials)
+  }
+
   getRealm = () => {
     return realmApp
   }
@@ -30,18 +35,9 @@ export default class RealmService {
   }
 
   changePassword = (password, token, tokenId) => {
-    // this.logoutRealm()
-    console.log("cool dawg: " + password + " token: " + token + " tokenId: " + tokenId)
 
+    return realmApp.emailPasswordAuth.resetPassword(token, tokenId, password)
 
-    realmApp.emailPasswordAuth.resetPassword(token, tokenId, password)
-    .then(res => {
-      // If succesful, also change the freakin other password.
-      console.log("resp: " + res)
-    })
-    .catch(err => {
-      console.log("err: " + err)
-    })
   }
 
   customLogin = (payload) => {

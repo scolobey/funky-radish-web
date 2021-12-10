@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { login, signup, resendVerification } from "../actions/Actions";
 
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
+
 // import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
 class AuthView extends Component {
@@ -26,22 +29,52 @@ class AuthView extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  onClick = (event) => {
+  resendVerification = (event) => {
     event.preventDefault();
-    console.log("clicked")
+    console.log("Resending verification")
 
     if(this.state.email.length > 0 && this.state.email.includes('@')) {
       var email = prompt("Is this your full email?", this.state.email);
 
-      if (email != null) {
+      if (email != null && email.length > 0) {
         this.props.resendVerification(email)
       }
     }
     else {
       var email = prompt("What's your email?");
 
-      if (email != null) {
+      if (email != null && email.length > 0) {
         this.props.resendVerification(email)
+      }
+    }
+  }
+
+  forgotPassword = (event) => {
+    event.preventDefault();
+    console.log("clicked forgot password")
+
+    if(this.state.email.length > 0 && this.state.email.includes('@')) {
+      var email = prompt("Is this your full email?", this.state.email);
+
+      if (email != null && email.length > 0) {
+        console.log(email)
+        realmService.sendPasswordResetEmail(email)
+      }
+    }
+    else {
+      var email = prompt("What's your email?");
+
+      if (email != null && email.length > 0) {
+        console.log(email)
+        realmService.sendPasswordResetEmail(email)
+        .then(res => {
+          // If succesful, also change the freakin other password.
+          console.log("Cool. Try logging in with your new password.")
+          // Now we have to change the password on the API
+        })
+        .catch(err => {
+          console.log("err: " + err)
+        })
       }
     }
   }
@@ -66,11 +99,11 @@ class AuthView extends Component {
   }
 
   render() {
-
       return (
         <div className='auth-container'>
           <div className='auth'>
-            <a href='./'>Dismiss.</a>
+            <a href='./'>Dismiss</a>
+
             {this.state.login ? <h1>Login</h1> : <h1>Sign up</h1> }
             <form onSubmit={this.onSubmit}>
               <input placeholder='Email...' name='email' value={this.state.email} onChange={this.onChange} />
@@ -78,11 +111,12 @@ class AuthView extends Component {
               {this.state.login ? <button>Login</button> : <button>Signup</button> }
             </form>
 
-            Not what you're lookin' for?
+            <div className='auth_options_header'>Not what you're lookin' for?</div>
             <br></br>
-            {this.state.login ? <a href='./signup' >Sign up.</a> : <a href='./login' >Login</a>}
-            <br></br>
-            <a className='resend_verification_button' onClick={this.onClick} >Resend Verification</a>
+            {this.state.login ? <a className='auth_options' href='./signup' >Sign Up</a> : <a className='auth_options' href='./login' >Login</a>} -
+            <a className='auth_options' onClick={this.resendVerification} >Resend Verification</a> -
+            <a className='auth_options' onClick={this.forgotPassword}>Forgot Password</a>
+
           </div>
         </div>
       )

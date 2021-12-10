@@ -19,9 +19,6 @@ export class Verification extends Component {
 
   componentDidMount() {
     this.props.verifyEmail(this.state.token);
-    // if(this.state.token.length > 0) {
-    //   this.props.verifyEmail(this.state.token);
-    // }
   }
 
   render() {

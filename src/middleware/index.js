@@ -116,8 +116,17 @@ export function signupMiddleware({ dispatch }) {
         })
         .then(data => {
           if (data.message === "Verification email sent.") {
-            dispatch(toggleLoader(false));
-            return dispatch(warning("Check your email for a link to help complete your signup."))
+
+            realmService.emailRegister(params.email, params.password)
+            .then(res => {
+              console.log("realm registered: " + JSON.stringify(res));
+              dispatch(toggleLoader(false));
+              return dispatch(warning("Check your email for the link to complete your signup."))
+            })
+            .catch(err => {
+              dispatch(toggleLoader(false));
+              return dispatch(warning(err.message))
+            })
           } else {
             dispatch(toggleLoader(false));
             return dispatch(warning(data.message))
@@ -173,26 +182,30 @@ export function tokenCollectionMiddleware({ dispatch }) {
           if (data.message === "Enjoy your token, ya filthy animal!") {
             console.log("resp: " + JSON.stringify(data))
 
-            realmService.authenticate(data.token)
+            realmService.authenticate(params.email, params.password)
             .then(user => {
               console.log("Logged in user: " + Object.keys(user))
               console.log("user id: " + user.id)
               console.log("prof: " + user._profile)
 
-              auth.setSession(data.token, action.authData.email)
-              auth.setRealmUser(user)
+              // TODO: This should always be true.
+              if (!user.customData || !user.customData.author) {
 
-              // If the user doesn't have an associated realm user...
-              // This should only happen on first authentication
-              let userPayload = {
-                realmUser: user,
-                email: action.authData.email,
-                token: data.token
+                console.log("setting realm user: " + JSON.stringify(user))
+
+                let userPayload = {
+                  email: user.profile.email,
+                  realmUser: user,
+                  token: data.token
+                }
+
+                dispatch(updateUserRecord(userPayload));
               }
 
-              dispatch(updateUserRecord(userPayload));
+              auth.setSession(data.token, params.email)
+              auth.setRealmUser(user)
 
-              dispatch(setUsername(action.authData.email));
+              dispatch(setUsername(params.email));
               dispatch(warning("Welcome! Hold on while we collect your recipes."));
               dispatch(toggleLoader(false));
 
@@ -229,7 +242,7 @@ export function logoutMiddleware({ dispatch }) {
     return function(action) {
 
       if (action.type === LOGOUT) {
-        realmService.logoutRealm()
+        // realmService.logoutRealm()
         return dispatch(setRedirect("/"));
       }
 
@@ -253,6 +266,7 @@ export function emailVerificationMiddleware({ dispatch }) {
         .then(data => {
           console.log("fetch returned.")
           console.log(data)
+
           dispatch(toggleLoader(false));
           if ( data.message === "Email verified.") {
             return dispatch(setVerified("Welcome to Funky Radish! You can now login from any device."));
@@ -641,19 +655,14 @@ export function updateUserRecordMiddleware({ dispatch }) {
       if (action.type === UPDATE_USER_RECORD) {
         console.log("Hit endpoint to update the realm user: " + JSON.stringify(action.payload))
 
-        let token = auth.getToken();
-        if (!token) {
-          return dispatch(warning("You're not logged in. User will not be saved."));
-        }
-
         console.log("params... " )
         console.log("email: " + action.payload.email)
-        console.log("realmUser: " + action.payload.realmUser.id)
-        console.log("other: " + Object.keys(action.payload.realmUser._profile))
+        console.log("realmUser: " + JSON.stringify(action.payload.realmUser))
+        console.log("token: " + action.payload.token)
 
         // And then we need a token in the header
         let params = {
-          user: action.payload.realmUser._profile.identities[0].id,
+          user: action.payload.realmUser,
           author: action.payload.realmUser.id,
           email: action.payload.email
         }
@@ -674,7 +683,7 @@ export function updateUserRecordMiddleware({ dispatch }) {
           method: 'put',
           headers: new Headers({
             'Content-Type': 'application/x-www-form-urlencoded',
-            'x-access-token': token
+            'x-access-token': action.payload.token
           }),
           body: formBody
         })
@@ -695,24 +704,20 @@ export function updateUserPasswordMiddleware({ dispatch }) {
     return function(action) {
       if (action.type === CHANGE_PASSWORD) {
 
-        console.log("update the user: " + JSON.stringify(action.payload))
+        console.log("update the mongo-side password: " + JSON.stringify(action.payload))
 
         if (!auth.validatePassword(action.payload.newPassword)) {
           return dispatch(warning('Password needs 8 characters and a number.'))
         }
 
 
-        // console.log("params... " )
-        // console.log("email: " + action.payload.email)
-        // console.log("realmUser: " + action.payload.realmUser.id)
-        // // And then we need a token in the header
-        // let params = {
-        //   user: action.payload.realmUser.profile.identities[0].id,
-        //   realmUser: action.payload.realmUser.id,
-        //   email: action.payload.email
-        // }
-        //
-        //
+        let params = {
+          newPassword: action.payload.newPassword,
+          token: action.payload.token
+        }
+
+        console.log("params: " + JSON.stringify(params))
+
         // var formBody = [];
         // for (var property in params) {
         //   var encodedKey = encodeURIComponent(property);
@@ -720,19 +725,24 @@ export function updateUserPasswordMiddleware({ dispatch }) {
         //   formBody.push(encodedKey + "=" + encodedValue);
         // }
         // formBody = formBody.join("&");
-        //
-        // fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
-        //   method: 'put',
-        //   headers: new Headers({
-        //     'Content-Type': 'application/x-www-form-urlencoded',
-        //     'x-access-token': token
-        //   }),
-        //   body: formBody
-        // })
-        // .then(res => {
-        //   console.log("response: " + res)
-        //   return dispatch(warning("It worked."));
-        // })
+
+        fetch("https://funky-radish-api.herokuapp.com/changePassword/61b380273f76440016797065", {
+          method: 'put',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify(params)
+        })
+        .then(res => {
+          console.log("response: " + JSON.stringify(res))
+          return dispatch(warning("It worked."));
+        })
+        .catch(err => {
+          console.log("error: " + err)
+          return dispatch(warning('Error: ' + err))
+        })
+
       }
       return next(action);
     };
@@ -745,8 +755,10 @@ export function resendVerificationMiddleware({ dispatch }) {
 
       if (action.type === RESEND_VERIFICATION) {
         var params = {
-          email: action.user.email
+          email: action.email
         };
+
+        console.log("params: " + JSON.stringify(params))
 
         fetch("https://funky-radish-api.herokuapp.com/resendVerification", {
           method: 'post',
@@ -754,7 +766,7 @@ export function resendVerificationMiddleware({ dispatch }) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           }),
-          body: JSON.stringify(params)
+          body: params
         })
         .then(res=> {
           return res.clone().json()

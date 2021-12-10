@@ -53,6 +53,12 @@ const UpdateRecipeMutation = gql`
       directions {
         text
       }
+      users {
+        _id
+      }
+      source {
+        _id
+      }
     }
   }
 `;

@@ -17,7 +17,6 @@ export default function ResetPasswordView(props) {
   const tokenId = new URLSearchParams(search).get('tokenId');
 
   const [ newPassword, setNewPassword ] = React.useState("")
-  const [ userEmail, setUserEmail ] = React.useState("")
 
   return (
     <div className="reset_password_view">
@@ -25,11 +24,6 @@ export default function ResetPasswordView(props) {
           e.preventDefault();
           console.log("submitting with new password: " + newPassword)
           console.log("submitting with token: " + token)
-
-          dispatch(changePassword({
-            newPassword: newPassword,
-            token: token
-          }))
         }}
       >
         <div className="reset_password_form">
@@ -54,31 +48,32 @@ export default function ResetPasswordView(props) {
 
           <button className="submit" value="SUBMIT" onClick={e => {
               e.preventDefault();
-              console.log("clicked: " + token)
-              // realmService.changePassword(newPassword, token, tokenId)
+              console.log("clicked")
 
-              // realmService.sendPasswordResetEmail("qemacibi@onekisspresave.com")
-
-              realmService.emailAuthenticate("qemacibi@onekisspresave.com", "tester123")
-              .then(user => {
-                console.log("Logged in user: " + Object.keys(user))
-                console.log("user id: " + user.id)
-                console.log("prof: " + user._profile)
-
-                return
-              })
-              .catch(error => {
-                console.log(error)
-                return
-              });
-
-              // realmService.emailRegister("qemacibi@onekisspresave.com", "password123")
+              // const theToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6ZmFsc2UsInVzZXIiOiJtaW5lZGllZEBnbWFpbC5jb20iLCJzdWIiOiI2MGQ3OWNiMzhlNDQ2MjAwMTVlNjdlZWMiLCJhdWQiOiJmdW5reS1yYWRpc2gtdHdkeHYiLCJhdXRob3IiOiI2MGUxMzc2YjViM2VkNDM2NzdlYTU4ZDIiLCJpYXQiOjE2MzkxNzI1NDksImV4cCI6MTYzOTI1ODk0OX0.uBhnxcNP3bkD34kdUyJnX9BVlbuNrw0zeVhdW-NdSmahQby-xg6WbKGFH7m7WlXYUlNnIMG91_je0dwXVuFCzVRTR8fdWR_9NLiI5xMy69f8Tdb77nQip47KcCWK8TraZLrVt4g5zIKA-it3xAosuW8bnv7RB-Wzqj_TgNoFohE--T9Y1_OzDk7xQIGtZ1RZ-HaqQAThDhmyxn9xaH2kmB7zEKHTKT6erMRiH7YkkhhCmdJZVwh4LyKilJKaGl98ss-7umVNFDEyUkCuqUZ0r-qhWi83ZLmqn-SH3QgwYgNnJRrPUMKhrNF-h2-J7xfLN4NskweCH8ItBasZDJlT6w"
+              //
+              // realmService.jwtLogin(theToken)
               // .then(res => {
-              //   console.log("resp: " + res)
+              //   console.log("Cool: " + JSON.stringify(res))
               // })
               // .catch(err => {
               //   console.log("err: " + err)
               // })
+
+              realmService.changePassword(newPassword, token, tokenId)
+              .then(res => {
+                // Now login to Realm, get the user id, get a token
+                dispatch(changePassword({
+                  newPassword: newPassword,
+                  token: token
+                }))
+
+                console.log("Cool. Try logging in with your new password.")
+              })
+              .catch(err => {
+                console.log("err: " + err)
+              })
+
 
             }}>
             BUTTON
