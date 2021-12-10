@@ -6,8 +6,6 @@ const realmApp = new Realm.App({ id: REALM_APP_ID });
 export default class RealmService {
 
   authenticate = (token) => {
-    //Try to extract this to a class
-    console.log("sending: " + token)
     const credentials = Realm.Credentials.jwt(token);
     return realmApp.logIn(credentials)
   }
@@ -27,10 +25,10 @@ export default class RealmService {
     return user
   }
 
-  changePassword = (email, password) => {
-    console.log("cool dawg: " + email + ", " + password )
-
-    realmApp.emailPasswordAuth.callResetPasswordFunction(email, password, {});
-  }
+  // changePassword = (email, password) => {
+  //   console.log("cool dawg: " + email + ", " + password )
+  //
+  //   realmApp.emailPasswordAuth.callResetPasswordFunction(email, password, {});
+  // }
 
 }

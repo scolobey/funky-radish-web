@@ -314,7 +314,8 @@ $black: black;
   }
 
   #menu .user-label {
-    font-size: 12px;
+    font-size: 16px;
+    color: black;
   }
 
   #menu a {
@@ -510,7 +511,7 @@ $black: black;
   left: 10%;
   top: 20%;
   width: 240px;
-  height: 350px;
+  height: 375px;
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.8);
   border-width: medium;
@@ -1065,7 +1066,12 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-.resend_verification_button {
+.auth_options_header{
+  text-align: left;
+}
+
+.auth_options {
   cursor: pointer;
   text-decoration: underline;
+  padding: 8px;
 }
