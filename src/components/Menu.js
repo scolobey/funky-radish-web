@@ -6,16 +6,19 @@ import Auth from '../Auth'
 
 import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
+
 const auth = new Auth();
 
 class Menu extends Component {
   constructor(props) {
     super(props);
 
-    let theUser = auth.getUser()
+    let user = realmService.getUser()
 
     this.state = {
-      userData: theUser,
+      user: user,
       menu: false
     }
 
@@ -34,10 +37,10 @@ class Menu extends Component {
   }
 
   renderUserState() {
-    if (this.context.currentUser && this.context.currentUser._profile.data.name && this.context.currentUser._profile.data.name.length > 0) {
+    if (this.context.currentUser) {
         return (
           [
-            <li key='1' className="user-label">{this.props.user}</li>,
+            <li key='1' className="user-label">{this.context.currentUser.profile.email}</li>,
             <li key='2'><a href='/' onClick={this.handleLogout} >Logout</a></li>
           ]
         );

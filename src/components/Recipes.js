@@ -51,7 +51,7 @@ export class Recipes extends Component {
   }
 
   render() {
-    return this.context.currentUser && this.context.currentUser._profile.data.name && this.context.currentUser._profile.data.name.length > 0 ? (
+    return this.context.currentUser ? (
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
