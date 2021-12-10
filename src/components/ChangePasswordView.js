@@ -1,35 +1,36 @@
 // TODO: Remove useEffect
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
+import {useLocation} from "react-router-dom";
 
 import { setRedirect, changePassword } from "../actions/Actions";
 
 import RealmService from '../services/RealmService'
 const realmService = new RealmService();
 
-export default function ResetPasswordView(props) {
+export default function ChangePasswordView(props) {
   const dispatch = useDispatch()
   const redirector = useSelector((state) => state.redirect)
 
+
+
+  // const search = useLocation().search;
+  // const token = new URLSearchParams(search).get('token');
+  // const tokenId = new URLSearchParams(search).get('tokenId');
+
   const [ newPassword, setNewPassword ] = React.useState("")
-  const [ userEmail, setUserEmail ] = React.useState("")
   const [ token, setToken ] = React.useState("")
 
   React.useEffect(() => {
-    setToken(props.match.params.token)
+     setToken(props.match.params.token)
   },[])
+
 
   return (
     <div className="reset_password_view">
       <form onSubmit={e => {
           e.preventDefault();
           console.log("submitting with new password: " + newPassword)
-          console.log("submitting with token: " + token)
-
-          dispatch(changePassword({
-            newPassword: newPassword,
-            token: token
-          }))
         }}
       >
         <div className="reset_password_form">
@@ -54,8 +55,13 @@ export default function ResetPasswordView(props) {
 
           <button className="submit" value="SUBMIT" onClick={e => {
               e.preventDefault();
-              console.log("clicked: " + newPassword + ", " + userEmail + ", " + token)
-              realmService.changePassword("minedied@gmail.com", newPassword)
+              console.log("clicked")
+
+              dispatch(changePassword({
+                newPassword: newPassword,
+                token: token
+              }))
+
             }}>
             BUTTON
           </button>

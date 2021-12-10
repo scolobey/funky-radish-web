@@ -692,44 +692,38 @@ export function updateUserPasswordMiddleware({ dispatch }) {
     return function(action) {
       if (action.type === CHANGE_PASSWORD) {
 
-        console.log("update the user: " + JSON.stringify(action.payload))
+        console.log("changing password: " + JSON.stringify(action.payload))
 
         if (!auth.validatePassword(action.payload.newPassword)) {
           return dispatch(warning('Password needs 8 characters and a number.'))
         }
 
+        // And then we need a token in the header
+        let params = {
+          newPassword: action.payload.newPassword,
+          token: action.payload.token
+        }
 
-        // console.log("params... " )
-        // console.log("email: " + action.payload.email)
-        // console.log("realmUser: " + action.payload.realmUser.id)
-        // // And then we need a token in the header
-        // let params = {
-        //   user: action.payload.realmUser.profile.identities[0].id,
-        //   realmUser: action.payload.realmUser.id,
-        //   email: action.payload.email
-        // }
-        //
-        //
-        // var formBody = [];
-        // for (var property in params) {
-        //   var encodedKey = encodeURIComponent(property);
-        //   var encodedValue = encodeURIComponent(params[property]);
-        //   formBody.push(encodedKey + "=" + encodedValue);
-        // }
-        // formBody = formBody.join("&");
-        //
-        // fetch("https://funky-radish-api.herokuapp.com/realmUser/", {
-        //   method: 'put',
-        //   headers: new Headers({
-        //     'Content-Type': 'application/x-www-form-urlencoded',
-        //     'x-access-token': token
-        //   }),
-        //   body: formBody
-        // })
-        // .then(res => {
-        //   console.log("response: " + res)
-        //   return dispatch(warning("It worked."));
-        // })
+        var formBody = [];
+        for (var property in params) {
+          var encodedKey = encodeURIComponent(property);
+          var encodedValue = encodeURIComponent(params[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        fetch("https://funky-radish-api.herokuapp.com/changePassword/", {
+          method: 'put',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }),
+          body: formBody
+        })
+        .then(res => {
+          console.log("response: " + res)
+          return dispatch(warning("Password Changed."));
+        })
       }
       return next(action);
     };

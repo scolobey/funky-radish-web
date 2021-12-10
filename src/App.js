@@ -24,7 +24,7 @@ import Verification from './components/Verification.js';
 import RecipeClaimer from './components/RecipeClaimer.js';
 
 import AuthView from './components/AuthView';
-import ResetPasswordView from './components/ResetPasswordView';
+import ChangePasswordView from './components/ChangePasswordView';
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
@@ -66,7 +66,7 @@ class App extends Component {
           <Route path="/admin/recipes" component={RecipesAdmin} />
           <Route path="/admin/users" component={UsersAdmin} />
           <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
-          <Route path="/resetPassword/:token?" component={ResetPasswordView} />
+          <Route path="/changePassword/:token?" component={ChangePasswordView} />
         </div>
       </div>
     );
