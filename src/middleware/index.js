@@ -704,26 +704,19 @@ export function updateUserPasswordMiddleware({ dispatch }) {
           token: action.payload.token
         }
 
-        var formBody = [];
-        for (var property in params) {
-          var encodedKey = encodeURIComponent(property);
-          var encodedValue = encodeURIComponent(params[property]);
-          formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
-
         fetch("https://funky-radish-api.herokuapp.com/changePassword/", {
           method: 'put',
           headers: new Headers({
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           }),
-          body: formBody
+          body: JSON.stringify(params)
         })
         .then(res => {
           console.log("response: " + res)
           return dispatch(warning("Password Changed."));
         })
+
       }
       return next(action);
     };
@@ -736,18 +729,21 @@ export function resendVerificationMiddleware({ dispatch }) {
 
       if (action.type === RESEND_VERIFICATION) {
         var params = {
-          email: action.user.email
+          email: action.email
         };
 
-        fetch("https://funky-radish-api.herokuapp.com/resendVerification", {
-          method: 'post',
-          headers: new Headers({
-            'Accept': 'application/json',
+        console.log("params: " + JSON.stringify(params))
+
+        fetch('https://funky-radish-api.herokuapp.com/resendVerification/', {
+          method: 'POST',
+          headers: {
             'Content-Type': 'application/json'
-          }),
+          },
           body: JSON.stringify(params)
         })
         .then(res=> {
+          console.log("res: " + JSON.stringify(res))
+
           return res.clone().json()
         })
         .then(data => {

@@ -22,6 +22,10 @@ class AuthView extends Component {
     }
   }
 
+  clearFields = (event) => {
+    this.setState({ email: "", password: "" })
+  }
+
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
@@ -36,6 +40,8 @@ class AuthView extends Component {
       if (email != null && email.length > 0) {
         this.props.resendVerification(email)
       }
+
+      this.clearFields()
     }
     else {
       var email = prompt("What's your email?");
@@ -43,6 +49,8 @@ class AuthView extends Component {
       if (email != null && email.length > 0) {
         this.props.resendVerification(email)
       }
+
+      this.clearFields()
     }
   }
 
@@ -55,7 +63,7 @@ class AuthView extends Component {
 
       if (email != null && email.length > 0) {
         console.log(email)
-        // realmService.sendPasswordResetEmail(email)
+
       }
     }
     else {
@@ -63,15 +71,7 @@ class AuthView extends Component {
 
       if (email != null && email.length > 0) {
         console.log(email)
-        // realmService.sendPasswordResetEmail(email)
-        // .then(res => {
-        //   // If succesful, also change the freakin other password.
-        //   console.log("Cool. Try logging in with your new password.")
-        //   // Now we have to change the password on the API
-        // })
-        // .catch(err => {
-        //   console.log("err: " + err)
-        // })
+
       }
     }
   }
