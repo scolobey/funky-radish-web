@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { login, signup, resendVerification } from "../actions/Actions";
+import { login, signup, resendVerification, sendPasswordResetEmail } from "../actions/Actions";
 
 // import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
@@ -63,7 +63,7 @@ class AuthView extends Component {
 
       if (email != null && email.length > 0) {
         console.log(email)
-
+        this.props.sendPasswordResetEmail(email)
       }
     }
     else {
@@ -71,9 +71,11 @@ class AuthView extends Component {
 
       if (email != null && email.length > 0) {
         console.log(email)
-
+        this.props.sendPasswordResetEmail(email)
       }
     }
+
+    this.clearFields()
   }
 
   onSubmit = (event) => {
@@ -128,4 +130,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { login, signup, resendVerification })(AuthView);
+export default connect(mapStateToProps, { login, signup, resendVerification, sendPasswordResetEmail })(AuthView);

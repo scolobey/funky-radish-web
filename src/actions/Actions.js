@@ -31,6 +31,7 @@ import {
   IMPORT_RECIPE,
   SET_DRAFT_RECIPE,
   UPDATE_USER_RECORD,
+  SEND_PASSWORD_RESET_EMAIL,
   CHANGE_PASSWORD,
   RESEND_VERIFICATION
 } from "../constants/action-types"
@@ -174,4 +175,8 @@ export function changePassword(payload) {
 
 export function resendVerification(email) {
   return { type: RESEND_VERIFICATION, email }
+};
+
+export function sendPasswordResetEmail(email) {
+  return { type: SEND_PASSWORD_RESET_EMAIL, email }
 };

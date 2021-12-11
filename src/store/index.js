@@ -16,6 +16,7 @@ import {
   logoutMiddleware,
   recipeImportMiddleware,
   updateUserRecordMiddleware,
+  sendPasswordResetEmailMiddleware,
   updateUserPasswordMiddleware,
   resendVerificationMiddleware
 } from "../middleware";
@@ -46,6 +47,7 @@ const store = createStore(
       logoutMiddleware,
       recipeImportMiddleware,
       updateUserRecordMiddleware,
+      sendPasswordResetEmailMiddleware,
       updateUserPasswordMiddleware,
       resendVerificationMiddleware,
       thunk

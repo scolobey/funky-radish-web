@@ -14,6 +14,7 @@ import {
   GRAPHQL,
   IMPORT_RECIPE,
   UPDATE_USER_RECORD,
+  SEND_PASSWORD_RESET_EMAIL,
   CHANGE_PASSWORD,
   RESEND_VERIFICATION
 } from "../constants/action-types";
@@ -37,7 +38,8 @@ import {
   importRecipes,
   setImportQueue,
   setSearchSuggestions,
-  updateUserRecord
+  updateUserRecord,
+  sendPasswordResetEmail
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
@@ -750,12 +752,50 @@ export function resendVerificationMiddleware({ dispatch }) {
           if (data.message === "Verification email sent.") {
             return dispatch(warning("Check your email for a link to help complete your signup."))
           } else {
-            dispatch(toggleLoader(false));
             return dispatch(warning(data.message))
           }
         })
         .catch(err => {
-          dispatch(toggleLoader(false));
+          return dispatch(warning('Error: ' + err))
+        })
+      }
+
+      return next(action);
+    };
+  };
+}
+
+export function sendPasswordResetEmailMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === SEND_PASSWORD_RESET_EMAIL) {
+        var params = {
+          email: action.email
+        };
+
+        console.log("params: " + JSON.stringify(params))
+
+        fetch('https://funky-radish-api.herokuapp.com/resetPassword/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        })
+        .then(res=> {
+          console.log("res: " + JSON.stringify(res))
+
+          return res.clone().json()
+        })
+        .then(data => {
+          if (data.message === "Password reset email sent.") {
+            return dispatch(warning("Check your email for a link to help complete your signup."))
+          } else {
+            return dispatch(warning(data.message))
+          }
+        })
+        .catch(err => {
           return dispatch(warning('Error: ' + err))
         })
       }
