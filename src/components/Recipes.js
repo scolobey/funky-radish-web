@@ -40,7 +40,7 @@ export class Recipes extends Component {
     this.setState({ author: userObject })
 
     if (realmUser) {
-      console.log("setting current user: " + realmUser)
+      console.log("setting current user: " + JSON.stringify(realmUser))
       this.context.setCurrentUser(realmUser)
     }
     else {

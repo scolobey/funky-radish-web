@@ -40,7 +40,7 @@ class Menu extends Component {
     if (this.context.currentUser) {
         return (
           [
-            <li key='1' className="user-label">{this.context.currentUser.profile.email}</li>,
+            <li key='1' className="user-label">{this.context.currentUser.customData.email}</li>,
             <li key='2'><a href='/' onClick={this.handleLogout} >Logout</a></li>
           ]
         );
