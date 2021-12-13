@@ -64,7 +64,7 @@ export default function ChangePasswordView(props) {
 
               setNewPassword("")
             }}>
-            BUTTON
+            CHANGE PASSWORD
           </button>
 
         </div>
