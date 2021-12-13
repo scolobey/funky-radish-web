@@ -62,6 +62,7 @@ export default function ChangePasswordView(props) {
                 token: token
               }))
 
+              setNewPassword("")
             }}>
             BUTTON
           </button>
