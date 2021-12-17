@@ -29,6 +29,8 @@ import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
 
+import Minter from './components/Minter';
+
 import './App.scss';
 
 import ReactGA from 'react-ga';
@@ -67,6 +69,7 @@ class App extends Component {
           <Route path="/admin/users" component={UsersAdmin} />
           <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
           <Route path="/changePassword/:token?" component={ChangePasswordView} />
+          <Route path="/minter/" component={Minter} />
         </div>
       </div>
     );

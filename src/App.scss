@@ -1075,3 +1075,8 @@ input:checked + .slider:before {
   text-decoration: underline;
   padding: 8px;
 }
+
+.svg_preview img {
+  display: block;
+  margin: auto;
+}

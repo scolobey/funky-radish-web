@@ -6,7 +6,10 @@ import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
-import { setRedirect } from "../actions/Actions";
+import { setRedirect, warning } from "../actions/Actions";
+
+import SVGService from '../services/SVGService'
+const svgService = new SVGService();
 
 let currentRealmUser = localStorage.getItem('realm_user');
 
@@ -181,6 +184,20 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     }
   };
 
+  const mintNFT = () => {
+    console.log("let's try and create the SVG")
+    svgService.generate(draftRecipe)
+    .then((image) => {
+      // dispatch(setRedirect("/builder/" + draftRecipe._id))
+      console.log("image returned: " + image)
+      dispatch(setRedirect("/minter/" + image))
+    })
+    .catch((err) => {
+      console.log("didn't work: " + err.message)
+      dispatch(warning(err.message))
+    });
+  };
+
   return {
     resetDraftRecipe,
     createDraftRecipe,
@@ -190,7 +207,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     setDraftRecipeDirections,
     submitDraftRecipe,
     setDraftRecipeComplete,
-    submitDeleteRecipe
+    submitDeleteRecipe,
+    mintNFT
   };
 }
 
@@ -230,7 +248,8 @@ export default function Builder(props) {
     setDraftRecipeDirections,
     submitDraftRecipe,
     setDraftRecipeComplete,
-    submitDeleteRecipe
+    submitDeleteRecipe,
+    mintNFT
   } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]);
 
   if (loading) {
@@ -247,8 +266,6 @@ export default function Builder(props) {
     let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
 
     if ((draftRecipeIngredients != dataRecipeIngredients) || (draftRecipeDirections != dataRecipeDirections) || (draftRecipe.title != data.recipe.title)) {
-
-
       setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
 
       let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
@@ -258,7 +275,6 @@ export default function Builder(props) {
       console.log("setting base ing: " + ingList)
       setBaseDirections(dirList)
       console.log("setting base ing: " + dirList)
-
     }
   }
 
@@ -349,6 +365,13 @@ export default function Builder(props) {
             }}
           />
         </div>
+
+        <button type="Create NFT" onClick={e => {
+            e.preventDefault();
+            mintNFT()
+          }}>
+          Mint NFT
+        </button>
 
       </div>
       </form>
