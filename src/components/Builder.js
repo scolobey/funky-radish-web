@@ -190,7 +190,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     .then((image) => {
       // dispatch(setRedirect("/builder/" + draftRecipe._id))
       console.log("image returned: " + image)
-      dispatch(setRedirect("/minter/" + image))
+      localStorage.setItem('mint_image', image);
+      dispatch(setRedirect("/minter/"))
     })
     .catch((err) => {
       console.log("didn't work: " + err.message)
@@ -370,8 +371,10 @@ export default function Builder(props) {
             e.preventDefault();
             mintNFT()
           }}>
-          Mint NFT
+          Create NFT
         </button>
+
+
 
       </div>
       </form>

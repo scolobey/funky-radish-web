@@ -1076,7 +1076,43 @@ input:checked + .slider:before {
   padding: 8px;
 }
 
+.svg_preview {
+  width:840px;
+  height:600px;
+  display: block;
+  margin: auto;
+}
+
 .svg_preview img {
   display: block;
   margin: auto;
+}
+
+.picker {
+  position: relative;
+  bottom: 50px;
+  left: 100px;
+}
+
+.background_color_button {
+  background-color: #65C4FF;
+  color: $white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.minter_button {
+  background-color: #EC1ADF;
+  color: $white;
+  padding: 12px 20px;
+  margin-left: 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.mining_in_progress {
+
 }
