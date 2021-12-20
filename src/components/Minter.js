@@ -187,24 +187,18 @@ export default function Minter(props) {
       }
     }
 
-    // return function cleanup() {
-    //   localStorage.setItem('mint_image', '');
-    // };
   });
 
   return (
     <div className="minter">
-    
       <div className="svg_preview">
         Preview:
-
         <img width='840' height='530' src={`data:image/svg+xml;utf8,${encodeURIComponent(image)}`} />
 
         <div className="tools">
           <button className="background_color_button" onClick={onClick} >Adjust Background Color</button>
           { image && <button className="minter_button" onClick={createNFT} >Mint</button> }
           <a className='view_collection_button' href="https://testnets.opensea.io/collection/recipenft-tnl92pdxif">Checkout The Full Collection!</a>
-
 
           { pickerOpened &&
             <div className="picker">
@@ -220,7 +214,7 @@ export default function Minter(props) {
       </div>
       { miningInProgress &&
         <div className="mining_in_progress">
-          <iframe src="https://giphy.com/embed/6fDQ3k4IOqnEA" width="480" height="310" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/mining-stages-6fDQ3k4IOqnEA">via GIPHY</a></p>
+          <iframe src="https://giphy.com/embed/6fDQ3k4IOqnEA" width="960" height="620" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/mining-stages-6fDQ3k4IOqnEA">via GIPHY</a></p>
         </div>
       }
     </div>

@@ -1129,5 +1129,17 @@ input:checked + .slider:before {
 }
 
 .mining_in_progress {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 8;
+  background: rgba(255, 255, 255, 0.9);
+}
 
+.mining_in_progress iframe {
+  position: absolute;
+  padding: 3vmin 20vmin;
+  top: 100px;
+  left: 30vmin;
 }
