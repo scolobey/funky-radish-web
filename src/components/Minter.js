@@ -11,8 +11,6 @@ import 'react-color-gradient-picker/dist/index.css';
 
 import myRecipeNFT from '../utils/MyRecipeNFT.json'
 
-let currentImage = localStorage.getItem('mint_image');
-
 const color = {
     red: 255,
     green: 255,
@@ -29,12 +27,19 @@ export default function Minter(props) {
 
   const [ image, setImage ] = React.useState('')
   const [ pickerOpened, setPickerOpened ] = React.useState(false)
-  const [colorAttrs, setColorAttrs] = useState(color);
-  const [currentAccount, setCurrentAccount] = useState("");
+  const [ colorAttrs, setColorAttrs] = useState(color);
+  const [ currentAccount, setCurrentAccount] = useState("");
   const [ miningInProgress, setMiningInProgress ] = React.useState(false)
 
-  const onChange = (colorAttrs) => {
-    setColorAttrs(colorAttrs);
+  const onChange = (colorAttributes) => {
+    setColorAttrs(colorAttributes);
+    const regex = /height="100%" fill=".*"\/>/gm;
+    console.log("initial image: " + image)
+    console.log("color: " + colorAttributes.style)
+    let newImage = image.replace(regex, 'height="100%" fill="' + colorAttributes.style + '"/>')
+    console.log("newImage: " + newImage)
+    setImage(newImage)
+    console.log("changing color: " + image)
   };
 
   const onClick = () => {
@@ -138,7 +143,6 @@ export default function Minter(props) {
   }
 
   const askContractToMintNft = async () => {
-
     setMiningInProgress(true)
 
     try {
@@ -150,7 +154,9 @@ export default function Minter(props) {
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, myRecipeNFT.abi, signer);
 
         console.log("Going to pop wallet now to pay gas...")
-        let nftTxn = await connectedContract.makeARecipeNFT(currentImage.replace('</svg>', '<text font-size="40"><tspan x="1650" y="1000">'));
+        let finalImage = image.replace('</svg>', '<text font-size="40"><tspan x="1650" y="1000">')
+        console.log("minting: " + finalImage)
+        let nftTxn = await connectedContract.makeARecipeNFT(finalImage);
 
         console.log("Mining...please wait.")
         await nftTxn.wait();
@@ -158,7 +164,6 @@ export default function Minter(props) {
         setMiningInProgress(false)
 
         console.log(`Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTxn.hash}`);
-
       } else {
         setMiningInProgress(false)
         console.log("Ethereum object doesn't exist!");
@@ -170,35 +175,47 @@ export default function Minter(props) {
   }
 
   useEffect(() => {
-    if (currentImage && currentImage.length > 0) {
-      setImage(currentImage.replace("rgb(162,255,177)", colorAttrs.style))
-      console.log(currentImage.replace('</svg>', '<text font-size="40"><tspan x="1650" y="1000">'))
-    } else {
-      setImage('<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"> <rect x="0" y="0" width="100%" height="100%" fill="' + colorAttrs.style + '/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="60" dy="10.5" font-weight="bold" x="50%" y="50%" text-anchor="middle">1920×1080</text></svg>')
-      console.log(currentImage)
+    console.log("using effect")
+
+    if (!image || image.length < 1) {
+      let initialImage = localStorage.getItem('mint_image');
+      if (initialImage.length < 1) {
+        setImage('<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"> <rect x="0" y="0" width="100%" height="100%" fill="' + colorAttrs.style + '/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="60" dy="10.5" font-weight="bold" x="50%" y="50%" text-anchor="middle">1920×1080</text></svg>')
+      }
+      else {
+        setImage(initialImage);
+      }
     }
+
+    // return function cleanup() {
+    //   localStorage.setItem('mint_image', '');
+    // };
   });
 
   return (
     <div className="minter">
-      <a href="https://testnets.opensea.io/collection/recipenft-tnl92pdxif">Checkout The Full Collection!</a>
-
-      { pickerOpened &&
-        <div className="picker">
-          <ColorPicker
-            onStartChange={onChange}
-            onChange={onChange}
-            onEndChange={onChange}
-            color={colorAttrs}
-          />
-        </div>
-      }
+    
       <div className="svg_preview">
         Preview:
+
         <img width='840' height='530' src={`data:image/svg+xml;utf8,${encodeURIComponent(image)}`} />
+
         <div className="tools">
           <button className="background_color_button" onClick={onClick} >Adjust Background Color</button>
           { image && <button className="minter_button" onClick={createNFT} >Mint</button> }
+          <a className='view_collection_button' href="https://testnets.opensea.io/collection/recipenft-tnl92pdxif">Checkout The Full Collection!</a>
+
+
+          { pickerOpened &&
+            <div className="picker">
+              <ColorPicker
+                onStartChange={onChange}
+                onChange={onChange}
+                onEndChange={onChange}
+                color={colorAttrs}
+              />
+            </div>
+          }
         </div>
       </div>
       { miningInProgress &&

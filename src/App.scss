@@ -1081,6 +1081,8 @@ input:checked + .slider:before {
   height:600px;
   display: block;
   margin: auto;
+  border-radius: 10px;
+  border-color: red;
 }
 
 .svg_preview img {
@@ -1090,8 +1092,8 @@ input:checked + .slider:before {
 
 .picker {
   position: relative;
-  bottom: 50px;
-  left: 100px;
+  bottom: 350px;
+  left: -20px;
 }
 
 .background_color_button {
@@ -1101,6 +1103,9 @@ input:checked + .slider:before {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  position: relative;
+  bottom: 0px;
+  left: 0px;
 }
 
 .minter_button {
@@ -1111,6 +1116,16 @@ input:checked + .slider:before {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.view_collection_button {
+  background-color: #006666;
+  color: $white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 30px;
 }
 
 .mining_in_progress {
