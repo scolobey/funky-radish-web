@@ -10,7 +10,7 @@ class Redirector extends Component {
 
   render() {
     return (
-          (this.props.redirect) ? ( <Redirect to={this.props.redirect} /> ) : (<div></div>)
+      (this.props.redirect) ? ( <Redirect to={this.props.redirect} /> ) : (<div></div>)
     );
   }
 }

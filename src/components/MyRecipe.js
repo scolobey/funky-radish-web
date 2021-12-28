@@ -4,19 +4,17 @@ import { connect, useSelector, useDispatch } from 'react-redux'
 import useRecipe from "../graphql/useRecipe";
 import EditRecipe from "../graphql/editRecipe";
 import Builder from "./Builder";
-import { setRedirect } from "../actions/Actions";
-
+import { setRedirect, getRecipeToken } from "../actions/Actions";
 
 import { Helmet } from "react-helmet";
 
 export default function MyRecipe(props) {
 
-  const redirector = useSelector((state) => state.redirect)
+  // const redirector = useSelector((state) => state.redirect)
 
   const dispatch = useDispatch()
 
   let recId = props.match.params.recipeId
-  console.log("rec id: " + recId)
 
   const { loading, error, data } = useRecipe(recId);
 
@@ -29,6 +27,10 @@ export default function MyRecipe(props) {
     dispatch(setRedirect("/builder/" + recId))
   };
 
+  const generateShareToken = () => {
+    dispatch(getRecipeToken(recId))
+  };
+
   return (
     <div className="Recipe">
       <Helmet>
@@ -39,10 +41,14 @@ export default function MyRecipe(props) {
 
       <div className="Title">
         <b>{data.recipe.title}</b>
-        <img src="/edit_icon.svg" height="30" alt="Funky Radish" onClick={e => {
-            e.preventDefault();
-            segueToEdit();
-          }}/>
+        <img className="share_button" src="/share_icon.svg" alt="share" onClick={e => {
+          e.preventDefault();
+          generateShareToken();
+        }}/>
+        <img className="edit_button" src="/edit_icon.svg" height="30" alt="Funky Radish" onClick={e => {
+          e.preventDefault();
+          segueToEdit();
+        }}/>
       </div>
 
       <div className="Ingredients">

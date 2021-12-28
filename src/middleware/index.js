@@ -16,7 +16,9 @@ import {
   UPDATE_USER_RECORD,
   SEND_PASSWORD_RESET_EMAIL,
   CHANGE_PASSWORD,
-  RESEND_VERIFICATION
+  RESEND_VERIFICATION,
+  GET_RECIPE_TOKEN,
+  CLAIM_RECIPE
 } from "../constants/action-types";
 
 import {
@@ -800,6 +802,52 @@ export function sendPasswordResetEmailMiddleware({ dispatch }) {
         })
       }
 
+      return next(action);
+    };
+  };
+}
+
+export function recipeTokenMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === GET_RECIPE_TOKEN) {
+        let token = localStorage.getItem('access_token');
+
+        console.log("id: " + action.recipeID)
+        console.log("token"  + token)
+
+        fetch("https://funky-radish-api.herokuapp.com/createRecipeToken/" + action.recipeID, {
+          method: 'get',
+          headers: new Headers({
+            'x-access-token': token
+          })
+        })
+        .then(res=> {
+          console.log(res.clone().json())
+          return res.clone().json()
+        })
+        .then(data => {
+          // if (data.message) {
+          //   return dispatch(warning(data.message))
+          // }
+          console.log(data)
+          alert("Here's your token, boss: \n" + data.token)
+          return
+        })
+        .catch(error => dispatch(warning(error)));
+
+      }
+      return next(action);
+    };
+  };
+}
+
+export function claimRecipelMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === CLAIM_RECIPE) {
+        console.log("claiming recipe (member: " + action.member + " token: " + action.token + ")")
+      }
       return next(action);
     };
   };

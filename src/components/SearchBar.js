@@ -19,24 +19,28 @@ class SearchBar extends Component {
     this.throttleHandleChange = debounce(this.throttleHandleChange.bind(this), 100)
     this.handleChange = this.handleChange.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
-    this.dismissSuggestions = this.dismissSuggestions.bind(this)
-    this.clickSuggestion = this.clickSuggestion.bind(this)
 
     this.searchRef = React.createRef()
   }
 
   throttleHandleChange(event) {
     // TODO: finding a way to cancel debounce and override here may help performance?
-    this.props.autocomplete(event.target.value)
+    console.log("throttling: " + event.target.value)
+
+    this.props.search(event.target.value)
+
+    // Here's where I should then change the ordering of the realm recipes.
+
+    // this.props.autocomplete(event.target.value)
   }
 
   handleChange(event) {
-    console.log("handling change")
+    console.log("handling change: " + event.target.value)
     this.throttleHandleChange(event)
   }
 
   handleKeyDown(event) {
-    console.log("handling keydown")
+    console.log("handling keydown: " + event.target.value)
     if (event.keyCode === 13) { // Enter
       // TODO: It would be nice to have some more clarity in the indices here.
       // It gets confusing using index 0 to mean that no selection has been made.
@@ -46,8 +50,10 @@ class SearchBar extends Component {
           return
         }
         else {
-          this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '-'))
+          // this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '-'))
+          this.props.externalRecipeSearch()
           this.props.setSearchSuggestions([])
+
           // If you're not on home -> redirect
           console.log("query launched: " + window.location.pathname)
           if (window.location.pathname != "/") {
@@ -57,7 +63,8 @@ class SearchBar extends Component {
         }
       }
       else {
-        this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor-1].title.replace(/\s+/g, '-'))
+        // this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor-1].title.replace(/\s+/g, '-'))
+        this.props.externalRecipeSearch()
         event.target.value = this.props.suggestions[this.state.cursor-1].title
 
         this.setState({
@@ -89,32 +96,9 @@ class SearchBar extends Component {
     }
   }
 
-  dismissSuggestions(event) {
-    const searchInput = this.searchRef.current;
-    searchInput.value = ""
-    this.props.setSearchSuggestions([])
-  }
-
-  clickSuggestion(index) {
-    console.log("handling suggestion click")
-    console.log("index: " + index)
-
-    this.props.externalRecipeSearch(this.props.suggestions[index].title.replace(/\s+/g, '-'))
-
-    const searchInput = this.searchRef.current;
-    searchInput.value = this.props.suggestions[index].title
-
-    this.setState({
-      cursor: 0
-    });
-
-    this.props.setSearchSuggestions([])
-  }
-
   render() {
     return (
       <div className="RecipeSearchField">
-        <GhostComponent searchInput={this.dismissSuggestions}/>
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input
           type="text"
@@ -123,51 +107,10 @@ class SearchBar extends Component {
           onKeyDown={ this.handleKeyDown }
           ref={this.searchRef}
         />
-
-        { this.props.suggestions && this.props.suggestions.length > 0 ?
-          <div className="Suggestions">
-          <div className="Suggestions-Dismiss" onClick={this.dismissSuggestions}><p>X</p></div>
-            <ul>
-              { this.props.suggestions.map((suggestion, index) => (
-                <div onClick={() => this.clickSuggestion(index)}>
-                  <Suggestion index={index} key={index} cursor={this.state.cursor} suggestion={suggestion}/>
-                </div>
-              ))}
-            </ul>
-          </div>
-        : <div></div> }
-
       </div>
     );
   }
 }
-
-function Suggestion(props) {
-  let classLabel;
-
-  if (props.cursor-1 == props.index) {
-    classLabel = "active-suggestion";
-  }
-
-  return (
-    <li key={props.index} className={classLabel}>
-      {props.suggestion.title}
-    </li>
-  )
-}
-
-// The only purpose of this component is to receive the location hook so that the search input can be cleared when the url changes.
-// This is a very ugly solution
-const GhostComponent = (props) => {
-  const location = useLocation();
-  React.useEffect(() => {
-    console.log('Location changed: ' + props.searchInput);
-    props.searchInput()
-
-  }, [location]);
-
-  return <div />
-};
 
 function mapStateToProps(state) {
   return {

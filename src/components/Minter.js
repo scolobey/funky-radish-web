@@ -18,7 +18,7 @@ const color = {
     alpha: 0.9,
 };
 
-const CONTRACT_ADDRESS = "0x30f8034472CA947eFbdeB21f35Db172BBab2E428";
+const CONTRACT_ADDRESS = "0x7610D542A9B99BfD6d3Fdf06582BCb67a1E96a82";
 
 export default function Minter(props) {
 
@@ -30,6 +30,8 @@ export default function Minter(props) {
   const [ colorAttrs, setColorAttrs] = useState(color);
   const [ currentAccount, setCurrentAccount] = useState("");
   const [ miningInProgress, setMiningInProgress ] = React.useState(false)
+  const [ minterRecipe, setMinterRecipe ] = React.useState({})
+
 
   const onChange = (colorAttributes) => {
     setColorAttrs(colorAttributes);
@@ -55,6 +57,8 @@ export default function Minter(props) {
     }
 
     const accounts = await ethereum.request({ method: 'eth_accounts' });
+
+    console.log("metamask accts: " + accounts)
 
     if (accounts.length !== 0) {
       const account = accounts[0];
@@ -153,10 +157,10 @@ export default function Minter(props) {
         const signer = provider.getSigner();
         const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, myRecipeNFT.abi, signer);
 
-        console.log("Going to pop wallet now to pay gas...")
+        console.log("Going to pop the wallet now to pay gas...")
         let finalImage = image.replace('</svg>', '<text font-size="40"><tspan x="1650" y="1000">')
-        console.log("minting: " + finalImage)
-        let nftTxn = await connectedContract.makeARecipeNFT(finalImage);
+        console.log("minting: " + finalImage + minterRecipe.title + JSON.stringify(minterRecipe.ingredients) + JSON.stringify(minterRecipe.directions))
+        let nftTxn = await connectedContract.makeARecipeNFT(finalImage, minterRecipe.title, JSON.stringify(minterRecipe.ingredients), JSON.stringify(minterRecipe.directions));
 
         console.log("Mining...please wait.")
         await nftTxn.wait();
@@ -175,11 +179,17 @@ export default function Minter(props) {
   }
 
   useEffect(() => {
-    console.log("using effect")
+    console.log("using effect: " + image.length)
 
-    if (!image || image.length < 1) {
+    if (!image || (image.length < 1)) {
       let initialImage = localStorage.getItem('mint_image');
-      if (initialImage.length < 1) {
+      let minterRecipe = localStorage.getItem('mint_recipe');
+      setMinterRecipe(minterRecipe);
+
+      console.log("though: " + initialImage.length)
+
+
+      if (initialImage && initialImage.length < 1) {
         setImage('<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"> <rect x="0" y="0" width="100%" height="100%" fill="' + colorAttrs.style + '/><text fill="rgba(0,0,0,0.5)" font-family="sans-serif" font-size="60" dy="10.5" font-weight="bold" x="50%" y="50%" text-anchor="middle">1920×1080</text></svg>')
       }
       else {

@@ -134,12 +134,17 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SEARCH) {
-    let recipeList = state.recipes.filter(function(recipe ) {
-      return recipe.title.toLowerCase().includes(action.query.toLowerCase());
-    });
+    //
+    // let recipeList = state.recipes.filter(function(recipe ) {
+    //   return recipe.title.toLowerCase().includes(action.query.toLowerCase());
+    // });
+    //
+    // return Object.assign({}, state, {
+    //   filteredRecipes: recipeList
+    // });
 
     return Object.assign({}, state, {
-      filteredRecipes: recipeList
+      query: action.query
     });
   }
 

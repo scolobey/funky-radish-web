@@ -37,8 +37,9 @@ export class Recipes extends Component {
     let realmUser = realmService.getUser()
     let userObject = localStorage.getItem('realm_user');
 
-    this.setState({ author: userObject })
+    this.setState({ author: realmUser })
 
+    //TODO: MAybe set this to !realmUser and dump the first half
     if (realmUser) {
       console.log("setting current user: " + JSON.stringify(realmUser))
       this.context.setCurrentUser(realmUser)
@@ -46,8 +47,6 @@ export class Recipes extends Component {
     else {
       this.props.getToken();
     }
-
-
   }
 
   render() {

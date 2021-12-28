@@ -33,7 +33,9 @@ import {
   UPDATE_USER_RECORD,
   SEND_PASSWORD_RESET_EMAIL,
   CHANGE_PASSWORD,
-  RESEND_VERIFICATION
+  RESEND_VERIFICATION,
+  GET_RECIPE_TOKEN,
+  CLAIM_RECIPE
 } from "../constants/action-types"
 
 /* action creators */
@@ -179,4 +181,12 @@ export function resendVerification(email) {
 
 export function sendPasswordResetEmail(email) {
   return { type: SEND_PASSWORD_RESET_EMAIL, email }
+};
+
+export function getRecipeToken(recipeID) {
+  return { type: GET_RECIPE_TOKEN, recipeID }
+};
+
+export function claimRecipe(payload) {
+  return { type: CLAIM_RECIPE, payload }
 };

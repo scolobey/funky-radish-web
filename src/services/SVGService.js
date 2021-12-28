@@ -81,6 +81,7 @@ export default class SVGService {
       '</text><path d="M575,950 v-700" stroke="black" stroke-width="6" /></svg>'
 
       localStorage.setItem('mint_image', image);
+      localStorage.setItem('mint_recipe', recipe);
 
       fulfill(image)
     })
