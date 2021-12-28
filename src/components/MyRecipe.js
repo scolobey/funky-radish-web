@@ -16,6 +16,8 @@ export default function MyRecipe(props) {
 
   let recId = props.match.params.recipeId
 
+  let realmUser = localStorage.getItem('realm_user');
+
   const { loading, error, data } = useRecipe(recId);
 
   if (recId == null || recId == 'undefined') return <Builder />
@@ -41,10 +43,11 @@ export default function MyRecipe(props) {
 
       <div className="Title">
         <b>{data.recipe.title}</b>
-        <img className="share_button" src="/share_icon.svg" alt="share" onClick={e => {
+
+        {(data.recipe.author === realmUser ? <img className="share_button" src="/share_icon.svg" alt="share" onClick={e => {
           e.preventDefault();
           generateShareToken();
-        }}/>
+        }}/> : <div></div>)}
         <img className="edit_button" src="/edit_icon.svg" height="30" alt="Funky Radish" onClick={e => {
           e.preventDefault();
           segueToEdit();
