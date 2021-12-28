@@ -31,13 +31,21 @@ function RecipeList(props) {
   return data?.recipes? (
     <div className="recipeView">
       {rec.map((recipe) =>
-        <li key={recipe._id}>
+        (recipe.author == props.author.id ? <li key={recipe._id}>
             <Link
               className="recipeListing"
               key={recipe._id}
               to={{ pathname: "/myrecipes/" + recipe._id}}
             > {recipe.title} </Link>
-        </li>
+        </li> :
+        <li key={recipe._id}>
+            <Link
+              className="watchedRecipeListing"
+              key={recipe._id}
+              to={{ pathname: "/myrecipes/" + recipe._id}}
+            > {recipe.title} </Link>
+        </li>)
+
       )}
     </div>
   ): (

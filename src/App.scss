@@ -945,6 +945,20 @@ button[type=import]:hover {
   color: black;
 }
 
+.watchedRecipeListing {
+  text-align: center;
+  background: $specialBlue;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  min-width: 100px;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  color: red;
+}
+
 .recipeView a:hover {
   box-shadow: 0 0 2px red;
 }
