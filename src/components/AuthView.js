@@ -112,6 +112,7 @@ class AuthView extends Component {
 
             <div className='auth_options_header'>Not what you're lookin' for?</div>
             <br></br>
+
             {this.state.login ? <a className='auth_options' href='./signup' >Sign Up</a> : <a className='auth_options' href='./login' >Login</a>} •
              <a className='auth_options' onClick={this.resendVerification} >Resend Verification</a> •
              <a className='auth_options' onClick={this.forgotPassword}>Forgot Password?</a>

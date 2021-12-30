@@ -39,8 +39,13 @@ export default function RecipeClaimer(props) {
 
   return (
     <div className="verificationView">
-      <b>{recipeToken? recipeToken : "abc"}</b>
-      <b>{recipeAccepted? recipeAccepted : "def"}</b>
+      <b>{recipeToken ? recipeToken : "abc"}</b>
+      <b>{recipeAccepted ? recipeAccepted : "def"}</b>
+      { fullRealmUser && fullRealmUser.length > 0 ?
+        <div className="accept_recipe_flow">
+          <b>You aren't logged in though</b> 
+        </div>
+      : "def"}
     </div>
   )
 }
