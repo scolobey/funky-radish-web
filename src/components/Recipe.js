@@ -33,7 +33,6 @@ class RecipeView extends Component {
         <li>
           <div className="Title">
             <b>{this.state.title}</b>
-
           </div>
           <div className="Ingredients">
             {this.state.ingredients ? (

@@ -846,7 +846,32 @@ export function claimRecipelMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
       if (action.type === CLAIM_RECIPE) {
-        console.log("claiming recipe (member: " + action.member + " token: " + action.token + ")")
+        console.log("claiming recipe (member: " + action.payload.member + " token: " + action.payload.token + ")")
+        var params = action.payload;
+        let url = "https://funky-radish-api.herokuapp.com/claimRecipe/"
+
+        params = [params];
+
+        fetch(url, {
+          method: 'put',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify(params)
+        })
+        .then(res=> {
+          console.log(res.clone().json())
+          return res.clone().json()
+        })
+        .then(data => {
+          if (data.message) {
+            return dispatch(warning(data.message))
+          }
+          console.log("json: " + JSON.stringify(data))
+          return dispatch(warning("Recipe acquired."));
+        })
+        .catch(error => dispatch(warning(error)));
       }
       return next(action);
     };

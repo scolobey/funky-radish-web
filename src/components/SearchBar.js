@@ -24,23 +24,14 @@ class SearchBar extends Component {
   }
 
   throttleHandleChange(event) {
-    // TODO: finding a way to cancel debounce and override here may help performance?
-    console.log("throttling: " + event.target.value)
-
     this.props.search(event.target.value)
-
-    // Here's where I should then change the ordering of the realm recipes.
-
-    // this.props.autocomplete(event.target.value)
   }
 
   handleChange(event) {
-    console.log("handling change: " + event.target.value)
     this.throttleHandleChange(event)
   }
 
   handleKeyDown(event) {
-    console.log("handling keydown: " + event.target.value)
     if (event.keyCode === 13) { // Enter
       // TODO: It would be nice to have some more clarity in the indices here.
       // It gets confusing using index 0 to mean that no selection has been made.

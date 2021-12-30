@@ -7,6 +7,8 @@ export default class Auth {
 
   setRealmUser = (realmUser) => {
     console.log("setting realm user. Logged in, but now the user is set: ", realmUser.id)
+    // TODO: convert all realm_user instances to use realm_
+    localStorage.setItem('realm_user_complete', JSON.stringify(realmUser));
     localStorage.setItem('realm_user', realmUser.id);
   }
 

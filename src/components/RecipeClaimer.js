@@ -3,27 +3,38 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import useNewRecipe from "../graphql/useNewRecipe";
 
-import { setRedirect } from "../actions/Actions";
-let currentRealmUser = localStorage.getItem('realm_user');
+import { setRedirect, claimRecipe } from "../actions/Actions";
 
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
+
+let fullRealmUser = localStorage.getItem('realm_user_complete');
 
 export default function RecipeClaimer(props) {
-  // let recipeIdentification = props.match.params.recipeId
-
-
-  const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe({});
-
-
-
   const redirector = useSelector((state) => state.redirect)
+
+  const dispatch = useDispatch()
 
   const [ recipeToken, setRecipeToken ] = React.useState("")
   const [ recipeAccepted, setRecipeAccepted ] = React.useState("Just a moment while we check your key...")
 
   React.useEffect(() => {
-    let theToken = props.match.params.token
+    let token = props.match.params.token
+     setRecipeToken(token)
 
-     console.log("some effect: " + theToken)
+     if (fullRealmUser) {
+       console.log("user: " + JSON.parse(fullRealmUser).customData._id)
+       console.log("token: " + token)
+       let payload = {
+         member: JSON.parse(fullRealmUser).customData._id,
+         token: token
+       }
+       dispatch(claimRecipe(payload))
+     }
+     else {
+       console.log("user not logged in")
+       // Gotta show people what's going on.
+     }
   },[])
 
   return (

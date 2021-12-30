@@ -71,7 +71,6 @@ class App extends Component {
           <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
           <Route path="/changePassword/:token?" component={ChangePasswordView} />
           <Route path="/minter" component={Minter} />
-          <Route path="/claimRecipe/:token?" component={Claimer} />
         </div>
       </div>
     );

@@ -11,16 +11,10 @@ function RecipeList(props) {
   //   return state.query
   // })
 
-  console.log("query on list: " + Object.keys(props.author))
-  console.log("query on list: " + props.author.recipes)
-  console.log("query on mist: " + props.query)
-
   const { loading, error, data } = useRecipes(props.author.id, ["617ee621638d87c7faf71c9f"]);
 
   let rec = data?.recipes.filter(function(recipe) {
     if(props.query && props.query.length > 0) {
-      console.log("filtering recipe: " + recipe.title.toLowerCase() + " on: " + props.query)
-      console.log("includes? : " + recipe.title.toLowerCase().includes(props.query))
       return recipe.title.toLowerCase().includes(props.query)
     } else {
       return true
@@ -48,8 +42,8 @@ function RecipeList(props) {
 
       )}
     </div>
-  ): (
-      <div> Loading... </div>
+  ):(
+    <div> Loading... </div>
   );
 }
 
