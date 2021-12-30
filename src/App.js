@@ -30,7 +30,6 @@ import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
 
 import Minter from './components/Minter';
-import Claimer from './components/Claimer';
 
 import './App.scss';
 

@@ -3,6 +3,23 @@ var path = require('path');
 
 export default class ServerService {
 
+  async generateRecipeToken(recipeID) {
+    let token = localStorage.getItem('access_token');
+
+    let endpoint = BASE_URL + "createRecipeToken/" + recipeID
+    console.log("endpoint: " + endpoint)
+    console.log("token"  + token)
+    let response = await fetch(endpoint, {
+      method: 'get',
+      headers: new Headers({
+        'x-access-token': token
+      })
+    })
+
+    let data = await response.json()
+    return data;
+  }
+
   async importRecipe(address) {
     let encoded = encodeURIComponent(address);
     let endpoint = BASE_URL + "collector/inspect/" + encoded
@@ -141,4 +158,6 @@ function fetchWithTimeout(endpoint) {
           reject(err);
       });
   })
+
+
 }
