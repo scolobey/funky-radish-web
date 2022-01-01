@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom';
 
 function RecipeList(props) {
 
-  // const query = useSelector((state) => {
-  //   console.log("useSelector")
-  //   return state.query
-  // })
+  let list = []
 
-  const { loading, error, data } = useRecipes(props.author.id, ["617ee621638d87c7faf71c9f"]);
+  if (props.author.customData && props.author.customData["recipes"]) {
+    list = props.author.customData["recipes"].map((item) => {
+      return item.$oid
+    })
+  }
+
+  const { loading, error, data } = useRecipes(props.author.id, list);
 
   let rec = data?.recipes.filter(function(recipe) {
     if(props.query && props.query.length > 0) {

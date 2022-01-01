@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import useNewRecipe from "../graphql/useNewRecipe";
 
-import { setRedirect, claimRecipe } from "../actions/Actions";
+import { setRedirect, claimRecipe, warning } from "../actions/Actions";
 
-import RealmService from '../services/RealmService'
-const realmService = new RealmService();
+// import RealmService from '../services/RealmService'
+// const realmService = new RealmService();
 
 let fullRealmUser = localStorage.getItem('realm_user_complete');
 
@@ -16,11 +16,17 @@ export default function RecipeClaimer(props) {
   const dispatch = useDispatch()
 
   const [ recipeToken, setRecipeToken ] = React.useState("")
-  const [ recipeAccepted, setRecipeAccepted ] = React.useState("Just a moment while we check your key...")
+  const [ recipeAccepted, setRecipeAccepted ] = React.useState("")
 
   React.useEffect(() => {
     let token = props.match.params.token
      setRecipeToken(token)
+
+     if(token && token.length < 10) {
+       dispatch(warning("You need a token to claim a recipe."))
+       dispatch(setRedirect("/"))
+       setRecipeAccepted("")
+     }
 
      if (fullRealmUser) {
        console.log("user: " + JSON.parse(fullRealmUser).customData._id)
@@ -29,23 +35,37 @@ export default function RecipeClaimer(props) {
          member: JSON.parse(fullRealmUser).customData._id,
          token: token
        }
+
+       setRecipeAccepted("Just a moment while we find that recipe...")
+
        dispatch(claimRecipe(payload))
      }
      else {
-       console.log("user not logged in")
-       // Gotta show people what's going on.
+       localStorage.setItem('recipe_claim_token', token);
      }
   },[])
 
   return (
     <div className="verificationView">
-      <b>{recipeToken ? recipeToken : "abc"}</b>
-      <b>{recipeAccepted ? recipeAccepted : "def"}</b>
+      <b>{recipeAccepted}</b>
+      <br></br>
       { fullRealmUser && fullRealmUser.length > 0 ?
-        <div className="accept_recipe_flow">
-          <b>You aren't logged in though</b> 
-        </div>
-      : "def"}
+        <div>{JSON.parse(fullRealmUser).customData.name}</div>
+      : <div className="accept_recipe_flow">
+        <b>Let's first get you into your account, then you can claim this recipe.</b>
+        <ul className="not-logged-in-banner">
+          <li>
+            <a href="/login">
+              <div className="login-text login-text--pushDown login-text--shadow">Login</div>
+            </a>
+          </li>
+          <li>
+            <a href="/signup">
+              <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
+            </a>
+          </li>
+        </ul>
+      </div>}
     </div>
   )
 }
