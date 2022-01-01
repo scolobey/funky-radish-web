@@ -814,41 +814,6 @@ export function sendPasswordResetEmailMiddleware({ dispatch }) {
   };
 }
 
-export function recipeTokenMiddleware({ dispatch }) {
-  return function(next) {
-    return function(action) {
-      if (action.type === GET_RECIPE_TOKEN) {
-        let token = localStorage.getItem('access_token');
-
-        console.log("id: " + action.recipeID)
-        console.log("token"  + token)
-
-        fetch("https://funky-radish-api.herokuapp.com/createRecipeToken/" + action.recipeID, {
-          method: 'get',
-          headers: new Headers({
-            'x-access-token': token
-          })
-        })
-        .then(res=> {
-          console.log(res.clone().json())
-          return res.clone().json()
-        })
-        .then(data => {
-          // if (data.message) {
-          //   return dispatch(warning(data.message))
-          // }
-          console.log(data)
-          alert("Here's your token, boss: \n" + data.token)
-          return
-        })
-        .catch(error => dispatch(warning(error)));
-
-      }
-      return next(action);
-    };
-  };
-}
-
 export function claimRecipelMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
@@ -874,12 +839,6 @@ export function claimRecipelMiddleware({ dispatch }) {
           }
           console.log("json: " + JSON.stringify(data))
           dispatch(warning("Recipe acquired."));
-
-          // So, how do we add the new recipe to the realm User?
-          // We don't even know the id of the recipe ourselves right now.
-          // Where does the 'watching' come from actually
-          // Or will this solve itself?
-
 
           return dispatch(setRedirect("/"));
         })

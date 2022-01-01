@@ -52,14 +52,16 @@ export default function RecipeClaimer(props) {
       { fullRealmUser && fullRealmUser.length > 0 ?
         <div>{JSON.parse(fullRealmUser).customData.name}</div>
       : <div className="accept_recipe_flow">
-        <b>Let's first get you into your account, then you can claim this recipe.</b>
+        <b>Access your account,</b>
+        <br></br>
+        <b>to claim this recipe.</b>
         <ul className="not-logged-in-banner">
-          <li>
+          <li key='1'>
             <a href="/login">
               <div className="login-text login-text--pushDown login-text--shadow">Login</div>
             </a>
           </li>
-          <li>
+          <li key='2'>
             <a href="/signup">
               <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
             </a>

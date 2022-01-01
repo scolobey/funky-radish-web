@@ -8,7 +8,7 @@ import Popover from "./Popover";
 
 import ServerService from '../services/ServerService'
 
-import { setRedirect, getRecipeToken } from "../actions/Actions";
+import { setRedirect } from "../actions/Actions";
 
 import { Helmet } from "react-helmet";
 
@@ -77,7 +77,7 @@ export default function MyRecipe(props) {
         {data.recipe.ingredients ? (
           <ul>
             {data.recipe.ingredients.map((ingredient, index) => (
-              <li key={index}>
+              <li key={index.toString()}>
                 {ingredient.name}
               </li>
             ))}
@@ -90,7 +90,7 @@ export default function MyRecipe(props) {
         {data.recipe.directions ? (
           <ul>
             {data.recipe.directions.map((direction, index) => (
-              <li key={index}>
+              <li key={index.toString()}>
                 {direction.text}
               </li>
             ))}

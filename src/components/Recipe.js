@@ -23,14 +23,14 @@ class RecipeView extends Component {
 
   render() {
     return this.props.recipe ? (
-      <div className="Recipe" key={this.state.recID}>
+      <div className="Recipe">
         <Helmet>
           <meta charSet="utf-8" />
           <title>{this.state.title} </title>
           <meta name="description" content= {"Recipe for: " + this.state.title + ". "} />
         </Helmet>
 
-        <li>
+
           <div className="Title">
             <b>{this.state.title}</b>
           </div>
@@ -55,7 +55,7 @@ class RecipeView extends Component {
               ))}
             </ul>
           </div>
-        </li>
+
       </div>
     ) : (
       <div className="Recipe">

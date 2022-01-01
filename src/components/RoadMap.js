@@ -6,16 +6,16 @@ class RoadMap extends Component {
       <div className="RoadMapContainer">
         <div className="RoadMap">
           <ul>
-            <li>
+            <li key='1'>
               Automatic saving
             </li>
-            <li>
+            <li key='2'>
               Ingredient checklist
             </li>
-            <li>
+            <li key='3'>
               Bulk recipe import
             </li>
-            <li>
+            <li key='4'>
               Recipe sharing
             </li>
           </ul>

@@ -311,14 +311,14 @@ export default function Builder(props) {
         }}
       >
 
-      <label class="switch" >
+      <label className="switch" >
         <input type="checkbox" onClick={e => {
           setMasterDatabaseToggle(!masterDatabaseToggle)
         }}></input>
-        <span class="slider round"></span>
+        <span className="slider round"></span>
       </label>
 
-      <div class="db_indicator">
+      <div className="db_indicator">
         Import to: {masterDatabaseToggle? "Current User" : "Master DB"}
       </div>
 

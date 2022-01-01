@@ -19,7 +19,6 @@ import {
   sendPasswordResetEmailMiddleware,
   updateUserPasswordMiddleware,
   resendVerificationMiddleware,
-  recipeTokenMiddleware,
   claimRecipelMiddleware
 } from "../middleware";
 
@@ -52,7 +51,6 @@ const store = createStore(
       sendPasswordResetEmailMiddleware,
       updateUserPasswordMiddleware,
       resendVerificationMiddleware,
-      recipeTokenMiddleware,
       claimRecipelMiddleware,
       thunk
   ))

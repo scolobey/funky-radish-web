@@ -34,7 +34,6 @@ import {
   SEND_PASSWORD_RESET_EMAIL,
   CHANGE_PASSWORD,
   RESEND_VERIFICATION,
-  GET_RECIPE_TOKEN,
   CLAIM_RECIPE
 } from "../constants/action-types"
 
@@ -181,10 +180,6 @@ export function resendVerification(email) {
 
 export function sendPasswordResetEmail(email) {
   return { type: SEND_PASSWORD_RESET_EMAIL, email }
-};
-
-export function getRecipeToken(recipeID) {
-  return { type: GET_RECIPE_TOKEN, recipeID }
 };
 
 export function claimRecipe(payload) {

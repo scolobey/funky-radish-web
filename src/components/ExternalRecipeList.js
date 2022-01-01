@@ -14,10 +14,9 @@ class ExternalRecipeListView extends Component {
       <ul>
         {this.props.externalRecipes.map((recipe, index) => (
           // sp- is just a reference to sporctacular. If you ever add a different api, change this model.
-          <li key={recipe._id}>
+          <li key={recipe._id.toString()}>
             <Link
               className="externalRecipeListing"
-              key={recipe._id}
               onClick={this.handleClick}
               to={{
                 pathname: "/recipes/sp-" + recipe._id,

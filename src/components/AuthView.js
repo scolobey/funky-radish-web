@@ -35,19 +35,19 @@ class AuthView extends Component {
     console.log("Resending verification")
 
     if(this.state.email.length > 0 && this.state.email.includes('@')) {
-      var email = prompt("Is this your full email?", this.state.email);
+      var emailPrompt = prompt("Is this your full email?", this.state.email);
 
-      if (email != null && email.length > 0) {
-        this.props.resendVerification(email)
+      if (emailPrompt != null && emailPrompt.length > 0) {
+        this.props.resendVerification(emailPrompt)
       }
 
       this.clearFields()
     }
     else {
-      var email = prompt("What's your email?");
+      var emailPrompt = prompt("What's your email?");
 
-      if (email != null && email.length > 0) {
-        this.props.resendVerification(email)
+      if (emailPrompt != null && emailPrompt.length > 0) {
+        this.props.resendVerification(emailPrompt)
       }
 
       this.clearFields()
@@ -59,19 +59,18 @@ class AuthView extends Component {
     console.log("clicked forgot password")
 
     if(this.state.email.length > 0 && this.state.email.includes('@')) {
-      var email = prompt("Is this your full email?", this.state.email);
+      var emailPrompt = prompt("Is this your full email?", this.state.email);
 
-      if (email != null && email.length > 0) {
-        console.log(email)
-        this.props.sendPasswordResetEmail(email)
+      if (emailPrompt != null && emailPrompt.length > 0) {
+        console.log(emailPrompt)
+        this.props.sendPasswordResetEmail(emailPrompt)
       }
     }
     else {
-      var email = prompt("What's your email?");
+      var emailPrompt = prompt("What's your email?");
 
-      if (email != null && email.length > 0) {
-        console.log(email)
-        this.props.sendPasswordResetEmail(email)
+      if (emailPrompt != null && emailPrompt.length > 0) {
+        this.props.sendPasswordResetEmail(emailPrompt)
       }
     }
 

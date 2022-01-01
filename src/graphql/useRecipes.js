@@ -14,8 +14,6 @@ export default useRecipes;
 
 function useAllRecipesInProject(author, watching) {
 
-  console.log("querying my recipes.")
-
   const RECIPE_QUERY = gql`
     query Recipes($author: String!, $watching: [String!]){
       recipes(query: {OR: [{ author: $author }, {_id_in: $watching}]}) {

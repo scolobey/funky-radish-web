@@ -6,7 +6,6 @@ export default class Auth {
   }
 
   setRealmUser = (realmUser) => {
-    console.log("setting realm user. Logged in, but now the user is set: ", realmUser.id)
     // TODO: convert all realm_user instances to use realm_
     localStorage.setItem('realm_user_complete', JSON.stringify(realmUser));
     localStorage.setItem('realm_user', realmUser.id);
@@ -14,7 +13,7 @@ export default class Auth {
 
   getRealmUser = () => {
     console.log("getting the realm user")
-    let user = localStorage.getItem('realm_user');
+    localStorage.getItem('realm_user');
   }
 
   setToken = (token) => {
@@ -24,6 +23,8 @@ export default class Auth {
   logout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('realm_user_complete');
+
   }
 
   getToken = () => {

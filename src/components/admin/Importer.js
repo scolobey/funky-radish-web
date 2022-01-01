@@ -39,12 +39,9 @@ class ImporterAdmin extends Component {
           <input type="text" onChange={this.onChange} placeholder="Query.."/>
           <button type="import" onClick={this.handleClick}>Search</button>
         </form>
-
       </div>
     )
-
   }
-
 }
 
 function mapStateToProps(state) {

@@ -5,18 +5,8 @@ import {useLocation} from "react-router-dom";
 
 import { setRedirect, changePassword } from "../actions/Actions";
 
-import RealmService from '../services/RealmService'
-const realmService = new RealmService();
-
 export default function ChangePasswordView(props) {
   const dispatch = useDispatch()
-  const redirector = useSelector((state) => state.redirect)
-
-
-
-  // const search = useLocation().search;
-  // const token = new URLSearchParams(search).get('token');
-  // const tokenId = new URLSearchParams(search).get('tokenId');
 
   const [ newPassword, setNewPassword ] = React.useState("")
   const [ token, setToken ] = React.useState("")

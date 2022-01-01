@@ -142,7 +142,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     console.log("inspecting with prop id: " + id)
 
-    if (!id || id == "") {
+    if (!id || id === "") {
       await addRecipe(draftRecipe).then((rec) => {
         dispatch(setRedirect("/builder/" + draftRecipe._id))
         console.log("returned recipe is: " + rec)
@@ -160,7 +160,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
       console.log("passing this: " + JSON.stringify(rec))
 
       // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
-      let returnedRecipe = await updateRecipe(rec).then((resp) => {
+      await updateRecipe(rec).then((resp) => {
         console.log("recipe updated I think")
       });
     }
@@ -169,11 +169,11 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   const submitDeleteRecipe = async () => {
     if (window.confirm('Are you sure you wish to delete this recipe?')) {
       //If it's a new recipe, just clear it out.
-      if (draftRecipe._id == newID) {
+      if (draftRecipe._id === newID) {
         resetDraftRecipe()
       }
       else {
-        let deletedResponse = await deleteRecipe(draftRecipe).then((obj) => {
+        await deleteRecipe(draftRecipe).then((obj) => {
           dispatch(setRedirect("/builder/"))
           newID = new ObjectId()
           resetDraftRecipe()
@@ -265,7 +265,7 @@ export default function Builder(props) {
     let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
     let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
 
-    if ((draftRecipeIngredients != dataRecipeIngredients) || (draftRecipeDirections != dataRecipeDirections) || (draftRecipe.title != data.recipe.title)) {
+    if ((draftRecipeIngredients !== dataRecipeIngredients) || (draftRecipeDirections !== dataRecipeDirections) || (draftRecipe.title !== data.recipe.title)) {
       setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
 
       let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
