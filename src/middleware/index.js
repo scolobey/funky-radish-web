@@ -615,8 +615,10 @@ export function recipeImportMiddleware({ dispatch }) {
       if (action.type === IMPORT_RECIPE) {
         serverService.importRecipe(action.address)
         .then(res=> {
+          console.log("import res: " + JSON.stringify(res))
           let currentRealmUser = localStorage.getItem('realm_user')
           let newRecID = new ObjectId()
+
           let protoRecipe = {
             _id: newRecID,
             author: currentRealmUser,

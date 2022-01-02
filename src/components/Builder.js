@@ -9,7 +9,10 @@ import useRecipe from "../graphql/useRecipe";
 import { setRedirect, importRecipe, warning } from "../actions/Actions";
 
 import SVGService from '../services/SVGService'
+import ServerService from '../services/ServerService'
+
 const svgService = new SVGService();
+const serverService = new ServerService();
 
 let currentRealmUser = localStorage.getItem('realm_user');
 let fullRealmUser = JSON.parse(localStorage.getItem('realm_user_complete'));
@@ -180,7 +183,33 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const importFromAddress = async () => {
-    dispatch(importRecipe(importAddress))
+    // dispatch(importRecipe(importAddress))
+
+    serverService.importRecipe(importAddress)
+    .then(res=> {
+
+      let dirObject = {
+        create: res.directions.map((dir) => {return { _id: new ObjectId(), author: currentRealmUser, text: dir }}),
+        link: [newID]
+      }
+
+      let ingObject = {
+        create: res.ingredients.map((ing) => { return { _id: new ObjectId(), author: currentRealmUser, name: ing }}),
+        link: [newID]
+      }
+
+      setDraftRecipe({
+        _id: newID,
+        author: currentRealmUser,
+        title: res.title,
+        ingredients: ingObject,
+        directions: dirObject
+      });
+
+    })
+    .catch(err => {
+      return dispatch(warning("Import failed: " + err))
+    })
   }
 
   const mintNFT = () => {

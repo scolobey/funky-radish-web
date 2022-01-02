@@ -23,7 +23,6 @@ export default class ServerService {
   async importRecipe(address) {
     let encoded = encodeURIComponent(address);
     let endpoint = BASE_URL + "collector/inspect/" + encoded
-    console.log("callin it : " + encoded)
     let response = await fetch(endpoint, { method: 'get' })
 
     let data = await response.json()
