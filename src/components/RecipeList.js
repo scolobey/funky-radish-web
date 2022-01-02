@@ -27,23 +27,41 @@ function RecipeList(props) {
 
   return data?.recipes? (
     <div className="recipeView">
-    <ul>
-      {rec.map((recipe) =>
-        (recipe.author == props.author.id ?
-          <li key={recipe._id.toString()}>
-            <Link
-              className="recipeListing"
-              to={{ pathname: "/myrecipes/" + recipe._id}}
-            > {recipe.title} </Link>
-          </li> :
-          <li key={recipe._id.toString()}>
+
+    { rec.length > 0 ?  (
+      <ul>
+        {rec.map((recipe) =>
+          (recipe.author == props.author.id ?
+            <li key={recipe._id.toString()}>
               <Link
-                className="watchedRecipeListing"
+                className="recipeListing"
                 to={{ pathname: "/myrecipes/" + recipe._id}}
               > {recipe.title} </Link>
-          </li>)
-      )}
-    </ul>
+            </li> :
+            <li key={recipe._id.toString()}>
+                <Link
+                  className="watchedRecipeListing"
+                  to={{ pathname: "/myrecipes/" + recipe._id}}
+                > {recipe.title} </Link>
+            </li>)
+        )}
+      </ul> ) :
+      <div>
+        You don't have any recipes yet.
+        <br></br>
+        Let's fix that
+        <br></br>
+        <br></br>
+        You've got a few options.
+        <br></br>
+        <ul>
+          <li>Import a recipe from anywhere.</li>
+          <br></br>
+          <li>Ask a friend.</li>
+          <br></br>
+          <li>Or add your own recipe.</li>
+        </ul>
+      </div>}
     </div>
   ):(
     <div> Loading... </div>

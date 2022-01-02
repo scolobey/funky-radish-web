@@ -156,7 +156,8 @@ export function tokenCollectionMiddleware({ dispatch }) {
         let token = localStorage.getItem('recipe_claim_token');
 
         if (token && token.length > 0 ) {
-          // params.recipeClaimToken = token
+          console.log("there's a token: " + token)
+          params.claimRecipeToken = token
           localStorage.setItem('recipe_claim_token', "")
         }
 
@@ -168,6 +169,8 @@ export function tokenCollectionMiddleware({ dispatch }) {
         }
         formBody = formBody.join("&");
 
+        console.log("form body: " + formBody)
+
         dispatch(toggleLoader(true));
 
         fetch("https://funky-radish-api.herokuapp.com/authenticate", {
@@ -178,6 +181,7 @@ export function tokenCollectionMiddleware({ dispatch }) {
           body: formBody
         })
         .then(res => {
+
           return res.clone().json()
         })
         .then(data => {
@@ -615,7 +619,6 @@ export function recipeImportMiddleware({ dispatch }) {
       if (action.type === IMPORT_RECIPE) {
         serverService.importRecipe(action.address)
         .then(res=> {
-          console.log("import res: " + JSON.stringify(res))
           let currentRealmUser = localStorage.getItem('realm_user')
           let newRecID = new ObjectId()
 
