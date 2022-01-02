@@ -12,6 +12,7 @@ import SVGService from '../services/SVGService'
 const svgService = new SVGService();
 
 let currentRealmUser = localStorage.getItem('realm_user');
+let fullRealmUser = JSON.parse(localStorage.getItem('realm_user_complete'));
 
 // newID is rather confusing...
 // Because...
@@ -20,6 +21,8 @@ let currentRealmUser = localStorage.getItem('realm_user');
 let newID = new ObjectId()
 
 function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]) {
+
+  console.log(fullRealmUser.customData.admin)
 
   const dispatch = useDispatch()
 
@@ -217,6 +220,7 @@ export default function Builder(props) {
 
   const redirector = useSelector((state) => state.redirect)
 
+  //TODO: do something with the error?
   const { loading, error, data } = useRecipe(recipeIdentification);
 
   // We have this issue where a recipe being edited maintains a different state than what has been saved to Realm cloud.
@@ -310,20 +314,11 @@ export default function Builder(props) {
         Delete
       </button>
 
-      <button type="share" onClick={e => {
-          e.preventDefault();
-          console.log("share the recipe")
-          // Just create a token with recipe access.
-        }}>
-        Clear
-      </button>
-
       <button type="submit">
         SAVE
       </button>
 
       <div className="recipe">
-
         <div className="title">
           <input
             type="text"
@@ -366,12 +361,14 @@ export default function Builder(props) {
           />
         </div>
 
-        <button type="Create NFT" onClick={e => {
-            e.preventDefault();
-            mintNFT()
-          }}>
-          Create NFT
-        </button>
+        { fullRealmUser.customData.admin ?
+          <button type="Create NFT" onClick={e => {
+              e.preventDefault();
+              mintNFT()
+            }}>
+            Create NFT
+          </button>
+        : <div></div> }
 
       </div>
       </form>
