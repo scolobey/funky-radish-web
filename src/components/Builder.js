@@ -6,7 +6,7 @@ import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
-import { setRedirect, warning } from "../actions/Actions";
+import { setRedirect, importRecipe, warning } from "../actions/Actions";
 
 import SVGService from '../services/SVGService'
 const svgService = new SVGService();
@@ -20,14 +20,11 @@ let fullRealmUser = JSON.parse(localStorage.getItem('realm_user_complete'));
 // 2. Sometimes I capitalize D, sometimes lowercase d
 let newID = new ObjectId()
 
-function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]) {
-
-  console.log(fullRealmUser.customData.admin)
+function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress) {
 
   const dispatch = useDispatch()
 
   const createDraftRecipe = () => {
-    console.log("setting to newId")
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -38,8 +35,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const deleteDraftRecipe = () => {
-    console.log("setting to newId")
-
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -50,8 +45,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const resetDraftRecipe = () => {
-    console.log("setting to newId")
-
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -62,7 +55,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeTitle = (title) => {
-    console.log("title set: " + title)
     setDraftRecipe({
       _id: draftRecipe._id,
       author: currentRealmUser,
@@ -187,6 +179,10 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     }
   };
 
+  const importFromAddress = async () => {
+    dispatch(importRecipe(importAddress))
+  }
+
   const mintNFT = () => {
     console.log("let's try and create the SVG")
     svgService.generate(draftRecipe)
@@ -211,6 +207,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     submitDraftRecipe,
     setDraftRecipeComplete,
     submitDeleteRecipe,
+    importFromAddress,
     mintNFT
   };
 }
@@ -238,8 +235,8 @@ export default function Builder(props) {
   )
 
   const [ baseIngredients, setBaseIngredients ] = React.useState([])
-
   const [ baseDirections, setBaseDirections ] = React.useState([])
+  const [ importAddress, setImportAddress ] = React.useState("")
 
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
 
@@ -253,8 +250,9 @@ export default function Builder(props) {
     submitDraftRecipe,
     setDraftRecipeComplete,
     submitDeleteRecipe,
+    importFromAddress,
     mintNFT
-  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ]);
+  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress);
 
   if (loading) {
     return 'Loading...';
@@ -361,12 +359,36 @@ export default function Builder(props) {
           />
         </div>
 
-        { fullRealmUser.customData.admin ?
+        { !recipeIdentification || recipeIdentification.length === 0 ?
+          <div>
+            <div className="title">
+              <input
+                type="text"
+                placeholder="import url"
+                id="import"
+                onChange={(event) => {
+                  setImportAddress(event.target.value);
+                }}
+              />
+            </div>
+
+            <button type="import"
+              onClick={e => {
+                e.preventDefault();
+                importFromAddress()
+              }}>
+              Import
+            </button>
+          </div>
+          : <div></div>
+        }
+
+        { fullRealmUser && fullRealmUser.customData.admin ?
           <button type="Create NFT" onClick={e => {
               e.preventDefault();
               mintNFT()
             }}>
-            Create NFT
+            Mint NFT
           </button>
         : <div></div> }
 
