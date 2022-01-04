@@ -385,6 +385,24 @@ $black: black;
   color: black;
 }
 
+@media only screen and (max-width: 600px) {
+  .Recipe {
+    margin: 20px !important;
+    padding: 25px !important;
+  }
+
+  .Recipe ul {
+    padding: 10px !important;
+    width: 300px;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .Directions {
+    float: right !important;
+  }
+}
+
 .Recipe {
   background-color: $white;
   border-radius: 20px;
@@ -403,13 +421,32 @@ $black: black;
   position: relative;
 }
 
+@media only screen and (max-width: 600px) {
+  .Title .edit_button {
+    top: -15px !important;
+    right: 35px !important;
+    max-width: 50px;
+    max-height: 50px;
+  }
+}
+
 .Title .edit_button {
   position: absolute;
+  margin: 0px;
   top: -20px;
   right: 50px;
-  min-width: 70px;
-  min-height: 70px;
+  min-width: 30px;
+  min-height: 30px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .Title .share_button {
+    min-width: 5px;
+    min-height: 5px;
+    max-width: 30px;
+    max-height: 30px;
+  }
 }
 
 .Title .share_button {
@@ -437,7 +474,6 @@ $black: black;
 .Directions {
   width: 70%;
   padding-right: 40px;
-  float:right;
 }
 
 .Directions ul {
@@ -929,6 +965,11 @@ button[type=import]:hover {
 }
 
 // Internal recipe listings
+@media only screen and (max-width: 600px) {
+  .recipeView ul {
+    padding: 0px;
+  }
+}
 
 .recipeView {
   font-family: "Francois One";
@@ -1119,7 +1160,6 @@ input:checked + .slider:before {
   display: block;
   margin: auto;
   border-radius: 10px;
-  border-color: red;
 }
 
 .svg_preview img {

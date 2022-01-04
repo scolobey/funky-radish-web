@@ -30,12 +30,13 @@ export default function Popover(props) {
         </div>
 
         <br></br>
-        <form>
+        {props.url ? <form>
           <textarea
             ref={textAreaRef}
             defaultValue={props.url}
           />
-        </form>
+        </form> :
+        <div></div>}
 
         {
           /* Logical shortcut for only displaying the

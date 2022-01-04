@@ -43,7 +43,6 @@ export default function MyRecipe(props) {
         console.log(res)
         setActive(true)
         setShareLink('https://www.funkyradish.com/claimRecipe/' + res.token)
-
       })
   };
 
@@ -63,11 +62,12 @@ export default function MyRecipe(props) {
       <div className="Title">
         <b>{data.recipe.title}</b>
 
-        {(data.recipe.author === realmUser ? <img className="share_button" src="/share_icon.svg" alt="share" onClick={e => {
+        {(data.recipe.author === realmUser ?
+        <img className="share_button" src="/share_icon.svg" alt="share" onClick={e => {
           e.preventDefault();
           generateShareToken();
         }}/> : <div></div>)}
-        <img className="edit_button" src="/edit_icon.svg" height="30" alt="Funky Radish" onClick={e => {
+        <img className="edit_button" src="/edit_icon.svg" alt="Funky Radish" onClick={e => {
           e.preventDefault();
           segueToEdit();
         }}/>
