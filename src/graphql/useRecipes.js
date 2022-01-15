@@ -5,6 +5,7 @@ import RealmService from '../services/RealmService'
 const realmService = new RealmService();
 
 const useRecipes = (author, watching) => {
+  console.log("and then: " + watching)
   const { loading, error, data } = useAllRecipesInProject(author, watching);
 
   return { loading, error, data };
@@ -13,6 +14,8 @@ const useRecipes = (author, watching) => {
 export default useRecipes;
 
 function useAllRecipesInProject(author, watching) {
+
+  console.log("author: " + author + " watching: " + watching)
 
   const RECIPE_QUERY = gql`
     query Recipes($author: String!, $watching: [String!]){

@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { connect, useSelector } from 'react-redux'
+import { connect, useSelector, useDispatch } from 'react-redux'
 
 import useRecipes from "../graphql/useRecipes";
 import { Link } from 'react-router-dom';
 
-function RecipeList(props) {
+import { warning } from "../actions/Actions";
 
+function RecipeList(props) {
+  const dispatch = useDispatch()
   let list = []
 
-  if (props.author.customData && props.author.customData["recipes"]) {
-    list = props.author.customData["recipes"].map((item) => {
-      return item.$oid
-    })
+  if (props.author.customData && props.author.customData["recipes"] && props.author.customData["recipes"].length > 0) {
+    list = props.author.customData["recipes"]
   }
 
   const { loading, error, data } = useRecipes(props.author.id, list);
+
+  if(error) {
+    dispatch(warning(error.message))
+  }
+
+  if(data) {
+    console.log(data)
+  }
 
   let rec = data?.recipes.filter(function(recipe) {
     if(props.query && props.query.length > 0) {
