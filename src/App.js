@@ -14,7 +14,7 @@ import RoadMap from './components/RoadMap';
 import About from './components/About';
 import Support from './components/Support';
 import Builder from "./components/Builder";
-import Importer from "./components/Importer";
+import Importer from "./components/admin/Importer";
 
 import Recipes from "./components/Recipes.js";
 import Recipe from "./components/Recipe.js";
