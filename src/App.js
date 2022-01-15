@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom'
 import Navigation from './components/Navigation';
 
 import Admin from './components/admin/Admin';
-import ImporterAdmin from './components/admin/Importer';
 import GraphAdmin from './components/admin/Graph';
 import RecipesAdmin from './components/admin/Recipes';
 import UsersAdmin from './components/admin/Users';
@@ -59,11 +58,10 @@ class App extends Component {
           <Route path="/privacy/" component={PrivacyPolicy} />
           <Route path="/verify/:token?" component={Verification} />
           <Route path="/builder/:recipeId?" component={Builder} />
-          <Route path="/importer/" component={Importer} />
           <Route path="/recipes/:recipeTitle?" component={Recipe} />
           <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
           <Route path="/admin/" component={Admin} />
-          <Route path="/admin/importer" component={ImporterAdmin} />
+          <Route path="/admin/importer/:recipeId?" component={Importer} />
           <Route path="/admin/graph" component={GraphAdmin} />
           <Route path="/admin/recipes" component={RecipesAdmin} />
           <Route path="/admin/users" component={UsersAdmin} />
