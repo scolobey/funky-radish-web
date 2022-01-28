@@ -68,7 +68,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
-
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
       return { _id: new ObjectId(), author: currentRealmUser, name: ingredientName }
     });
@@ -88,7 +87,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeDirections = (directions) => {
-
     let dirList = directions.split(/\r?\n/).map(directionText => {
       return { _id: new ObjectId(), author: currentRealmUser, text: directionText }
     });
@@ -147,7 +145,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
       });
     }
     else {
-
       let rec = {
         recipeId: draftRecipe._id,
         oldIngredients: ing,
@@ -183,11 +180,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const importFromAddress = async () => {
-    // dispatch(importRecipe(importAddress))
-
     serverService.importRecipe(importAddress)
     .then(res=> {
-
       let dirObject = {
         create: res.directions.map((dir) => {return { _id: new ObjectId(), author: currentRealmUser, text: dir }}),
         link: [newID]
@@ -205,7 +199,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         ingredients: ingObject,
         directions: dirObject
       });
-
     })
     .catch(err => {
       return dispatch(warning("Import failed: " + err))

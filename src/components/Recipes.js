@@ -54,7 +54,7 @@ export class Recipes extends Component {
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Funky Radish Professional Recipe Repository</title>
+          <title>Funky Radish Recipe Repository</title>
           <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
         </Helmet>
 
@@ -65,24 +65,34 @@ export class Recipes extends Component {
         <div className="create-button"><a href="./builder">+</a></div>
       </div>
     ):([
-        <ul className="not-logged-in-banner">
-          <li>
-            <a href="./login">
-              <div className="login-text login-text--pushDown login-text--shadow">Login</div>
-            </a>
-          </li>
-          <li>
-            <a href="./signup">
-              <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
-            </a>
-          </li>
-        </ul>,
-        <div className="download-icons">
-          <h2>Download the apps...</h2>
-          <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
-          <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
+      <div className="not-logged-in-banner">
+        <div className="not-logged-in-cta">
+          <div className="landing-headline">
+            <h1>The recipe app for cooks</h1>
+            <h3 className="landing-sub">With FunkyRadish you can collect, store and share recipes from any device.</h3>
+          </div>
+
+          <a href="./login">
+            <div className="login-text login-text--pushDown login-text--shadow">Login</div>
+          </a>
+
+          <a href="./signup">
+            <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
+          </a>
+
+          <div className="download-icons">
+            <h2>Or download the apps...</h2>
+            <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
+            <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
+          </div>
         </div>
-      ]);
+
+        <div className="landing-mockup">
+          <img src="/ios-mockup.gif" alt="Funky Radish Mockup"/>
+        </div>
+      </div>,
+
+    ]);
   }
 }
 

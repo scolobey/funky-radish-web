@@ -90,6 +90,7 @@ class SearchBar extends Component {
   render() {
     return (
       <div className="RecipeSearchField">
+        {this.context.currentUser ? ("") : (<text className="search-cta">Find a recipe ></text>)}
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input
           type="text"
