@@ -29,15 +29,14 @@ function rootReducer(state, action) {
   }
 
   if (action.type === EXTERNAL_RECIPES_LOADED) {
-    console.log("external recipe loader: " + action)
+    console.log("external recipe loader: " + action.recipes)
 
     let recList = action.recipes.map(rec => {
        let recipeObject = {}
-       recipeObject["_id"] = rec.id
+       recipeObject["_id"] = rec._id
        recipeObject["title"] = rec.title
-       recipeObject["ingredients"] = rec.missedIngredients.map(ing => {
-         return ing.originalString
-       })
+       recipeObject["author"] = rec.author
+
        return recipeObject
     })
 
@@ -85,7 +84,7 @@ function rootReducer(state, action) {
     console.log("incoming recipe here: " + JSON.stringify(action.recipe))
     console.log("state recipe here: " + JSON.stringify(state.recipe))
     return Object.assign({}, state, {
-      recipe: action.recipe.recipe
+      recipe: action.recipe
     });
   }
 
@@ -100,11 +99,10 @@ function rootReducer(state, action) {
   }
 
   if (action.type === TOGGLE_LOADER) {
-    if (state.recipes.length < 1) {
-      return Object.assign({}, state, {
-        loader: action.loader
-      });
-    }
+    console.log("quit togglin your loader: " + action.loader)
+    return Object.assign({}, state, {
+      loader: action.loader
+    });
   }
 
   if (action.type === WARNING) {

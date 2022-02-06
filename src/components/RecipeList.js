@@ -4,7 +4,9 @@ import { connect, useSelector, useDispatch } from 'react-redux'
 import useRecipes from "../graphql/useRecipes";
 import { Link } from 'react-router-dom';
 
-import { warning } from "../actions/Actions";
+import { warning, toggleLoader } from "../actions/Actions";
+
+import Loader from "./Loader";
 
 function RecipeList(props) {
   const dispatch = useDispatch()
@@ -16,12 +18,18 @@ function RecipeList(props) {
 
   const { loading, error, data } = useRecipes(props.author.id, list);
 
+  if (loading) {
+    console.log("loading...")
+    dispatch(toggleLoader(true))
+  }
+
   if(error) {
     dispatch(warning(error.message))
   }
 
   if(data) {
-    console.log(data)
+    console.log("data arrived")
+    dispatch(toggleLoader(false))
   }
 
   let rec = data?.recipes.filter(function(recipe) {
@@ -72,7 +80,7 @@ function RecipeList(props) {
       </div>}
     </div>
   ):(
-    <div> Loading... </div>
+    <div></div>
   );
 }
 

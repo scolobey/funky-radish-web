@@ -7,8 +7,10 @@ import { Helmet } from "react-helmet";
 import RecipeList from "./RecipeList";
 import ExternalRecipeList from "./ExternalRecipeList";
 
+import RecipeRequestView from "./RecipeRequestView";
+
 import { RealmApolloContext } from "../graphql/RealmApolloProvider";
-import useRecipes from "../graphql/useRecipes";
+// import useRecipes from "../graphql/useRecipes";
 
 import RealmService from '../services/RealmService'
 const realmService = new RealmService();
@@ -17,6 +19,9 @@ export class Recipes extends Component {
 
   constructor(props) {
     super(props);
+
+    let recipeQuery = props.match.params.query;
+    console.log("recipes query: " + recipeQuery);
 
     let user = localStorage.getItem('user');
     let author = localStorage.getItem('realm_user');
@@ -41,7 +46,6 @@ export class Recipes extends Component {
 
     //TODO: MAybe set this to !realmUser and dump the first half
     if (realmUser) {
-      console.log("setting current user: " + JSON.stringify(realmUser))
       this.context.setCurrentUser(realmUser)
     }
     else {
@@ -54,8 +58,8 @@ export class Recipes extends Component {
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Funky Radish Recipe Repository</title>
-          <meta name="description" content= "A recipe app. Find, share and store your favorite culinary recipes." />
+          <title>Funky Radish</title>
+          <meta name="description" content= "With FunkyRadish you can collect, store and share recipes from any device." />
         </Helmet>
 
         <RecipeList author={this.state.author}/>
@@ -64,35 +68,46 @@ export class Recipes extends Component {
 
         <div className="create-button"><a href="./builder">+</a></div>
       </div>
-    ):([
-      <div className="not-logged-in-banner">
-        <div className="not-logged-in-cta">
-          <div className="landing-headline">
-            <h1>The recipe app for cooks</h1>
-            <h3 className="landing-sub">With FunkyRadish you can collect, store and share recipes from any device.</h3>
+    ):(
+      this.props.externalRecipes? (
+        this.props.externalRecipes.length > 0 ? ([
+          <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>,
+          <RecipeRequestView/>
+        ]):(
+          <RecipeRequestView/>
+        )
+      ):(
+        <div className="not-logged-in-banner">
+          <div className="not-logged-in-cta">
+            <div className="landing-headline">
+              <div className='title-wrapper'>
+                <h1>The recipe app for cooks...</h1>
+                <h3 className="landing-sub">With FunkyRadish you can collect, store and share recipes from any device.</h3>
+              </div>
+            </div>
+
+            <a href="./login">
+              <div className="login-text login-text--pushDown login-text--shadow">Login</div>
+            </a>
+
+            <a href="./signup">
+              <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
+            </a>
+
+            <div className="download-icons">
+              <h2>Or download the apps...</h2>
+              <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
+              <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
+            </div>
           </div>
 
-          <a href="./login">
-            <div className="login-text login-text--pushDown login-text--shadow">Login</div>
-          </a>
-
-          <a href="./signup">
-            <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
-          </a>
-
-          <div className="download-icons">
-            <h2>Or download the apps...</h2>
-            <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
-            <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
+          <div className="landing-mockup">
+            <img src="/ios-mockup.gif" alt="Funky Radish Mockup"/>
           </div>
-        </div>
 
-        <div className="landing-mockup">
-          <img src="/ios-mockup.gif" alt="Funky Radish Mockup"/>
         </div>
-      </div>,
-
-    ]);
+      )
+    );
   }
 }
 

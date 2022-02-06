@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router-dom'
 
+import './App.scss';
+
 import Navigation from './components/Navigation';
 
 import Admin from './components/admin/Admin';
@@ -30,8 +32,6 @@ import Redirector from './components/Redirector';
 
 import Minter from './components/Minter';
 
-import './App.scss';
-
 import ReactGA from 'react-ga';
 
 function initializeReactGA() {
@@ -58,7 +58,7 @@ class App extends Component {
           <Route path="/privacy/" component={PrivacyPolicy} />
           <Route path="/verify/:token?" component={Verification} />
           <Route path="/builder/:recipeId?" component={Builder} />
-          <Route path="/recipes/:recipeTitle?" component={Recipe} />
+          <Route path="/recipe/:recipeTitle?" component={Recipe} />
           <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
           <Route path="/admin/" component={Admin} />
           <Route path="/admin/importer/:recipeId?" component={Importer} />

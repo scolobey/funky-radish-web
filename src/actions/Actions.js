@@ -34,7 +34,8 @@ import {
   SEND_PASSWORD_RESET_EMAIL,
   CHANGE_PASSWORD,
   RESEND_VERIFICATION,
-  CLAIM_RECIPE
+  CLAIM_RECIPE,
+  REQUEST_RECIPE
 } from "../constants/action-types"
 
 /* action creators */
@@ -184,4 +185,8 @@ export function sendPasswordResetEmail(email) {
 
 export function claimRecipe(payload) {
   return { type: CLAIM_RECIPE, payload }
+};
+
+export function requestRecipe(payload) {
+  return { type: REQUEST_RECIPE, payload }
 };

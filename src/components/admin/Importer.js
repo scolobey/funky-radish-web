@@ -262,7 +262,7 @@ export default function Builder(props) {
   } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress);
 
   if (loading) {
-    return 'Loading...';
+    return 'BLoading...';
   }
 
   if (data && !recipeInProgress) {

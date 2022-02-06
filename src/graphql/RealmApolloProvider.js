@@ -23,6 +23,7 @@ const createRealmApolloClient = (app) => {
       if (!app.currentUser) {
         throw new Error(`Must be logged in to get recipes: ` + app);
       }
+
       // Refreshing a user's custom data also refreshes their access token
       await app.currentUser.refreshCustomData();
       options.headers.Authorization = `Bearer ${app.currentUser.accessToken}`;

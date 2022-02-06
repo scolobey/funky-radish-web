@@ -19,7 +19,7 @@ class ExternalRecipeListView extends Component {
               className="externalRecipeListing"
               onClick={this.handleClick}
               to={{
-                pathname: "/recipes/sp-" + recipe._id,
+                pathname: "/recipe/" + recipe.title.toLowerCase().replaceAll(' ', '-'),
                 state: {
                   title: recipe.title,
                   ingredients: recipe.ingredients

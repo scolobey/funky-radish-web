@@ -3,7 +3,8 @@
 $grayLight	: #cac6c5;
 $offWhite	: #e7e7e7;
 $white: rgba(255,255,255,1);
-$color1	: rgb(203, 28, 92);
+$linkHoverColorBlue	: rgb(64,185,222);
+$linkHoverColorGreen	: rgb(141, 255, 64);
 $specialBlue	: rgb(100,224,215);
 $specialGreen: rgba(162,255,177,1);
 $black: black;
@@ -936,21 +937,25 @@ button[type=import]:hover {
 
 .externalRecipeView {
   font-family: "Francois One";
-  display: inline-block;
   padding: 10px;
+  width: 100%;
+  color: black;
 }
 
 .externalRecipeView li {
   list-style-type: none;
+  display: inline-grid;
 }
 
 .externalRecipeView a {
   text-decoration: none;
 }
 
-.externalRecipeListing {
-  display: inline-block;
+.externalRecipeView a:visited {
+  color: black;
+}
 
+.externalRecipeListing {
   text-align: center;
   background: $white;
   border-style: solid;
@@ -961,10 +966,12 @@ button[type=import]:hover {
   padding: 10px;
   margin: 10px;
   cursor: pointer;
+  background-color: $specialBlue;
+  color: black;
 }
 
 .externalRecipeView a:hover {
-  box-shadow: 0 0 2px red;
+  box-shadow: 0 0 6px $linkHoverColorGreen;
 }
 
 // Internal recipe listings
@@ -1023,7 +1030,7 @@ button[type=import]:hover {
 }
 
 .recipeView a:hover {
-  box-shadow: 0 0 2px red;
+  box-shadow: 0 0 2px $linkHoverColorBlue;
 }
 
 .switch {
@@ -1225,7 +1232,6 @@ input:checked + .slider:before {
 .landing-headline {
   padding-left: 0px;
   padding-right: 20px;
-
   font-size: 30px;
   margin-bottom: 0px;
   padding-bottom: 8px;
@@ -1242,6 +1248,7 @@ input:checked + .slider:before {
   color: rgba(0,0,0,.75);
   font-size: 36px;
   line-height: 36px;
+  padding-bottom: 25px;
   margin: auto;
   max-width: 600px;
 }
@@ -1306,11 +1313,14 @@ input:checked + .slider:before {
     margin: 0;
   }
 
-  // .landing-headline {
-  //   padding-left: 0px;
-  //   padding-right: 20px;
-  //   font-size: 30px;
-  // }
+  .landing-headline {
+    font-size: 30px;
+    line-height: 65px;
+  }
+
+  .landing-headline h3{
+    font-size: 30px;
+  }
 
   .search-cta {
     font-size: 8px;
@@ -1324,4 +1334,78 @@ input:checked + .slider:before {
   .download-icons a {
     height: 40px;
   }
+}
+
+.recipe-request-container {
+  margin: auto;
+  padding: 20px;
+  width: 400px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8);
+  border-width: thin;
+  box-shadow: 0 0 8px;
+  border-radius: 10px;
+  background-color: white;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Francois One';
+}
+
+.recipe-request-container input {
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.recipe-request-container label {
+  font-size: 12px
+}
+
+.recipe-request-container input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.recipe-request-container button {
+  width: 100%;
+  background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%);
+  text-transform: uppercase;
+  color: $white;
+  padding: 14px 20px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.recipe-request-container button:hover {
+  background-image: linear-gradient(to right, #84fab0 12%, #8fd3f4 84%);
+}
+
+.finally {
+  color: red;
+  font-size: 10px;
+}
+
+.title-wrapper {
+  display: inline;
+}
+
+.loader {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  color: red;
+  font-family: "VT323";
+  font-size: 45px;
+  -webkit-animation: flickerAnimation 2s infinite;
+  -moz-animation: flickerAnimation 2s infinite;
+  -o-animation: flickerAnimation 2s infinite;
+   animation: flickerAnimation 2s infinite;
 }

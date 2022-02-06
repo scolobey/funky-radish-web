@@ -18,7 +18,8 @@ import {
   CHANGE_PASSWORD,
   RESEND_VERIFICATION,
   GET_RECIPE_TOKEN,
-  CLAIM_RECIPE
+  CLAIM_RECIPE,
+  REQUEST_RECIPE
 } from "../constants/action-types";
 
 import {
@@ -41,7 +42,8 @@ import {
   setImportQueue,
   setSearchSuggestions,
   updateUserRecord,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  requestRecipe
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
@@ -205,7 +207,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
               dispatch(updateUserRecord(userPayload));
 
               dispatch(setUsername(action.authData.email));
-              dispatch(warning("Welcome! Hold on while we collect your recipes."));
               dispatch(toggleLoader(false));
 
               return dispatch(setRedirect("/"));
@@ -406,37 +407,27 @@ export function getRecipeMiddleware({dispatch}) {
     return function(action) {
       if (action.type === GET_RECIPE) {
 
-        console.log("fetching recipe: " + action.recipeTitle)
+        console.log("fetching recipe: " + action.recipeTitle.replaceAll('-', ' '))
 
-        // TODO: This isn't the prettiest solution, but it would take some thought to find a better one.
-        // Currently, prepending with '-sp' means it's a recipe from the spoonacular API.
-        // Otherwise, it's a recipe that's in your Realm account, and so we don't have to hit the funkyradish api
-
-        if (action.recipeTitle.substring(0, 3) === "sp-") {
-          fetch("https://funky-radish-api.herokuapp.com/recipes/" + action.recipeTitle , {
-            method: 'get'
-          })
-          .then(response => response.json())
-          .then(json => {
-            if (json.error.length > 0) {
-              dispatch(warning(json.error))
-              return dispatch(toggleLoader(false));
-            }
-            else {
-              return dispatch(setRecipe(json));
-            }
-          })
-          .catch(error => {
-            console.log("a error here: " + error)
-            return dispatch(warning("the error"));
-          });
-        }
-        else {
-          console.log("here we must retrieve the gql")
-
-          const { loading, data } = useRecipe();
-        }
-
+        fetch("https://funky-radish-api.herokuapp.com/recipe/" + action.recipeTitle , {
+          method: 'get'
+        })
+        .then(response => response.json())
+        .then(json => {
+          if (json.error && json.error.length > 0) {
+            console.log("error on the calls.")
+            dispatch(warning(json.error))
+            return dispatch(toggleLoader(false));
+          }
+          else {
+            console.log("setting recipe now.")
+            return dispatch(setRecipe(json));
+          }
+        })
+        .catch(error => {
+          console.log("a error here: " + error)
+          return dispatch(warning("the error"));
+        });
       }
       return next(action);
     };
@@ -552,14 +543,16 @@ export function externalSearchMiddleware({ dispatch }) {
 
         console.log("calling search: " + action.query)
 
+        if (action.query.trim().length < 1) {
+          return dispatch(externalRecipesLoaded([]))
+        }
+
         serverService.searchRecipes(action.query)
         .then(res=> {
-          console.log("recipes: ", res.recipes)
-          // dispatch(toggleLoader(false))
-          return dispatch(externalRecipesLoaded(res.recipes.results))
+          console.log("recipes: ", res)
+          return dispatch(externalRecipesLoaded(res))
         })
         .catch(err => {
-          // dispatch(toggleLoader(false))
           console.log("here's the error: " + err)
           return dispatch(warning('Error: ' + err))
         })
@@ -849,6 +842,60 @@ export function claimRecipelMiddleware({ dispatch }) {
         })
         .catch(error => dispatch(warning(error)));
       }
+      return next(action);
+    };
+  };
+}
+
+export function requestRecipeMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === REQUEST_RECIPE) {
+
+        // TODO: validateEmail
+
+        // switch (auth.validateCredentials(action.user.email, action.user.password)) {
+        //   case 1:
+        //     break;
+        //   case 2:
+        //     return dispatch(warning('Password needs 8 characters and a number.'));
+        //   case 3:
+        //     return dispatch(warning('Invalid email.'));
+        //   default:
+        //     return dispatch(warning('Unidentified validation error.'));
+        // }
+
+        var params = {
+          query: action.payload.query,
+          email: action.payload.email
+        };
+
+        console.log("requesting: " + params)
+
+        fetch("https://funky-radish-api.herokuapp.com/requestRecipe", {
+          method: 'post',
+          headers: new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }),
+          body: JSON.stringify(params)
+        })
+        .then(res=> {
+          return res.clone().json()
+        })
+        .then(data => {
+          if (data.message === "Email sent.") {
+            return dispatch(warning("Request sent. Expect a response within 24 hours."))
+          } else {
+            return dispatch(warning(data.message))
+          }
+        })
+        .catch(err => {
+          return dispatch(warning('Error: ' + err))
+        })
+      }
+
       return next(action);
     };
   };

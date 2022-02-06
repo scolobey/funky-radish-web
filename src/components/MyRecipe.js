@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux'
 
+import { warning, toggleLoader } from "../actions/Actions";
+
 import useRecipe from "../graphql/useRecipe";
 import EditRecipe from "../graphql/editRecipe";
 import Builder from "./Builder";
 import Popover from "./Popover";
+import Loader from "./Loader";
 
 import ServerService from '../services/ServerService'
 
@@ -30,8 +33,18 @@ export default function MyRecipe(props) {
 
   if (recId == null || recId == 'undefined') return <Builder />
 
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
+  if (loading) {
+    dispatch(toggleLoader(true))
+  };
+
+  if (error) {
+    dispatch(warning("recipe loading error: " + error.message))
+    dispatch(toggleLoader(false))
+  };
+
+  if (data) {
+    dispatch(toggleLoader(false))
+  };
 
   const segueToEdit = () => {
     dispatch(setRedirect("/builder/" + recId))
@@ -51,7 +64,7 @@ export default function MyRecipe(props) {
     setActive(false)
   };
 
-  return (
+  return data? (
     <div className="Recipe">
       <Helmet>
         <meta charSet="utf-8" />
@@ -108,5 +121,7 @@ export default function MyRecipe(props) {
       (<div></div>)}
 
     </div>
+  ) : (
+    <div></div>
   );
 }

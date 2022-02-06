@@ -19,7 +19,8 @@ import {
   sendPasswordResetEmailMiddleware,
   updateUserPasswordMiddleware,
   resendVerificationMiddleware,
-  claimRecipelMiddleware
+  claimRecipelMiddleware,
+  requestRecipeMiddleware
 } from "../middleware";
 
 import thunk from "redux-thunk";
@@ -52,6 +53,7 @@ const store = createStore(
       updateUserPasswordMiddleware,
       resendVerificationMiddleware,
       claimRecipelMiddleware,
+      requestRecipeMiddleware,
       thunk
   ))
 );

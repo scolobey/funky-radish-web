@@ -4,6 +4,10 @@ import { debounce } from 'lodash';
 import { useLocation, Switch } from 'react-router-dom';
 import { search, autocomplete, setSearchSuggestions, externalRecipeSearch, setRedirect } from "../actions/Actions";
 
+import { RealmApolloContext } from "../graphql/RealmApolloProvider";
+
+// import useRecipeSearch from "../graphql/useRecipes";
+
 import { useHistory } from 'react-router-dom'
 
 class SearchBar extends Component {
@@ -12,8 +16,8 @@ class SearchBar extends Component {
     super(props)
 
     this.state = {
-      cursor: 0,
-      suggestions: []
+      suggestions: [],
+      cursor: 0
     };
 
     this.throttleHandleChange = debounce(this.throttleHandleChange.bind(this), 100)
@@ -33,20 +37,16 @@ class SearchBar extends Component {
 
   handleKeyDown(event) {
     if (event.keyCode === 13) { // Enter
-      // TODO: It would be nice to have some more clarity in the indices here.
-      // It gets confusing using index 0 to mean that no selection has been made.
-
+      // cursor can be used to select search suggestion.
       if (this.state.cursor === 0) {
         if (event.target.value === "") {
-          return
+          this.props.externalRecipeSearch('')
         }
         else {
-          // this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '-'))
-          this.props.externalRecipeSearch()
-          this.props.setSearchSuggestions([])
+          console.log("searching")
+          this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '-'))
 
-          // If you're not on home -> redirect
-          console.log("query launched: " + window.location.pathname)
+          // If you're not at home -> redirect
           if (window.location.pathname != "/") {
             console.log("on the rec page. Redirecting now.")
             this.props.setRedirect("/")
@@ -55,13 +55,13 @@ class SearchBar extends Component {
       }
       else {
         // this.props.externalRecipeSearch(this.props.suggestions[this.state.cursor-1].title.replace(/\s+/g, '-'))
-        this.props.externalRecipeSearch()
-        event.target.value = this.props.suggestions[this.state.cursor-1].title
-
-        this.setState({
-          cursor: 0
-        });
-
+        // this.props.externalRecipeSearch()
+        // event.target.value = this.props.suggestions[this.state.cursor-1].title
+        //
+        // this.setState({
+        //   cursor: 0
+        // });
+        //
         this.props.setSearchSuggestions([])
       }
     }
@@ -90,7 +90,7 @@ class SearchBar extends Component {
   render() {
     return (
       <div className="RecipeSearchField">
-        {this.context.currentUser ? ("") : (<text className="search-cta">Find a recipe ></text>)}
+        {this.context.currentUser ? ("") : (<p className="search-cta">Find a recipe -></p>)}
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input
           type="text"
@@ -103,6 +103,8 @@ class SearchBar extends Component {
     );
   }
 }
+
+SearchBar.contextType = RealmApolloContext;
 
 function mapStateToProps(state) {
   return {

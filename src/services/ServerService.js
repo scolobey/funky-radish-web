@@ -29,8 +29,9 @@ export default class ServerService {
     return data;
   }
 
+  // https://funky-radish-api.herokuapp.com/recipes/cookies
   async searchRecipes(query) {
-    let endpoint = BASE_URL + "collector?query=" + query
+    let endpoint = BASE_URL + "recipes/" + query
 
     let response = await fetch(endpoint, { method: 'get' })
 
@@ -39,6 +40,7 @@ export default class ServerService {
     return data;
   }
 
+  // TODO: Probably deprecated
   searchAutocomplete(query) {
     return new Promise(function(resolve, reject) {
 

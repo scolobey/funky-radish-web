@@ -1,90 +1,55 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom'
+import React, { useState } from 'react';
 import { Helmet } from "react-helmet";
+import { useSelector, useDispatch } from 'react-redux'
+import { getRecipe } from "../actions/Actions";
+import Loader from "./Loader";
 
-import { getRecipe, setRedirect } from "../actions/Actions";
+export default function Recipe(props) {
 
-class RecipeView extends Component {
+  let recipeIdentifier = props.match.params.recipeTitle
 
-  constructor(props) {
-    super(props);
-    //TODO: This probably creates a problem where if recipes share a title, everything breaks.
-    let recipeTitle = props.match.params.recipeTitle;
+  const dispatch = useDispatch()
+  var recipe = useSelector((state) => state.recipe)
 
-    this.state = {
-      title: props.location.state.title,
-      ingredients: props.location.state.ingredients,
-      recID: recipeTitle
-    };
+  React.useEffect(() => {
+    dispatch(getRecipe(recipeIdentifier))
+  }, []);
 
-    this.props.getRecipe(recipeTitle)
-  }
+  return recipe? (
+    <div className="Recipe">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{recipe? recipe.title : ""}</title>
+        <meta name="description" content= {recipe? "Recipe for " + recipe.title : "Recipe view page"} />
+      </Helmet>
 
-  render() {
-    return this.props.recipe ? (
-      <div className="Recipe">
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>{this.state.title} </title>
-          <meta name="description" content= {"Recipe for: " + this.state.title + ". "} />
-        </Helmet>
-
-
-          <div className="Title">
-            <b>{this.state.title}</b>
-          </div>
-          <div className="Ingredients">
-            {this.state.ingredients ? (
-              <ul>
-                {this.state.ingredients.map((ingredient, index) => (
-                  <li key={index}>
-                    {ingredient}
-                  </li>
-                ))}
-              </ul>
-            ):
-            (<div></div>)}
-          </div>
-          <div className="Directions">
-            <ul>
-              {this.props.recipe.map((direction, index) => (
-                <li key={index}>
-                  {direction}
-                </li>
-              ))}
-            </ul>
-          </div>
-
+      <div className="Title">
+        <b>{recipe? recipe.title  : ""}</b>
       </div>
-    ) : (
-      <div className="Recipe">
 
-        <b>{this.state.title}</b>
-
-        <div className="Ingredients">
-          <ul>
-            {this.state.ingredients.map((ingredient, index) => (
-              <li key={index}>
-                {ingredient}
-              </li>
-            ))}
-          </ul>
-        </div>
-
+      <div className="Ingredients">
+        <ul>
+          {recipe.ingredients.map((ingredient, index) => (
+            <li key={index._id}>
+              {ingredient.name}
+            </li>
+          ))}
+        </ul>
       </div>
-    );
-  }
+
+      <div className="Directions">
+        <ul>
+          {recipe.directions.map((direction, index) => (
+            <li key={direction._id}>
+              {direction.text}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  ) :
+  (
+    <Loader loader='true'/>
+  );
 }
-
-function mapStateToProps(state) {
-  return {
-    recipe: state.recipe,
-    title: state.title,
-    ingredients: state.ingredients
-  };
-}
-
-const Recipe = connect(mapStateToProps, { getRecipe, setRedirect })(RecipeView);
-
-export default withRouter(Recipe);
