@@ -97,7 +97,6 @@ class AuthView extends Component {
   }
 
   render() {
-
       return (
         <div className='auth-container'>
           <div className='auth'>

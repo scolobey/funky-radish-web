@@ -2,6 +2,9 @@ import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux'
 import { warning, requestRecipe } from "../actions/Actions";
 
+import RealmService from '../services/RealmService'
+const realmService = new RealmService();
+
 export default function RecipeRequestView() {
 
   const [query, setQuery] = useState('');
@@ -23,7 +26,6 @@ export default function RecipeRequestView() {
 
     dispatch(requestRecipe(payload))
 
-
     dispatch(warning('Recipe requested. Thank You!'))
     setQuery('')
     setEmail('')
@@ -36,6 +38,12 @@ export default function RecipeRequestView() {
   const onChangeQuery = (e) => {
     setQuery(e.target.value )
   }
+
+  React.useEffect(() => {
+    let em = realmService.getUser()
+    let qu = query
+     console.log("Set the things if they're there: " + em + " , " + qu)
+  },[])
 
   return (
     <div className="recipe-request-container">

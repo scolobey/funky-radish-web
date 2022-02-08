@@ -550,6 +550,15 @@ export function externalSearchMiddleware({ dispatch }) {
         serverService.searchRecipes(action.query)
         .then(res=> {
           console.log("recipes: ", res)
+          if(res.length == 0) {
+            console.log("Sending an email to myself.")
+            let payload = {
+              query: action.query,
+              email: 'no email'
+            }
+
+            dispatch(requestRecipe(payload))
+          }
           return dispatch(externalRecipesLoaded(res))
         })
         .catch(err => {
@@ -885,8 +894,10 @@ export function requestRecipeMiddleware({ dispatch }) {
           return res.clone().json()
         })
         .then(data => {
-          if (data.message === "Email sent.") {
+          if (data.message === "Email sent." && params.email != 'no email') {
             return dispatch(warning("Request sent. Expect a response within 24 hours."))
+          } else if (params.email == 'no email'){
+            return
           } else {
             return dispatch(warning(data.message))
           }

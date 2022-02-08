@@ -9,6 +9,7 @@ import { warning, toggleLoader } from "../actions/Actions";
 import Loader from "./Loader";
 
 function RecipeList(props) {
+
   const dispatch = useDispatch()
   let list = []
 
@@ -19,16 +20,17 @@ function RecipeList(props) {
   const { loading, error, data } = useRecipes(props.author.id, list);
 
   if (loading) {
-    console.log("loading...")
+    console.log("loading: " + loading)
     dispatch(toggleLoader(true))
   }
 
   if(error) {
+    console.log("error: " + error)
     dispatch(warning(error.message))
   }
 
   if(data) {
-    console.log("data arrived")
+    console.log("data")
     dispatch(toggleLoader(false))
   }
 
@@ -41,7 +43,7 @@ function RecipeList(props) {
   })
   ?? []
 
-  return data?.recipes? (
+  return (data?.recipes) ? (
     <div className="recipeView">
 
     { rec.length > 0 ?  (
@@ -61,26 +63,27 @@ function RecipeList(props) {
                 > {recipe.title} </Link>
             </li>)
         )}
-      </ul> ) :
+      </ul> ) : (
       <div>
-        You don't have any recipes yet.
-        <br></br>
-        Let's fix that
-        <br></br>
-        <br></br>
-        You've got a few options.
-        <br></br>
-        <ul>
-          <li>Import a recipe from anywhere.</li>
-          <br></br>
-          <li>Ask a friend.</li>
-          <br></br>
-          <li>Or add your own recipe.</li>
-        </ul>
-      </div>}
+        { (props.query && props.query.length > 0) ?  (
+          <div>
+            Your book doesn't have any matching recipes. Hit enter on the search to check the FunkyRadish DB.
+            <br></br>
+            Or, click that '+' button at the lower right to add your own recipes.
+          </div>
+        ) : (
+          <div>
+            You don't have any recipes yet. Try search to check the FunkyRadish DB.
+            <br></br>
+            Or, click that '+' button at the lower right to add your own recipes.
+          </div>
+        ) }
+      </div>
+      ) }
     </div>
   ):(
-    <div></div>
+    <div>
+    </div>
   );
 }
 
