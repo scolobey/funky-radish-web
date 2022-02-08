@@ -1282,7 +1282,7 @@ input:checked + .slider:before {
   display: inline;
   padding-right: 25px;
   font-family: "VT323";
-  font-size: 22px;
+  font-size: 26px;
   -webkit-animation: flickerAnimation 2s infinite;
   -moz-animation: flickerAnimation 2s infinite;
   -o-animation: flickerAnimation 2s infinite;
@@ -1314,7 +1314,7 @@ input:checked + .slider:before {
   }
 
   .landing-headline {
-    font-size: 30px;
+    font-size: 24px;
     line-height: 65px;
   }
 
@@ -1333,6 +1333,10 @@ input:checked + .slider:before {
 
   .download-icons a {
     height: 40px;
+  }
+
+  .search-cta {
+    font-size: 12px;
   }
 }
 
