@@ -60,7 +60,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   const setDraftRecipeTitle = (title) => {
     setDraftRecipe({
       _id: draftRecipe._id,
-      author: currentRealmUser,
+      author: draftRecipe.author,
       title: title,
       ingredients: draftRecipe.ingredients,
       directions: draftRecipe.directions
@@ -69,7 +69,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
   const setDraftRecipeIngredients = (ingredients) => {
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
-      return { _id: new ObjectId(), author: currentRealmUser, name: ingredientName }
+      return { _id: new ObjectId(), author: draftRecipe.author, name: ingredientName }
     });
 
     let ingObject = {
@@ -79,7 +79,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     setDraftRecipe({
       _id: draftRecipe._id,
-      author: currentRealmUser,
+      author: draftRecipe.author,
       title: draftRecipe.title,
       ingredients:  ingObject,
       directions: draftRecipe.directions
@@ -88,7 +88,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
   const setDraftRecipeDirections = (directions) => {
     let dirList = directions.split(/\r?\n/).map(directionText => {
-      return { _id: new ObjectId(), author: currentRealmUser, text: directionText }
+      return { _id: new ObjectId(), author: draftRecipe.author, text: directionText }
     });
 
     let dirObject = {
@@ -98,7 +98,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     setDraftRecipe({
       _id: draftRecipe._id,
-      author: currentRealmUser,
+      author: draftRecipe.author,
       title: draftRecipe.title,
       ingredients: draftRecipe.ingredients,
       directions: dirObject
@@ -107,7 +107,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
   const setDraftRecipeComplete = (id, title, ingredients, directions) => {
     let dirList = directions.split(/\r?\n/).map(directionText => {
-      return { _id: new ObjectId(), author: currentRealmUser, text: directionText }
+      return { _id: new ObjectId(), author: draftRecipe.author, text: directionText }
     });
 
     let dirObject = {
@@ -116,7 +116,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     }
 
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
-      return { _id: new ObjectId(), author: currentRealmUser, name: ingredientName }
+      return { _id: new ObjectId(), author: draftRecipe.author, name: ingredientName }
     });
 
     let ingObject = {
@@ -126,7 +126,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     setDraftRecipe({
       _id: id,
-      author: currentRealmUser,
+      author: draftRecipe.author,
       title: title,
       ingredients: ingObject,
       directions: dirObject

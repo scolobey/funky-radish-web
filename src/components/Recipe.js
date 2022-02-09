@@ -30,8 +30,8 @@ export default function Recipe(props) {
       <div className="Ingredients">
         <ul>
           {recipe.ingredients.map((ingredient, index) => (
-            <li key={index._id}>
-              {ingredient.name}
+            <li key={ingredient._id}>
+              {ingredient.name} 
             </li>
           ))}
         </ul>

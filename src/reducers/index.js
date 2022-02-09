@@ -29,7 +29,6 @@ function rootReducer(state, action) {
   }
 
   if (action.type === EXTERNAL_RECIPES_LOADED) {
-    console.log("external recipe loader: " + action.recipes)
 
     let recList = action.recipes.map(rec => {
        let recipeObject = {}
@@ -41,6 +40,8 @@ function rootReducer(state, action) {
     })
 
     console.log("setting external recipes to: ", recList)
+
+    // set redirect...
 
     return Object.assign({}, state, {
       externalRecipes: recList
@@ -81,8 +82,6 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_RECIPE ) {
-    console.log("incoming recipe here: " + JSON.stringify(action.recipe))
-    console.log("state recipe here: " + JSON.stringify(state.recipe))
     return Object.assign({}, state, {
       recipe: action.recipe
     });
@@ -118,6 +117,7 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_REDIRECT) {
+    console.log("redirect set: " + action.redirect)
     return Object.assign({}, state, {
       redirect: action.redirect
     });
