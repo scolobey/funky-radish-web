@@ -53,13 +53,13 @@ function RecipeList(props) {
             <li key={recipe._id.toString()}>
               <Link
                 className="recipeListing"
-                to={{ pathname: "/myrecipes/" + recipe._id}}
+                to={{ pathname: "/recipe/" + recipe._id}}
               > {recipe.title} </Link>
             </li> :
             <li key={recipe._id.toString()}>
                 <Link
                   className="watchedRecipeListing"
-                  to={{ pathname: "/myrecipes/" + recipe._id}}
+                  to={{ pathname: "/recipe/" + recipe._id}}
                 > {recipe.title} </Link>
             </li>)
         )}

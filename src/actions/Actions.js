@@ -83,8 +83,8 @@ export function getRecipes(token) {
   return { type: GET_RECIPES, token }
 };
 
-export function getRecipe(recipeTitle) {
-  return { type: GET_RECIPE, recipeTitle }
+export function getRecipe(recipeIdentifier) {
+  return { type: GET_RECIPE, recipeIdentifier }
 };
 
 export function addDatabaseRecipe(recipe) {

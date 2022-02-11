@@ -98,7 +98,6 @@ function rootReducer(state, action) {
   }
 
   if (action.type === TOGGLE_LOADER) {
-    console.log("quit togglin your loader: " + action.loader)
     return Object.assign({}, state, {
       loader: action.loader
     });

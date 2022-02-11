@@ -407,26 +407,27 @@ export function getRecipeMiddleware({dispatch}) {
     return function(action) {
       if (action.type === GET_RECIPE) {
 
-        console.log("fetching recipe: " + action.recipeTitle.replaceAll('-', ' '))
+        console.log("retrieving recipe: " + action.recipeIdentifier.replaceAll('-', ' '))
 
-        fetch("https://funky-radish-api.herokuapp.com/recipe/" + action.recipeTitle , {
+        dispatch(toggleLoader(true))
+
+        fetch("https://funky-radish-api.herokuapp.com/recipe/" + action.recipeIdentifier , {
           method: 'get'
         })
         .then(response => response.json())
         .then(json => {
+          dispatch(toggleLoader(false))
+
           if (json.error && json.error.length > 0) {
-            console.log("error on the calls.")
-            dispatch(warning(json.error))
-            return dispatch(toggleLoader(false));
+            return dispatch(warning(json.error))
           }
           else {
-            console.log("setting recipe now.")
             return dispatch(setRecipe(json));
           }
         })
         .catch(error => {
-          console.log("a error here: " + error)
-          return dispatch(warning("the error"));
+          dispatch(toggleLoader(false))
+          return dispatch(warning(error.message));
         });
       }
       return next(action);

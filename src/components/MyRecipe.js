@@ -33,17 +33,8 @@ export default function MyRecipe(props) {
 
   if (recId == null || recId == 'undefined') return <Builder />
 
-  if (loading) {
-    dispatch(toggleLoader(true))
-  };
-
   if (error) {
     dispatch(warning("recipe loading error: " + error.message))
-    dispatch(toggleLoader(false))
-  };
-
-  if (data) {
-    dispatch(toggleLoader(false))
   };
 
   const segueToEdit = () => {
@@ -122,6 +113,6 @@ export default function MyRecipe(props) {
 
     </div>
   ) : (
-    <div></div>
+    <Loader loader='true'/>
   );
 }

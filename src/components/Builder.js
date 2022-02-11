@@ -6,10 +6,12 @@ import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
-import { setRedirect, importRecipe, warning } from "../actions/Actions";
+import { setRedirect, importRecipe, warning, toggleLoader } from "../actions/Actions";
 
 import SVGService from '../services/SVGService'
 import ServerService from '../services/ServerService'
+
+import Loader from "./Loader";
 
 const svgService = new SVGService();
 const serverService = new ServerService();
@@ -139,7 +141,9 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     console.log("inspecting with prop id: " + id)
 
     if (!id || id === "") {
+      dispatch(toggleLoader(true))
       await addRecipe(draftRecipe).then((rec) => {
+        dispatch(toggleLoader(false))
         dispatch(setRedirect("/builder/" + draftRecipe._id))
         console.log("returned recipe is: " + rec)
       });
@@ -152,10 +156,10 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         updates: draftRecipe
       }
 
-      console.log("passing this: " + JSON.stringify(rec))
-
+      dispatch(toggleLoader(true))
       // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
       await updateRecipe(rec).then((resp) => {
+        dispatch(toggleLoader(false))
         console.log("recipe updated I think")
       });
     }
@@ -168,7 +172,9 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         resetDraftRecipe()
       }
       else {
+        dispatch(toggleLoader(true))
         await deleteRecipe(draftRecipe).then((obj) => {
+          dispatch(toggleLoader(false))
           dispatch(setRedirect("/builder/"))
           newID = new ObjectId()
           resetDraftRecipe()
@@ -180,6 +186,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const importFromAddress = async () => {
+    dispatch(toggleLoader(true))
     serverService.importRecipe(importAddress)
     .then(res=> {
       let dirObject = {
@@ -199,8 +206,11 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         ingredients: ingObject,
         directions: dirObject
       });
+
+      dispatch(toggleLoader(false))
     })
     .catch(err => {
+      dispatch(toggleLoader(false))
       return dispatch(warning("Import failed: " + err))
     })
   }
@@ -238,6 +248,8 @@ export default function Builder(props) {
   let recipeIdentification = props.match.params.recipeId
 
   const redirector = useSelector((state) => state.redirect)
+
+  const dispatch = useDispatch()
 
   //TODO: do something with the error?
   const { loading, error, data } = useRecipe(recipeIdentification);
@@ -277,12 +289,15 @@ export default function Builder(props) {
   } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress);
 
   if (loading) {
-    return 'Loading...';
+    dispatch(toggleLoader(true))
   }
 
-  if (data && !recipeInProgress) {
-    console.log("data arrived")
+  if (error) {
+    dispatch(warning("recipe loading error: " + error.message))
+    dispatch(toggleLoader(false))
+  };
 
+  if (data && !recipeInProgress) {
     let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
     let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
 
