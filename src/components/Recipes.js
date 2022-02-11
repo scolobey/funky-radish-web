@@ -71,8 +71,7 @@ export class Recipes extends Component {
     ):(
       this.props.externalRecipes? (
         this.props.externalRecipes.length > 0 ? ([
-          <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>,
-          <RecipeRequestView/>
+          <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
         ]):(
           <RecipeRequestView/>
         )
