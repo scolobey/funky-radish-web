@@ -1,3 +1,6 @@
+
+// TODO: This is mostly unused now. The functionality has been rolled into Recipe.js
+
 import React, { useState } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux'
 

@@ -12,7 +12,7 @@ class About extends Component {
         </Helmet>
 
         <div className="Static-Info">
-          <h2>Most recipe apps are weighed down by images, video and useless features. Funky Radish aims to be a lightweight and reliable recipe manager that can be easily accessed from all of your devices for free. Check out our <a href='./roadmap'>roadmap</a> to see development plans.</h2>
+          <h2>Most recipe apps are weighed down by images, video and useless features. Funky Radish aims to be a lightweight and reliable recipe manager that can be easily accessed from all of your devices for free. Check out our <a href='//docs.google.com/document/d/1LJDYrEtm67WId9lE8Khlx_jvb0letNNlGGbenT42gg4/edit?usp=sharing'>roadmap</a> to see exactly what's being worked on, in real time.</h2>
         </div>
       </div>
     );

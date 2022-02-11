@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
+import RecipeRequestView from "./RecipeRequestView";
 
 class ExternalRecipeListView extends Component {
 
@@ -29,6 +30,7 @@ class ExternalRecipeListView extends Component {
           </li>
         ))}
       </ul>
+      <RecipeRequestView/>
       </div>
     ):(
       <div></div>
