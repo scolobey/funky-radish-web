@@ -25,9 +25,48 @@ let fullRealmUser = JSON.parse(localStorage.getItem('realm_user_complete'));
 // 2. Sometimes I capitalize D, sometimes lowercase d
 let newID = new ObjectId()
 
-function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress) {
+function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections ], importAddress, recipeIdentification) {
 
   const dispatch = useDispatch()
+
+  // A recipe which is being edited maintains a different state than what has been saved to Realm cloud.
+  // In progress means we've disabled the seamless reloading from cloud.
+  const [ recipeInProgress, setRecipeInProgress ] = React.useState(false)
+
+  const { loading, error, data } = useRecipe(recipeIdentification);
+
+  if (loading) {
+    dispatch(toggleLoader(true))
+  }
+
+  if (error) {
+    dispatch(toggleLoader(false))
+    dispatch(warning(error.message))
+  };
+
+  // So, if the recipe comes in, and it's not currently being worked on.
+  // That's when you might wanna set the recipe.
+  if (data && !recipeInProgress) {
+    dispatch(toggleLoader(false))
+
+    let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
+    let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
+
+    let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
+    let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
+
+    // First check if anything has changed.
+    if ((draftRecipeIngredients !== dataRecipeIngredients) || (draftRecipeDirections !== dataRecipeDirections) || (draftRecipe.title !== data.recipe.title)) {
+
+      setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
+
+      let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
+      let dirList = data.recipe.directions.map(dirListing => {return dirListing._id})
+
+      setBaseIngredients(ingList)
+      setBaseDirections(dirList)
+    }
+  }
 
   const createDraftRecipe = () => {
     setDraftRecipe({
@@ -50,6 +89,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const resetDraftRecipe = () => {
+    setRecipeInProgress(true)
+
     setDraftRecipe({
       _id: newID,
       author: currentRealmUser,
@@ -60,6 +101,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeTitle = (title) => {
+    setRecipeInProgress(true)
+
     setDraftRecipe({
       _id: draftRecipe._id,
       author: draftRecipe.author,
@@ -70,6 +113,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
+    setRecipeInProgress(true)
+
     let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
       return { _id: new ObjectId(), author: draftRecipe.author, name: ingredientName }
     });
@@ -89,6 +134,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const setDraftRecipeDirections = (directions) => {
+    setRecipeInProgress(true)
+
     let dirList = directions.split(/\r?\n/).map(directionText => {
       return { _id: new ObjectId(), author: draftRecipe.author, text: directionText }
     });
@@ -107,41 +154,13 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     });
   };
 
-  const setDraftRecipeComplete = (id, title, ingredients, directions) => {
-    let dirList = directions.split(/\r?\n/).map(directionText => {
-      return { _id: new ObjectId(), author: draftRecipe.author, text: directionText }
-    });
-
-    let dirObject = {
-      create: dirList,
-      link: [id]
-    }
-
-    let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
-      return { _id: new ObjectId(), author: draftRecipe.author, name: ingredientName }
-    });
-
-    let ingObject = {
-      create: ingList,
-      link: [id]
-    }
-
-    setDraftRecipe({
-      _id: id,
-      author: draftRecipe.author,
-      title: title,
-      ingredients: ingObject,
-      directions: dirObject
-    });
-  };
-
   const submitDraftRecipe = async (id, ing, dir) => {
     draftRecipe._id = draftRecipe._id.toString()
 
     console.log("inspecting with prop id: " + id)
+    dispatch(toggleLoader(true))
 
     if (!id || id === "") {
-      dispatch(toggleLoader(true))
       await addRecipe(draftRecipe).then((rec) => {
         dispatch(toggleLoader(false))
         dispatch(setRedirect("/builder/" + draftRecipe._id))
@@ -156,7 +175,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         updates: draftRecipe
       }
 
-      dispatch(toggleLoader(true))
+
       // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
       await updateRecipe(rec).then((resp) => {
         dispatch(toggleLoader(false))
@@ -173,6 +192,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
       }
       else {
         dispatch(toggleLoader(true))
+
         await deleteRecipe(draftRecipe).then((obj) => {
           dispatch(toggleLoader(false))
           dispatch(setRedirect("/builder/"))
@@ -229,6 +249,34 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     });
   };
 
+  function setDraftRecipeComplete(id, title, ingredients, directions) {
+    let dirList = directions.split(/\r?\n/).map(directionText => {
+      return { _id: new ObjectId(), author: draftRecipe.author, text: directionText }
+    });
+
+    let dirObject = {
+      create: dirList,
+      link: [id]
+    }
+
+    let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
+      return { _id: new ObjectId(), author: draftRecipe.author, name: ingredientName }
+    });
+
+    let ingObject = {
+      create: ingList,
+      link: [id]
+    }
+
+    setDraftRecipe({
+      _id: id,
+      author: draftRecipe.author,
+      title: title,
+      ingredients: ingObject,
+      directions: dirObject
+    });
+  };
+
   return {
     resetDraftRecipe,
     createDraftRecipe,
@@ -237,7 +285,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     setDraftRecipeIngredients,
     setDraftRecipeDirections,
     submitDraftRecipe,
-    setDraftRecipeComplete,
     submitDeleteRecipe,
     importFromAddress,
     mintNFT
@@ -248,15 +295,6 @@ export default function Builder(props) {
   let recipeIdentification = props.match.params.recipeId
 
   const redirector = useSelector((state) => state.redirect)
-
-  const dispatch = useDispatch()
-
-  //TODO: do something with the error?
-  const { loading, error, data } = useRecipe(recipeIdentification);
-
-  // We have this issue where a recipe being edited maintains a different state than what has been saved to Realm cloud.
-  // In progress means we've disabled the seamless reloading from cloud.
-  const [ recipeInProgress, setRecipeInProgress ] = React.useState(false)
 
   const [ draftRecipe, setDraftRecipe ] = React.useState(
     {
@@ -282,47 +320,15 @@ export default function Builder(props) {
     setDraftRecipeIngredients,
     setDraftRecipeDirections,
     submitDraftRecipe,
-    setDraftRecipeComplete,
     submitDeleteRecipe,
     importFromAddress,
     mintNFT
-  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe ], importAddress);
-
-  if (loading) {
-    dispatch(toggleLoader(true))
-  }
-
-  if (error) {
-    dispatch(warning("recipe loading error: " + error.message))
-    dispatch(toggleLoader(false))
-  };
-
-  if (data && !recipeInProgress) {
-    let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
-    let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
-
-    let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
-    let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
-
-    if ((draftRecipeIngredients !== dataRecipeIngredients) || (draftRecipeDirections !== dataRecipeDirections) || (draftRecipe.title !== data.recipe.title)) {
-      setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
-
-      let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
-      let dirList = data.recipe.directions.map(dirListing => {return dirListing._id})
-
-      setBaseIngredients(ingList)
-      console.log("setting base ing: " + ingList)
-      setBaseDirections(dirList)
-      console.log("setting base ing: " + dirList)
-    }
-  }
+  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections ], importAddress, recipeIdentification);
 
   return (
     <div className="builder">
       <form onSubmit={e => {
           e.preventDefault();
-          console.log("submitting with baseing: " + baseIngredients)
-          console.log("submitting with basedir: " + baseDirections)
           setBaseIngredients(baseIngredients)
           setBaseDirections(baseDirections)
 
@@ -333,7 +339,6 @@ export default function Builder(props) {
       <button type="clear" onClick={e => {
           e.preventDefault();
           if (window.confirm('Are you sure you want to clear the form? Unsaved changes will be lost.')) {
-            setRecipeInProgress(true)
             resetDraftRecipe()
           } else {
             console.log("clear canceled")
@@ -362,7 +367,6 @@ export default function Builder(props) {
             id="title"
             value={draftRecipe? draftRecipe.title : ""}
             onChange={(event) => {
-              setRecipeInProgress(true)
               setDraftRecipeTitle(event.target.value);
             }}
           />
@@ -376,7 +380,6 @@ export default function Builder(props) {
             id="ingredients"
             value={draftRecipe.ingredients.create.length > 0 ? draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n") : ""}
             onChange={(event) => {
-              setRecipeInProgress(true)
               setDraftRecipeIngredients(event.target.value);
             }}
           />
@@ -390,7 +393,6 @@ export default function Builder(props) {
             id="directions"
             value={draftRecipe.directions.create.length > 0 ? draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n") : ""}
             onChange={(event) => {
-              setRecipeInProgress(true)
               setDraftRecipeDirections(event.target.value);
             }}
           />
