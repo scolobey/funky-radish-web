@@ -100,8 +100,14 @@ export class Recipes extends Component {
             </div>
           </div>
 
-          <div className="landing-mockup">
-            <img src="/ios-mockup.gif" alt="Funky Radish Mockup"/>
+          <div className="landing-screenshot">
+
+             <source media="(max-width: 650px)" srcset="/screenshot/screenshot-small.webp"/>
+
+             <img
+                src="/screenshot/screenshot-medium.webp"
+                alt="Funky Radish Screenshot"
+             />
           </div>
 
         </div>

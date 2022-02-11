@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { toggleMenu } from "../actions/Actions";
 import Menu from './Menu';
-import icon from '../icon.png';
 import SearchBar from "./SearchBar";
 
 class Navigation extends Component {
@@ -28,7 +27,12 @@ class Navigation extends Component {
 
           <header className="header">
             <a href="/">
-              <img className="icon" src={icon} alt="Logo"/>
+              <img
+                className="icon"
+                 srcset="/icon/icon-small.webp 1x, /icon/icon-medium.webp 2x"
+                 src="/icon/icon-medium.webp"
+                 alt="FunkyRadish Icon"
+              />
             </a>
 
             <SearchBar/>
