@@ -1,0 +1,10 @@
+# www.robotstxt.org/
+
+# Allow crawling of all content
+User-agent: *
+Disallow: /privacy/
+Disallow: /builder/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /about/
+Disallow: /roadmap/
