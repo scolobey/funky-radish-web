@@ -102,7 +102,7 @@ export class Recipes extends Component {
 
           <div className="landing-screenshot">
 
-             <source media="(max-width: 650px)" srcset="/screenshot/screenshot-small.webp"/>
+             <source media="(max-width: 650px)" srcSet="/screenshot/screenshot-small.webp"/>
 
              <img
                 src="/screenshot/screenshot-medium.webp"

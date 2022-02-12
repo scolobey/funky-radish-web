@@ -52,7 +52,7 @@ export default function RecipeRequestView() {
       <form onSubmit={submitRequest}>
         <label >Recipe Title</label><br></br>
         <input placeholder='Recipe Title...' name='title' value={query} onChange={onChangeQuery} /><br></br>
-        <label for="html">Email Address</label><br></br>
+        <label for="html">Your Email Address</label><br></br>
         <input placeholder='Email...' name='email' value={email} onChange={onChangeEmail} /><br></br>
         <button>Submit</button>
       </form>

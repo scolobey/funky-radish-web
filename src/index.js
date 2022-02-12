@@ -21,6 +21,8 @@ import { saveState } from './stateLoader.js';
 
 export const APP_ID = "funky-radish-twdxv";
 
+const Loader = React.lazy(() => import('./components/Loader'));
+
 store.subscribe(throttle(() => {
   saveState({
     recipes: store.getState().recipes,

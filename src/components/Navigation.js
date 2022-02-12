@@ -29,7 +29,7 @@ class Navigation extends Component {
             <a href="/">
               <img
                 className="icon"
-                 srcset="/icon/icon-small.webp 1x, /icon/icon-medium.webp 2x"
+                 srcSet="/icon/icon-small.webp 1x, /icon/icon-medium.webp 2x"
                  src="/icon/icon-medium.webp"
                  alt="FunkyRadish Icon"
               />
