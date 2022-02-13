@@ -29,6 +29,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "0.13.5",
+    "source-map-explorer": "^2.5.2",
     "url-search-params-polyfill": "^8.1.0",
     "uuid": "^8.3.2",
     "whatwg-fetch": "^3.5.0"
@@ -38,6 +39,7 @@
     "start": "set HTTPS=true&&node server.js",
     "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,6 +52,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "compression-webpack-plugin": "^9.2.0",
     "core-js": "3.8.2"
   }
 }
