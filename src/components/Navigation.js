@@ -1,8 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import { connect } from "react-redux";
 import { toggleMenu } from "../actions/Actions";
-import Menu from './Menu';
-import SearchBar from "./SearchBar";
+const SearchBar = lazy(() => import('./SearchBar'));
+const Menu = lazy(() => import('./Menu'));
+
+const MenuLoading = () => <div></div>;
+const SearchBarLoading = () => <div className="RecipeSearchField">
+  <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
+  <input
+    type="text"
+    placeholder="Search.."
+  />
+</div>;
 
 class Navigation extends Component {
   constructor(props) {
@@ -23,7 +32,9 @@ class Navigation extends Component {
   render() {
     return (
         <div className="App">
-          <Menu/>
+          <Suspense fallback={MenuLoading}>
+            <Menu/>
+          </Suspense>
 
           <header className="header">
             <a href="/">
@@ -35,7 +46,9 @@ class Navigation extends Component {
               />
             </a>
 
-            <SearchBar/>
+            <Suspense fallback={SearchBarLoading}>
+              <SearchBar/>
+            </Suspense>
 
             <div id="Nav-Icon" className={this.props.menu ? 'open' : ''} onClick={this.toggleMenu}>
               <span></span>

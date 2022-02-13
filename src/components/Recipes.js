@@ -1,19 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, Suspense, lazy } from "react";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import { getToken } from "../actions/Actions";
 import { Helmet } from "react-helmet";
-
-import RecipeList from "./RecipeList";
-import ExternalRecipeList from "./ExternalRecipeList";
-
-import RecipeRequestView from "./RecipeRequestView";
 
 import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 // import useRecipes from "../graphql/useRecipes";
 
 import RealmService from '../services/RealmService'
 const realmService = new RealmService();
+
+const RecipeList = lazy(() => import("./RecipeList"));
+const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
+const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
+
+const Loading = () => <div></div>;
 
 export class Recipes extends Component {
 
@@ -62,18 +63,23 @@ export class Recipes extends Component {
           <meta name="description" content= "With FunkyRadish you can collect, store and share recipes from any device." />
         </Helmet>
 
-        <RecipeList author={this.state.author}/>
-
-        <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
+        <Suspense fallback={Loading}>
+          <RecipeList author={this.state.author}/>
+          <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
+        </Suspense>
 
         <div className="create-button"><a href="./builder">+</a></div>
       </div>
     ):(
       this.props.externalRecipes? (
         this.props.externalRecipes.length > 0 ? ([
-          <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
+          <Suspense fallback={Loading}>
+            <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
+          </Suspense>
         ]):(
-          <RecipeRequestView/>
+          <Suspense fallback={Loading}>
+            <RecipeRequestView/>
+          </Suspense>
         )
       ):(
         <div className="not-logged-in-banner">

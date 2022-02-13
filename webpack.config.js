@@ -21,7 +21,7 @@ module.exports = {
       new webpack.optimize.DedupePlugin(), //dedupe similar code
       new webpack.optimize.UglifyJsPlugin(), //minify everything
       new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-      new CompressionPlugin({   <-- Add this
+      new CompressionPlugin({
         asset: "[path].gz[query]",
         algorithm: "gzip",
         test: /\.js$|\.css$|\.html$/,
