@@ -10,7 +10,7 @@ function RecipesAdmin(props) {
   const dispatch = useDispatch()
   let list = []
 
-  const { loading, error, data } = useRecipes("61e1e4cafbb17b00164fc738", list);
+  const { loading, error, data } = useRecipes("all", list);
 
   if(error) {
     dispatch(warning(error.message))
@@ -32,6 +32,8 @@ function RecipesAdmin(props) {
   return data?.recipes? (
     <div className="recipeView">
 
+    Total Recipes: {rec.length}
+
     { rec.length > 0 ?  (
       <ul>
         {rec.map((recipe) =>
@@ -39,7 +41,7 @@ function RecipesAdmin(props) {
             <Link
               className="recipeListing"
               to={{ pathname: "/admin/importer/" + recipe._id}}
-            > {recipe.title} </Link>
+            > {recipe.title} / {recipe.author}</Link>
           </li>
         )}
       </ul> ) :

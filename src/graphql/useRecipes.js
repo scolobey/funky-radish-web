@@ -17,7 +17,7 @@ function useAllRecipesInProject(author, watching) {
 
   console.log("author: " + author + " watching: " + watching)
 
-  const RECIPE_QUERY = gql`
+  let RECIPE_QUERY = gql`
     query Recipes($author: String!, $watching: [String!]){
       recipes(query: {OR: [{ author: $author }, {_id_in: $watching}]}) {
         _id
@@ -25,6 +25,17 @@ function useAllRecipesInProject(author, watching) {
         title
       }
     }`;
+
+  if (author == 'all') {
+    RECIPE_QUERY = gql`
+    query Recipes {
+      recipes {
+        _id
+        author
+        title
+      }
+    }`;
+  }
 
   const { loading, error, data } = useQuery(RECIPE_QUERY, {
     variables: { author, watching },
