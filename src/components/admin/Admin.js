@@ -9,15 +9,12 @@ class Admin extends Component {
           <meta charSet="utf-8" />
           <title>Funky Radish Recipe App - Admin</title>
         </Helmet>
-
-        <a href='/admin/importer' >Importer</a>
-        <br></br>
-        <a href='/admin/graph' >Graph</a>
-        <br></br>
-        <a href='/admin/recipes' >Recipes</a>
-        <br></br>
-        <a href='/admin/users' >Users</a>
-        <br></br>
+        <div className="admin_options">
+          <a href='/admin/importer' >Importer</a>
+          <a href='/admin/graph' >Graph</a>
+          <a href='/admin/recipes' >Recipes</a>
+          <a href='/admin/users' >Users</a>
+        </div>
       </div>
     );
   }

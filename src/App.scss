@@ -1433,3 +1433,29 @@ input:checked + .slider:before {
   -o-animation: flickerAnimation 2s infinite;
    animation: flickerAnimation 2s infinite;
 }
+
+.admin_options {
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  top: 120px;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.admin_options a {
+  padding: 20px;
+}
+
+.user_view {
+  padding-top: 40px;
+  padding-left: 25px;
+}
+
+.user_view table, th, td {
+  margin-top: 15px;
+  padding: 5px;
+  border: 1px solid black;
+  border-collapse: collapse;
+  background-color: white;
+}
