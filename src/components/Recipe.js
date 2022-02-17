@@ -69,7 +69,7 @@ export default function Recipe(props) {
              ))} ],
              "name": "${recipe.title}",
              "recipeInstructions": "${recipe.directions.map((direction, index) => (
-               direction.text
+               direction.text.replace('"',"%22").replace("\\", "%5C")
              )).join("\n")}"
          }
         `}</script>
