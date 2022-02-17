@@ -55,6 +55,24 @@ export default function Recipe(props) {
         <meta charSet="utf-8" />
         <title>{recipe.title}</title>
         <meta name="description" content= {"Recipe for " + recipe.title} />
+
+        // https://jsonld.com/recipe/
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+             "@type": "Recipe",
+             "author": "FunkyRadish.com",
+             "datePublished": "2021-12-15",
+             "description": "No pictures, no stories, just a simple recipe for ${recipe.title}",
+             "recipeIngredient": ${recipe.ingredients.map((ingredient, index) => (
+               ingredient.name
+             ))},
+             "name": "${recipe.title}",
+             "recipeInstructions": "${recipe.directions.map((direction, index) => (
+               direction.text
+             )).join("\n")}"
+         }
+        `}</script>
       </Helmet>
 
       <div className="Title">
