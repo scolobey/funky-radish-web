@@ -64,9 +64,9 @@ export default function Recipe(props) {
              "author": "FunkyRadish.com",
              "datePublished": "2021-12-15",
              "description": "No pictures, no stories, just a simple recipe for ${recipe.title}",
-             "recipeIngredient": ${recipe.ingredients.map((ingredient, index) => (
-               ingredient.name
-             ))},
+             "recipeIngredient": [ ${recipe.ingredients.map((ingredient, index) => (
+               '"' + ingredient.name + '"'
+             ))} ],
              "name": "${recipe.title}",
              "recipeInstructions": "${recipe.directions.map((direction, index) => (
                direction.text
