@@ -6,29 +6,6 @@ import './App.scss';
 
 import Navigation from './components/Navigation';
 
-// import Admin from './components/admin/Admin';
-// import GraphAdmin from './components/admin/Graph';
-// import RecipesAdmin from './components/admin/Recipes';
-// import UsersAdmin from './components/admin/Users';
-//
-// import PrivacyPolicy from './components/PrivacyPolicy';
-// import RoadMap from './components/RoadMap';
-// import About from './components/About';
-// import Support from './components/Support';
-// import Builder from "./components/Builder";
-// import Importer from "./components/admin/Importer";
-//
-// import Recipes from "./components/Recipes.js";
-// import Recipe from "./components/Recipe.js";
-// import MyRecipe from "./components/MyRecipe.js";
-// import Verification from './components/Verification.js';
-// import RecipeClaimer from './components/RecipeClaimer.js';
-//
-// import AuthView from './components/AuthView';
-// import ChangePasswordView from './components/ChangePasswordView';
-
-// import Minter from './components/Minter';
-
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
@@ -54,6 +31,7 @@ const Importer = lazy(() => import("./components/admin/Importer"));
 
 const Recipes = lazy(() => import("./components/Recipes.js"));
 const Recipe = lazy(() => import("./components/Recipe.js"));
+const SearchLandingPage = lazy(() => import("./components/SearchLandingPage"));
 const MyRecipe = lazy(() => import("./components/MyRecipe.js"));
 const Verification = lazy(() => import('./components/Verification.js'));
 const RecipeClaimer = lazy(() => import('./components/RecipeClaimer.js'));
@@ -87,6 +65,7 @@ class App extends Component {
             <Route path="/builder/:recipeId?" component={Builder} />
             <Route path="/recipe/:recipeTitle?" component={Recipe} />
             <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
+            <Route path="/recipes/:searchQuery?" component={SearchLandingPage} />
             <Route path="/admin/" component={Admin} />
             <Route path="/admin/importer/:recipeId?" component={Importer} />
             <Route path="/admin/graph" component={GraphAdmin} />
