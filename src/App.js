@@ -12,6 +12,9 @@ import Redirector from './components/Redirector';
 
 import ReactGA from 'react-ga';
 
+import RealmService from './services/RealmService'
+const realmService = new RealmService();
+
 function initializeReactGA() {
     ReactGA.initialize('UA-141908035-1');
     ReactGA.pageview('/');
@@ -66,11 +69,17 @@ class App extends Component {
             <Route path="/recipe/:recipeTitle?" component={Recipe} />
             <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
             <Route path="/recipes/:searchQuery?" component={SearchLandingPage} />
-            <Route path="/admin/" component={Admin} />
-            <Route path="/admin/importer/:recipeId?" component={Importer} />
-            <Route path="/admin/graph" component={GraphAdmin} />
-            <Route path="/admin/recipes" component={RecipesAdmin} />
-            <Route path="/admin/users" component={UsersAdmin} />
+
+            { (realmService.getUser() && realmService.getUser()["customData"]["admin"]) ? ([
+              <Route path="/admin/" component={Admin} />,
+              <Route path="/admin/importer/:recipeId?" component={Importer} />,
+              <Route path="/admin/graph" component={GraphAdmin} />,
+              <Route path="/admin/recipes" component={RecipesAdmin} />,
+              <Route path="/admin/users" component={UsersAdmin} />
+            ]): (
+              <Route path="/admin/" component={Recipes} />
+            )}
+
             <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
             <Route path="/changePassword/:token?" component={ChangePasswordView} />
             <Route path="/minter" component={Minter} />
