@@ -25,6 +25,18 @@ let fullRealmUser = JSON.parse(localStorage.getItem('realm_user_complete'));
 // 2. Sometimes I capitalize D, sometimes lowercase d
 let newID = new ObjectId()
 
+// Key:
+// createDraftRecipe
+// deleteDraftRecipe
+// resetDraftRecipe
+// setDraftRecipeTitle
+// setDraftRecipeIngredients
+// setDraftRecipeDirections
+// submitDraftRecipe
+// submitDeleteRecipe
+// mintNFT
+// setDraftRecipeComplete
+
 function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections ], importAddress, recipeIdentification) {
 
   const dispatch = useDispatch()
@@ -57,7 +69,6 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
     // First check if anything has changed.
     if ((draftRecipeIngredients !== dataRecipeIngredients) || (draftRecipeDirections !== dataRecipeDirections) || (draftRecipe.title !== data.recipe.title)) {
-
       setDraftRecipeComplete(recipeIdentification, data.recipe.title, dataRecipeIngredients, dataRecipeDirections )
 
       let ingList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
@@ -76,6 +87,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
       ingredients: {create: [], link: [newID]},
       directions: {create: [], link: [newID]}
     });
+    console.log("created draft: " + newID + " " + currentRealmUser)
   };
 
   const deleteDraftRecipe = () => {
@@ -104,12 +116,14 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     setRecipeInProgress(true)
 
     setDraftRecipe({
-      _id: draftRecipe._id,
+      _id: draftRecipe._id ,
       author: draftRecipe.author,
       title: title,
       ingredients: draftRecipe.ingredients,
       directions: draftRecipe.directions
     });
+
+    console.log("set title. Author: " + draftRecipe.author + " _id: " + draftRecipe._id)
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
@@ -157,7 +171,8 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   const submitDraftRecipe = async (id, ing, dir) => {
     draftRecipe._id = draftRecipe._id.toString()
 
-    console.log("inspecting with prop id: " + id)
+    console.log("Saving recipe: " + draftRecipe)
+
     dispatch(toggleLoader(true))
 
     if (!id || id === "") {
@@ -299,7 +314,7 @@ export default function Builder(props) {
   const [ draftRecipe, setDraftRecipe ] = React.useState(
     {
       _id: newID,
-      author: "",
+      author: currentRealmUser,
       title: "",
       ingredients: {create: [], link: [newID]},
       directions: {create: [], link: [newID]}
@@ -430,7 +445,6 @@ export default function Builder(props) {
             Mint NFT
           </button>
         : <div></div> }
-
       </div>
       </form>
     </div>
