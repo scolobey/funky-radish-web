@@ -24,8 +24,18 @@ export default function SearchLandingPage(props) {
     <div className="RecipeListContainer">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Funky Radish</title>
-        <meta name="description" content= "Welcome to FunkyRadish. Find a recipe." />
+        <title>{searchQuery + " recipes"}</title>
+        <meta name="description" content= {searchQuery + " recipes from FunkyRadish.com"} />
+
+        // https://jsonld.com/recipe/
+        <script type="application/ld+json">{`
+          {
+            "@context": "http://schema.org",
+            "@type": "SearchResultsPage",
+            "headline": "${searchQuery.replace("-", " ") + " recipes from FunkyRadish.com"}"",
+            "url": "https://www.funkyradish.com/recipes/chicken",
+          }
+        `}</script>
       </Helmet>
 
       <Suspense fallback={Loading}>

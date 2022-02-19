@@ -178,9 +178,9 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
     if (!id || id === "") {
       await addRecipe(draftRecipe).then((rec) => {
         dispatch(toggleLoader(false))
-        dispatch(setRedirect("/builder/" + draftRecipe._id))
-        console.log("returned recipe is: " + rec)
       });
+
+      dispatch(setRedirect("/builder/" + draftRecipe._id))
     }
     else {
       let rec = {
@@ -210,6 +210,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
         await deleteRecipe(draftRecipe).then((obj) => {
           dispatch(toggleLoader(false))
+
           dispatch(setRedirect("/builder/"))
           newID = new ObjectId()
           resetDraftRecipe()
