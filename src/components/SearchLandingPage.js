@@ -40,7 +40,6 @@ export default function SearchLandingPage(props) {
 
       <Suspense fallback={Loading}>
         <ExternalRecipeList externalRecipes={externalRecipes}/>
-        <RecipeRequestView/>
       </Suspense>
 
       <div className="create-button"><a href="./builder">+</a></div>
