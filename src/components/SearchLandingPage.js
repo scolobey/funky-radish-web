@@ -32,7 +32,7 @@ export default function SearchLandingPage(props) {
           {
             "@context": "http://schema.org",
             "@type": "SearchResultsPage",
-            "headline": "${searchQuery.replace("-", " ") + " recipes from FunkyRadish.com"}"",
+            "headline": "${"Recipes for " + searchQuery.replace("-", " ") + " from FunkyRadish.com"}",
             "url": "https://www.funkyradish.com/recipes/chicken",
           }
         `}</script>
