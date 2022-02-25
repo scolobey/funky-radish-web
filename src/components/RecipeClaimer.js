@@ -20,12 +20,17 @@ export default function RecipeClaimer(props) {
 
   React.useEffect(() => {
     let token = props.match.params.token
-     setRecipeToken(token)
+    let existingToken = localStorage.getItem('recipe_claim_token');
+
+    console.log("inspecting tokens: " + token + ", " + existingToken )
 
      if(token && token.length < 10) {
-       dispatch(warning("You need a token to claim a recipe."))
-       dispatch(setRedirect("/"))
-       setRecipeAccepted("")
+
+         console.log("token rejected: " + token )
+         dispatch(warning("You need a token to claim a recipe."))
+         dispatch(setRedirect("/"))
+         setRecipeAccepted("")
+
      }
 
      if (fullRealmUser) {
@@ -52,19 +57,19 @@ export default function RecipeClaimer(props) {
       { fullRealmUser && fullRealmUser.length > 0 ?
         <div>{JSON.parse(fullRealmUser).customData.name}</div>
       : <div className="accept_recipe_flow">
-        <b>Access your account,</b>
+        <b>Access your account</b>
         <br></br>
         <b>to claim this recipe.</b>
+        <br></br>
 
         <div className="not-logged-in-banner">
           <div className="not-logged-in-cta">
 
-
-            <a href="./login">
+            <a href="/login">
               <div className="login-text login-text--pushDown login-text--shadow">Login</div>
             </a>
 
-            <a href="./signup">
+            <a href="/signup">
               <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
             </a>
 
