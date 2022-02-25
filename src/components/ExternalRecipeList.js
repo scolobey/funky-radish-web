@@ -12,7 +12,6 @@ class ExternalRecipeListView extends Component {
   render() {
     return this.props.externalRecipes ? (
       <div className="externalRecipeView">
-
         <ul>
           {this.props.externalRecipes.map((recipe, index) => (
             // sp- is just a reference to sporctacular. If you ever add a different api, change this model.

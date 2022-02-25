@@ -10,6 +10,8 @@
     <lastmod>2019-07-02T12:50:06+00:00</lastmod>
   </url>
 
+  <!-- Recipe pages. -->
+
   <url>
     <loc>https://www.funkyradish.com/recipe/world-peace-cookies</loc>
     <lastmod>2022-02-07</lastmod>
@@ -104,6 +106,23 @@
     <loc>https://www.funkyradish.com/recipes/chicken</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/lucky-peach-pebre</loc>
+    <lastmod>2022-02-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/lucky-peach-coconut-mochi</loc>
+    <lastmod>2022-02-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/buffalo-cucumbers</loc>
+    <lastmod>2022-02-17</lastmod>
+  </url>
+
+  <!-- Search results pages. -->
 
   <url>
     <loc>https://www.funkyradish.com/recipes/cookies</loc>

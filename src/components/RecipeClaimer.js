@@ -48,25 +48,35 @@ export default function RecipeClaimer(props) {
   return (
     <div className="verificationView">
       <b>{recipeAccepted}</b>
-      <br></br>
+
       { fullRealmUser && fullRealmUser.length > 0 ?
         <div>{JSON.parse(fullRealmUser).customData.name}</div>
       : <div className="accept_recipe_flow">
         <b>Access your account,</b>
         <br></br>
         <b>to claim this recipe.</b>
-        <ul className="not-logged-in-banner">
-          <li key='1'>
-            <a href="/login">
+
+        <div className="not-logged-in-banner">
+          <div className="not-logged-in-cta">
+
+
+            <a href="./login">
               <div className="login-text login-text--pushDown login-text--shadow">Login</div>
             </a>
-          </li>
-          <li key='2'>
-            <a href="/signup">
+
+            <a href="./signup">
               <div className="login-text login-text--pushDown login-text--shadow">Signup</div>
             </a>
-          </li>
-        </ul>
+
+            <div className="download-icons">
+              <h2>Or download the apps...</h2>
+              <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
+              <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
+            </div>
+          </div>
+
+        </div>
+
       </div>}
     </div>
   )

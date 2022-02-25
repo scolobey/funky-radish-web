@@ -4,11 +4,11 @@ import { withRouter } from 'react-router-dom'
 
 import './App.scss';
 
-import Navigation from './components/Navigation';
-
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
+
+import Navigation from './components/Navigation';
 
 import ReactGA from 'react-ga';
 
