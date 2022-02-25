@@ -158,7 +158,7 @@ $black: black;
     .RecipeSearchField {
       height: 60px;
       padding-top: 5px;
-      width: 80%;
+      width: 70%;
     }
   }
 
@@ -168,11 +168,11 @@ $black: black;
   }
 
   .RecipeSearchField input {
-    width: 30%;
+    width: 20%;
     padding-right: 10%;
     padding: 10px;
     font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
-    font-size: 1em;
+    font-size: .75em;
     border: none;
     border-bottom: #757575 solid 2px;
     outline: none;
@@ -180,7 +180,7 @@ $black: black;
   }
 
   .RecipeSearchField input:focus {
-    width: 40%;
+    width: 30%;
     padding: 10px;
     transition: 0.5s;
     border: none;
@@ -1352,10 +1352,6 @@ input:checked + .slider:before {
 
   .download-icons a {
     height: 40px;
-  }
-
-  .search-cta {
-    font-size: 12px;
   }
 }
 
