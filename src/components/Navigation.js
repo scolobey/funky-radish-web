@@ -6,17 +6,16 @@ import Menu from './Menu';
 import SearchBar from './SearchBar';
 
 export default function Navigation(props) {
-  var recipes = useSelector((state) => state.menu)
+
   var menu = useSelector((state) => state.menu)
   const dispatch = useDispatch()
 
-  const toggleMenu = (e) => {
-    dispatch(toggleMenu)
+  const toggle = (e) => {
+    dispatch(toggleMenu())
   };
 
   return (
     <div className="App">
-
       <Menu/>
 
       <header className="header">
@@ -31,7 +30,7 @@ export default function Navigation(props) {
 
         <SearchBar/>
 
-        <div id="Nav-Icon" className={menu ? 'open' : ''} onClick={toggleMenu}>
+        <div id="Nav-Icon" className={menu ? 'open' : ''} onClick={toggle}>
           <span></span>
           <span></span>
           <span></span>
