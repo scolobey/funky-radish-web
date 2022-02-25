@@ -56,7 +56,7 @@ class App extends Component {
         <Warning />
 
         <div className="content">
-          <Suspense fallback={Loading}>
+          <Suspense fallback=<Loading/>>
             <Route path="/" exact component={Recipes} />
             <Route path="/login/" exact component={withRouter(AuthView)} />
             <Route path="/signup/" exact component={withRouter(AuthView)} />

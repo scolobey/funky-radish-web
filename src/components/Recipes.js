@@ -63,7 +63,7 @@ export class Recipes extends Component {
           <meta name="description" content= "With FunkyRadish you can collect, store and share recipes from any device." />
         </Helmet>
 
-        <Suspense fallback={Loading}>
+        <Suspense fallback=<Loading/>>
           <RecipeList author={this.state.author}/>
           <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
         </Suspense>
@@ -73,11 +73,11 @@ export class Recipes extends Component {
     ):(
       this.props.externalRecipes? (
         this.props.externalRecipes.length > 0 ? ([
-          <Suspense fallback={Loading}>
+          <Suspense fallback=<Loading/>>
             <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
           </Suspense>
         ]):(
-          <Suspense fallback={Loading}>
+          <Suspense fallback=<Loading/>>
             <RecipeRequestView/>
           </Suspense>
         )

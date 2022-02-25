@@ -8,7 +8,6 @@ const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
 const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
 
 const Loading = () => <div></div>;
-
 export default function SearchLandingPage(props) {
   let searchQuery = props.match.params.searchQuery
 
@@ -38,7 +37,7 @@ export default function SearchLandingPage(props) {
         `}</script>
       </Helmet>
 
-      <Suspense fallback={Loading}>
+      <Suspense fallback=<Loading/>>
         <ExternalRecipeList externalRecipes={externalRecipes}/>
       </Suspense>
 

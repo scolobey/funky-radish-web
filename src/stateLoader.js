@@ -42,6 +42,8 @@ export const initializeState = () => {
     filteredRecipes: [],
     menu: false,
     recipe: null,
+    loader: false,
+    redirect: null,
     warnings: []
   }
 
