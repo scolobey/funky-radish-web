@@ -7,7 +7,7 @@ export const loadState = () => {
       console.log("setting state cuz it aint")
       let initialState = initializeState();
       localStorage.setItem("funkyradish.com:state", JSON.stringify(initialState));
-      return initialState;
+      return JSON.parse(initialState);
     }
 
     console.log("unparsed state: " + serializedState)

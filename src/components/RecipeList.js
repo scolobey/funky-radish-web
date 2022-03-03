@@ -67,9 +67,7 @@ function RecipeList(props) {
       <div>
         { (props.query && props.query.length > 0) ?  (
           <div>
-            Your book doesn't have any matching recipes. Hit enter on the search to check the FunkyRadish DB.
-            <br></br>
-            Or, click that '+' button at the lower right to add your own recipes.
+
           </div>
         ) : (
           <div>

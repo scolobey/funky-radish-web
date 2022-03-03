@@ -7,6 +7,8 @@ $linkHoverColorBlue	: rgb(64,185,222);
 $linkHoverColorGreen	: rgb(141, 255, 64);
 $specialBlue	: rgb(100,224,215);
 $specialGreen: rgba(162,255,177,1);
+$specialPink	: rgb(252,3,144);
+$specialOrange	: rgb(252,165,3);
 $black: black;
 
 @import "~@fontsource/vt323/index.css";
@@ -981,7 +983,7 @@ button[type=import]:hover {
   padding: 10px;
   margin: 10px;
   cursor: pointer;
-  background-color: $specialBlue;
+  background-color: $specialOrange;
   color: black;
 }
 

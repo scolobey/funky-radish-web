@@ -25,12 +25,10 @@ export default function RecipeClaimer(props) {
     console.log("inspecting tokens: " + token + ", " + existingToken )
 
      if(token && token.length < 10) {
-
          console.log("token rejected: " + token )
          dispatch(warning("You need a token to claim a recipe."))
          dispatch(setRedirect("/"))
          setRecipeAccepted("")
-
      }
 
      if (fullRealmUser) {

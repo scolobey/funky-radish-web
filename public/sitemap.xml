@@ -103,11 +103,6 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipes/chicken</loc>
-    <lastmod>2022-02-17</lastmod>
-  </url>
-
-  <url>
     <loc>https://www.funkyradish.com/recipe/lucky-peach-pebre</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
@@ -122,10 +117,50 @@
     <lastmod>2022-02-17</lastmod>
   </url>
 
+  <url>
+    <loc>https://www.funkyradish.com/recipe/chocolate-cake</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/chocolate-buttercream</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/momofuku-pickle-brine</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/turkey-brine</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/avgolemonon</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/picadillo-cubano</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipe/hot-buttered-rum</loc>
+    <lastmod>2022-03-03</lastmod>
+  </url>
+
   <!-- Search results pages. -->
 
   <url>
     <loc>https://www.funkyradish.com/recipes/cookies</loc>
+    <lastmod>2022-02-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipes/chicken</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
 

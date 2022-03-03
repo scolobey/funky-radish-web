@@ -17,9 +17,11 @@ function useAllRecipesInProject(author, watching) {
 
   console.log("author: " + author + " watching: " + watching)
 
+  // TODO: Author recipes are limited to 500. This may be fine in perpetuity.
+  // But eventually, somebody that is not foglogs@gmail.com may have issues
   let RECIPE_QUERY = gql`
     query Recipes($author: String!, $watching: [String!]){
-      recipes(query: {OR: [{ author: $author }, {_id_in: $watching}]}) {
+      recipes(query: {OR: [{ author: $author }, {_id_in: $watching}]}, limit:500) {
         _id
         author
         title

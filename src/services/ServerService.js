@@ -1,7 +1,7 @@
 import { BASE_URL } from "../constants/api";
 var path = require('path');
 
-export default class ServerService {
+export default class ServerService { 
 
   async generateRecipeToken(recipeID) {
     let token = localStorage.getItem('access_token');

@@ -75,7 +75,7 @@ class Menu extends Component {
     )
   }
 }
-
+ 
 Menu.contextType = RealmApolloContext;
 
 function mapStateToProps(state) {

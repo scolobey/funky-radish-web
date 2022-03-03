@@ -557,7 +557,6 @@ export function externalSearchMiddleware({ dispatch }) {
               query: action.query,
               email: 'no email'
             }
-
             dispatch(requestRecipe(payload))
           }
           return dispatch(externalRecipesLoaded(res))
