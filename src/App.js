@@ -7,6 +7,7 @@ import './App.scss';
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
+import ScrollToTop from './components/ScrollToTop';
 
 import Navigation from './components/Navigation';
 
@@ -54,6 +55,7 @@ class App extends Component {
         <Loader />
         <Redirector />
         <Warning />
+        <ScrollToTop />
 
         <div className="content">
           <Suspense fallback=<Loading/>>
