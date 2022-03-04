@@ -6,12 +6,10 @@ import useNewRecipe from "../graphql/useNewRecipe";
 import { ObjectId } from "bson";
 import useRecipe from "../graphql/useRecipe";
 
-import { setRedirect, importRecipe, warning, toggleLoader } from "../actions/Actions";
+import { setRedirect, importRecipe, warning } from "../actions/Actions";
 
 import SVGService from '../services/SVGService'
 import ServerService from '../services/ServerService'
-
-import Loader from "./Loader";
 
 const svgService = new SVGService();
 const serverService = new ServerService();
@@ -37,7 +35,7 @@ let newID = new ObjectId()
 // mintNFT
 // setDraftRecipeComplete
 
-function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections ], importAddress, recipeIdentification) {
+function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections, loadingActive, setLoadingActive ], importAddress, recipeIdentification) {
 
   const dispatch = useDispatch()
 
@@ -47,20 +45,19 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
 
   const { loading, error, data } = useRecipe(recipeIdentification);
 
-  if (loading) {
-    dispatch(toggleLoader(true))
+  if (loading && !loadingActive) {
+    setLoadingActive(true)
   }
 
-  if (error) {
-    dispatch(toggleLoader(false))
+  if (error && loadingActive) {
+    console.log("error: loader to false")
+    setLoadingActive(false)
     dispatch(warning(error.message))
   };
 
   // So, if the recipe comes in, and it's not currently being worked on.
   // That's when you might wanna set the recipe.
   if (data && !recipeInProgress) {
-    dispatch(toggleLoader(false))
-
     let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
     let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
 
@@ -77,6 +74,12 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
       setBaseIngredients(ingList)
       setBaseDirections(dirList)
     }
+
+    // Make sure loadingActive hasn't been hit yet.
+    if (loadingActive) {
+      console.log("setting loader to false")
+      setLoadingActive(false)
+    };
   }
 
   const createDraftRecipe = () => {
@@ -171,13 +174,13 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   const submitDraftRecipe = async (id, ing, dir) => {
     draftRecipe._id = draftRecipe._id.toString()
 
-    console.log("Saving recipe: " + draftRecipe)
+    console.log("Saving recipe: " + JSON.stringify(draftRecipe))
 
-    dispatch(toggleLoader(true))
+    setLoadingActive(true)
 
     if (!id || id === "") {
       await addRecipe(draftRecipe).then((rec) => {
-        dispatch(toggleLoader(false))
+        setLoadingActive(false)
       });
 
       dispatch(setRedirect("/builder/" + draftRecipe._id))
@@ -190,10 +193,9 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         updates: draftRecipe
       }
 
-
       // console.log("this should be maybe not a new recipe. This should be a recipe downloadeded from the ole internet.")
       await updateRecipe(rec).then((resp) => {
-        dispatch(toggleLoader(false))
+        setLoadingActive(false)
         console.log("recipe updated I think")
       });
     }
@@ -206,10 +208,10 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         resetDraftRecipe()
       }
       else {
-        dispatch(toggleLoader(true))
+        setLoadingActive(true)
 
         await deleteRecipe(draftRecipe).then((obj) => {
-          dispatch(toggleLoader(false))
+          setLoadingActive(false)
 
           dispatch(setRedirect("/builder/"))
           newID = new ObjectId()
@@ -222,7 +224,7 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
   };
 
   const importFromAddress = async () => {
-    dispatch(toggleLoader(true))
+    setLoadingActive(true)
     serverService.importRecipe(importAddress)
     .then(res=> {
       let dirObject = {
@@ -243,10 +245,10 @@ function useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe
         directions: dirObject
       });
 
-      dispatch(toggleLoader(false))
+      setLoadingActive(false)
     })
     .catch(err => {
-      dispatch(toggleLoader(false))
+      setLoadingActive(false)
       return dispatch(warning("Import failed: " + err))
     })
   }
@@ -325,6 +327,7 @@ export default function Builder(props) {
   const [ baseIngredients, setBaseIngredients ] = React.useState([])
   const [ baseDirections, setBaseDirections ] = React.useState([])
   const [ importAddress, setImportAddress ] = React.useState("")
+  const [ loadingActive, setLoadingActive ] = React.useState(false)
 
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
 
@@ -339,10 +342,12 @@ export default function Builder(props) {
     submitDeleteRecipe,
     importFromAddress,
     mintNFT
-  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections ], importAddress, recipeIdentification);
+  } = useDraftRecipe({ addRecipe, updateRecipe, deleteRecipe }, [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections, loadingActive, setLoadingActive ], importAddress, recipeIdentification);
 
   return (
     <div className="builder">
+      {loadingActive ? <div className="loader">Loading...</div> : <div></div>}
+
       <form onSubmit={e => {
           e.preventDefault();
           setBaseIngredients(baseIngredients)
