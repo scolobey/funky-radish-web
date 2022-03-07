@@ -481,7 +481,7 @@ export function warningCycleMiddleware({ dispatch }) {
       if (action.type === WARNING) {
         setInterval(() => {
           return dispatch(warningToggle());
-        }, 10000);
+        }, 2000);
       }
       return next(action);
     };
