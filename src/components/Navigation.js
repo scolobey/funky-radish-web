@@ -7,7 +7,8 @@ import SearchBar from './SearchBar';
 
 export default function Navigation(props) {
 
-  var menu = useSelector((state) => state.menu)
+  console.log("but the nav is loading now.")
+  var menu = useSelector((state) => state.menu )
   const dispatch = useDispatch()
 
   const toggle = (e) => {

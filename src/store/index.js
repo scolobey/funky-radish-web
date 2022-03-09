@@ -29,6 +29,8 @@ import { loadState } from '../stateLoader.js';
 
 const persistedState = loadState();
 
+console.log("state should be loaded now.")
+
 const storeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(

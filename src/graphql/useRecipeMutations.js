@@ -126,12 +126,9 @@ function useAddRecipe(recipe) {
 }
 
 function useUpdateRecipe(recipe) {
-  console.log("loading the updater")
-
   const [updateRecipeMutation] = useMutation(UpdateRecipeMutation);
 
   const updateRecipe = async (recipe) => {
-    console.log("return from mutation;")
     const { updatedRecipe } = await updateRecipeMutation({
       variables: {
         recipeId: recipe.recipeId,
@@ -140,7 +137,7 @@ function useUpdateRecipe(recipe) {
         updates: recipe.updates
       }
     });
-    
+
     return updatedRecipe;
   };
   return updateRecipe;

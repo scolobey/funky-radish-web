@@ -245,13 +245,14 @@ function useDraftRecipe(
 
       await updateRecipe(rec).then((resp) => {
         console.log("this return is skipped when the thing tries to add an ingredient that's already there errors.")
+        console.log("update response: " + resp)
 
-        setLoadingActive(false)
+
         // dispatch(warning("recipe updated"))
       }).catch(err => {
         console.log("setting to false after updateRecipe catch: " + err)
 
-        setLoadingActive(false)
+      
       });
 
       console.log("setting to false after updateRecipe after the await")
