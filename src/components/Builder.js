@@ -33,7 +33,7 @@ var newRecipeID = ObjectId().valueOf()
 // mintNFT
 
 function useDraftRecipe(
-    [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections, loadingActive, setLoadingActive ],
+    [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive ],
     importAddress
   ) {
 
@@ -58,9 +58,15 @@ function useDraftRecipe(
     dispatch(warning(error.message))
   };
 
-  // Data incoming?
+  // In a recipe
+  // the recipe is either the same or different from the cloud
+  // if the same, you can ignore it, but then when you go to save, you're saving and deleting the same shit.
+  // this is either because the cloud has changed, youre editing the recipe, or the recipe has been downloaded from scratch.
+  // if downloaded from scratch, you need to set the draft from the data.
+  // if being edited, you need to ignore the data.
+  // if the cloud has changed, you need
   if (data && !recipeInProgress) {
-    console.log("data coming in. And recipe is not in progress.")
+    console.log("data coming in.")
 
     // Convert recipe data to strings for comparison
     let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
@@ -69,28 +75,19 @@ function useDraftRecipe(
     let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
     let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
 
-    // If incoming data is different from draftRecipe
-    // Make the draftRecipe look like the data
-    // and reset the base lists
+    let baseIngList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
+    let baseDirList = data.recipe.directions.map(dirListing => {return dirListing._id})
+
+    console.log("deleting list after incoming data")
+    console.log("ing: " + baseIngList)
+    console.log("dir: " + baseDirList)
+
+    // If data is different from draftRecipe
+    // Create a whole new set of ingredients and directions.
     if ((draftRecipeIngredients !== dataRecipeIngredients) || (draftRecipeDirections !== dataRecipeDirections) || (draftRecipe.title !== data.recipe.title)) {
 
-      let dirList = dataRecipeDirections.split(/\r?\n/).map(directionText => {
-        return { _id: ObjectId().valueOf(), author: data.recipe.author, text: directionText }
-      });
-
-      let dirObject = {
-        create: dirList,
-        link: [recipeID]
-      }
-
-      let ingList = dataRecipeIngredients.split(/\r?\n/).map(ingredientName => {
-        return { _id: new ObjectId(), author: draftRecipe.author, name: ingredientName }
-      });
-
-      let ingObject = {
-        create: ingList,
-        link: [recipeID]
-      }
+      let dirObject = arrayToDirections(dataRecipeDirections.split(/\r?\n/))
+      let ingObject = arrayToIngredients(dataRecipeIngredients.split(/\r?\n/))
 
       setDraftRecipe({
         _id: recipeID,
@@ -100,22 +97,31 @@ function useDraftRecipe(
         directions: dirObject
       });
 
-      let baseIngList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
-      let baseDirList = data.recipe.directions.map(dirListing => {return dirListing._id})
-
       setBaseIngredients(baseIngList)
       setBaseDirections(baseDirList)
     }
 
-    // Barrier against run conditions.
-    if (loadingActive) {
-      console.log("setting loader to false")
+// this causes loading to turn off immediately when saving.
+// How to turn off the loading after the recipe loads, but while the recipe is updating.
+// Either setBaseIngredients to null
+// or what's the difference between updating and loading?
+// What's the data look like here?
+    if (loadingActive && baseIngredients != null) {
+
+      let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
+      let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
+
+      console.log("setting loader to false: setting loading false")
+      console.log("draft: " + draftRecipeIngredients)
+      console.log("data: " + dataRecipeIngredients)
+
       setLoadingActive(false)
-    };
-  } else if (data && loadingActive){
+    }
+
+  } else if (data && loadingActive) {
+    console.log("data and loading - setting loader to false: setting loading false")
     setLoadingActive(false)
   }
-
 
   /* Presenting... Your recipe interaction methods */
   const clearDraftRecipe = () => {
@@ -151,14 +157,8 @@ function useDraftRecipe(
   const setDraftRecipeIngredients = (ingredients) => {
     setRecipeInProgress(true)
 
-    let ingList = ingredients.split(/\r?\n/).map(ingredientName => {
-      return { _id: ObjectId().valueOf(), author: draftRecipe.author, name: ingredientName }
-    });
-
-    let ingObject = {
-      create: ingList,
-      link: [draftRecipe._id]
-    }
+    let ingArray = ingredients.split(/\r?\n/)
+    let ingObject = arrayToIngredients(ingArray)
 
     setDraftRecipe({
       _id: draftRecipe._id,
@@ -172,21 +172,8 @@ function useDraftRecipe(
   const setDraftRecipeDirections = (directions) => {
     setRecipeInProgress(true)
 
-    console.log("changin direc: " + directions)
-
-    // gotta check for 1 liners. where this split doesnt work.
-    // let gqlDirections = arrayToDirections(directions.split(/\r?\n/))
-
-    // console.log("direc obj: " + JSON.stringify(gqlDirections))
-
-    let dirList = directions.split(/\r?\n/).map(directionText => {
-      return { _id: new ObjectId(), author: draftRecipe.author, text: directionText }
-    });
-
-    let dirObject = {
-      create: dirList,
-      link: [draftRecipe._id]
-    }
+    let directionArray = directions.split(/\r?\n/)
+    let dirObject = arrayToDirections(directionArray)
 
     setDraftRecipe({
       _id: draftRecipe._id,
@@ -198,43 +185,77 @@ function useDraftRecipe(
   };
 
   const submitDraftRecipe = async (ing, dir) => {
-    console.log("Saving recipe: " + JSON.stringify(draftRecipe))
+    console.log("Saving Recipe")
 
-    // Make sure the right fields are populated
+    // Make sure the right fields are populated.
     if (draftRecipe.ingredients.create.length < 1 && draftRecipe.directions.create.length < 1 || draftRecipe.title.length < 1) {
       return dispatch(warning("Empty fields."))
     }
 
-    setLoadingActive(true)
-
     if (!recipeID || recipeID == "") {
-      console.log("adding new recipe")
-      await addRecipe(draftRecipe).then((rec) => {
-        console.log("the recipe should be there.")
-        setLoadingActive(false)
+      setLoadingActive(true)
+      console.log("Adding recipe: " + JSON.stringify(draftRecipe))
 
+      await addRecipe(draftRecipe).then((rec) => {
+        console.log("setting to false after addRecipe")
+        setLoadingActive(false)
         dispatch(setRedirect("/builder/" + draftRecipe._id))
       });
-
-
     }
     else {
+      // ing and dir are lists of the id's to ingredients and directions that should be removed from the db because they are no longer in use.
+      // There is a special case where an id in ing or dir are also in draftRecipe.ingredients or draftRecipe.directions
+      // This case occurs when a recipe has been updated previously but the page hasn't been reloaded yet to reset the baseIngredients and baseDirections.
+
+      // Convert draftRecipe.ingredients and draftRecipe.directions to arrays of id's
+      let currentIngredients = draftRecipe.ingredients.create.map((ing) => { return ing._id})
+      let currentDirections = draftRecipe.directions.create.map((dir) => { return dir._id})
+
+      console.log("deleting before filtering")
+      console.log("ing: " + ing)
+      console.log("dir: " + dir)
+
+      // Remove those id's from ing and dir
+      let finalIngredients = ing.filter( (el) => !currentIngredients.includes(el) );
+      let finalDirections = dir.filter( (el) => !currentDirections.includes(el) );
+
+
+
+      // But we also need to remove that _id from the array of ingredients or directions if it hasn't changed.
+
+      // Adding ingredients and directions.
+      console.log("adding")
+      console.log("ing: " + currentIngredients)
+      console.log("dir: " + currentDirections)
+
+      // Deleting ingredients and directions
+      console.log("deleting")
+      console.log("ing: " + finalIngredients)
+      console.log("dir: " + finalDirections)
+
       let rec = {
         recipeId: draftRecipe._id,
-        oldIngredients: ing,
-        oldDirections: dir,
+        oldIngredients: finalIngredients,
+        oldDirections: finalDirections,
         updates: draftRecipe
       }
 
-      console.log("updating recipe: " + JSON.stringify(rec))
+      console.log("Updating: loadingActive = true")
+      setLoadingActive(true)
 
       await updateRecipe(rec).then((resp) => {
+        console.log("this return is skipped when the thing tries to add an ingredient that's already there errors.")
+
         setLoadingActive(false)
-        return dispatch(warning("recipe updated"))
+        // dispatch(warning("recipe updated"))
       }).catch(err => {
+        console.log("setting to false after updateRecipe catch: " + err)
+
         setLoadingActive(false)
-        return dispatch(warning("recipe updated error: " + err))
       });
+
+      console.log("setting to false after updateRecipe after the await")
+      setLoadingActive(false)
     }
   };
 
@@ -248,6 +269,8 @@ function useDraftRecipe(
         setLoadingActive(true)
 
         await deleteRecipe(draftRecipe).then((obj) => {
+          console.log("setting to false after deleteRecipe return")
+
           setLoadingActive(false)
 
           dispatch(setRedirect("/builder/"))
@@ -275,9 +298,12 @@ function useDraftRecipe(
         directions: gqlDirections
       })
 
+      console.log("setting to false after importRecipe")
       setLoadingActive(false)
     })
     .catch(err => {
+      console.log("setting to false after importRecipe err")
+
       setLoadingActive(false)
       return dispatch(warning("Import failed: " + err))
     })
@@ -299,44 +325,29 @@ function useDraftRecipe(
   /* This concludes our presentation */
 
   /* helpers for the ^^ */
-
   // format string Arrays for GQL update
   function arrayToDirections(directionArray) {
-    console.log("dir arr: " + directionArray.length)
-      let directionObject = {
-        create: directionArray
-        .map((dir) => {
-          console.log(dir)
-          return { _id: ObjectId().valueOf(), author: currentRealmUser, text: dir }
-        })
-        .filter(x => x.text != null),
-        link: [newRecipeID]
-      }
-      return directionObject
+    let directionObject = {
+      create: directionArray
+      .map((dir) => {
+        return { _id: ObjectId().valueOf(), author: currentRealmUser, text: dir }
+      }),
+      link: [newRecipeID]
+    }
+
+    return directionObject
   }
 
-  function arrayToIngredients(ingredientString) {
+  function arrayToIngredients(ingredientArray) {
     let ingredientObject = {
-      create: ingredientString
+      create: ingredientArray
       .map((ing) => {
         return { _id: ObjectId().valueOf(), author: currentRealmUser, name: ing }
-      })
-      .filter(x => x.name != null),
+      }),
       link: [newRecipeID]
     }
 
     return ingredientObject
-  }
-
-  // format GQl data for display
-  function directionsToString(directionObject) {
-
-      // return directionString
-  }
-
-  function ingredientsToString(ingredientObject) {
-
-      // return directionString
   }
 
   return {
@@ -377,7 +388,7 @@ export default function Builder(props) {
       author: currentRealmUser,
       title: "",
       ingredients: {create: [], link: [newRecipeID]},
-      directions: {create: [], link: [newRecipeID]}
+      directions: {create: [], link: [newRecipeID]},
     }
   )
 
@@ -392,7 +403,7 @@ export default function Builder(props) {
     importFromAddress,
     mintNFT
   } = useDraftRecipe(
-    [ draftRecipe, setDraftRecipe, setBaseIngredients, setBaseDirections, loadingActive, setLoadingActive ],
+    [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive ],
     importAddress
   );
 
