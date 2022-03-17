@@ -15,6 +15,7 @@ $black: black;
 @import "~@fontsource/vt323/index.css";
 @import "~@fontsource/francois-one/index.css";
 @import "~@fontsource/luckiest-guy/index.css";
+@import "~@fontsource/irish-grover/index.css";
 
 /* Functions */
 @function cos($angle) {
@@ -1484,4 +1485,33 @@ input:checked + .slider:before {
   border: 1px solid black;
   border-collapse: collapse;
   background-color: white;
+}
+
+.countdown {
+  margin-top: 200px;
+  padding: 20px;
+  margin: auto;
+  width: 80%;
+  text-align: center;
+  font-size: 25px;
+  font-family: "Irish Grover";
+}
+
+.countdown .page-title {
+  font-size: 70px;
+  color: $specialBlue;
+  padding-bottom: 40px;
+  @include outline($grayLight);
+  @include shade(text, #aaa, #333, 10, 135deg, true);
+}
+
+.countdown .timer {
+  font-size: 30px;
+  padding-bottom: 30px;
+}
+
+.countdown .counter {
+  font-size: 45px;
+  padding-bottom: 30px;
+  color: $specialOrange;
 }

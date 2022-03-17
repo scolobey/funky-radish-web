@@ -45,6 +45,8 @@ const ChangePasswordView = lazy(() => import('./components/ChangePasswordView'))
 
 const Minter = lazy(() => import('./components/Minter'));
 
+const CornedBeefCountdown = lazy(() => import('./components/CornedBeefCountdown'));
+
 const Loading = () => <div className="loader">Loading...</div>;
 
 class App extends Component {
@@ -85,6 +87,7 @@ class App extends Component {
             <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
             <Route path="/changePassword/:token?" component={ChangePasswordView} />
             <Route path="/minter" component={Minter} />
+            <Route path="/corned-beef-countdown" component={CornedBeefCountdown} />
           </Suspense>
         </div>
       </div>

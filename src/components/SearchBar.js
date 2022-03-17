@@ -94,7 +94,7 @@ class SearchBar extends Component {
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input
           type="text"
-          placeholder="Search.."
+          placeholder="Search for recipes.."
           onChange={this.handleChange}
           onKeyDown={ this.handleKeyDown }
           ref={this.searchRef}

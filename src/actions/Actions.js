@@ -35,7 +35,8 @@ import {
   CHANGE_PASSWORD,
   RESEND_VERIFICATION,
   CLAIM_RECIPE,
-  REQUEST_RECIPE
+  REQUEST_RECIPE,
+  SUBSCRIBE_TO_NEWSLETTER
 } from "../constants/action-types"
 
 /* action creators */
@@ -189,4 +190,8 @@ export function claimRecipe(payload) {
 
 export function requestRecipe(payload) {
   return { type: REQUEST_RECIPE, payload }
+};
+
+export function subscribeToNewsletter(payload) {
+  return { type: SUBSCRIBE_TO_NEWSLETTER, payload }
 };

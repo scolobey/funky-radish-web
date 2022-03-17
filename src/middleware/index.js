@@ -19,7 +19,8 @@ import {
   RESEND_VERIFICATION,
   GET_RECIPE_TOKEN,
   CLAIM_RECIPE,
-  REQUEST_RECIPE
+  REQUEST_RECIPE,
+  SUBSCRIBE_TO_NEWSLETTER
 } from "../constants/action-types";
 
 import {
@@ -43,7 +44,8 @@ import {
   setSearchSuggestions,
   updateUserRecord,
   sendPasswordResetEmail,
-  requestRecipe
+  requestRecipe,
+  subscribeToNewsletter
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
@@ -901,6 +903,37 @@ export function requestRecipeMiddleware({ dispatch }) {
           } else {
             return dispatch(warning(data.message))
           }
+        })
+        .catch(err => {
+          return dispatch(warning('Error: ' + err))
+        })
+      }
+
+      return next(action);
+    };
+  };
+}
+
+export function subscribeToNewsletterMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === SUBSCRIBE_TO_NEWSLETTER) {
+        console.log("subscribe action: " + JSON.stringify(action.payload))
+
+        fetch('https://funky-radish-api.herokuapp.com/newsletter/signup/?code=' + action.payload.code + '&email=' + action.payload.email , {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res=> {
+          console.log("res: " + JSON.stringify(res))
+          return res.clone().json()
+        })
+        .then(data => {
+          console.log(data)
+          return dispatch(warning("somethin somethin"))
         })
         .catch(err => {
           return dispatch(warning('Error: ' + err))

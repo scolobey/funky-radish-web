@@ -219,8 +219,6 @@ function useDraftRecipe(
       let finalIngredients = ing.filter( (el) => !currentIngredients.includes(el) );
       let finalDirections = dir.filter( (el) => !currentDirections.includes(el) );
 
-
-
       // But we also need to remove that _id from the array of ingredients or directions if it hasn't changed.
 
       // Adding ingredients and directions.
@@ -247,12 +245,9 @@ function useDraftRecipe(
         console.log("this return is skipped when the thing tries to add an ingredient that's already there errors.")
         console.log("update response: " + resp)
 
-
         // dispatch(warning("recipe updated"))
       }).catch(err => {
         console.log("setting to false after updateRecipe catch: " + err)
-
-      
       });
 
       console.log("setting to false after updateRecipe after the await")
