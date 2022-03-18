@@ -9,7 +9,6 @@ export default function CornedBeefCountdown() {
 
   const dispatch = useDispatch()
 
-  const [ popoverActive, setPopoverActive ] = useState(false)
   const [ weeklyToggle, setWeeklyToggle ] = useState(true)
   const [ cornedBeefToggle, setCornedBeefToggle ] = useState(true)
   const [ email, setEmail ] = useState(false)
@@ -18,7 +17,6 @@ export default function CornedBeefCountdown() {
     console.log(weeklyToggle)
     console.log(cornedBeefToggle)
     console.log(email)
-    setPopoverActive(true)
 
     let subCode = 1
 
@@ -37,10 +35,6 @@ export default function CornedBeefCountdown() {
       code: subCode
     }))
 
-  };
-
-  const dismissPopover = () => {
-    setPopoverActive(false)
   };
 
   const calculateTimeRemaining = () => {
@@ -87,7 +81,7 @@ export default function CornedBeefCountdown() {
             {timeLeft.days} Days {timeLeft.hours} hours {timeLeft.minutes} minutes {timeLeft.seconds} seconds
           </div>
 
-          Until you need to get your next corned beef started.
+          Until you need to get your next corned beef started, baby!
         </div>
 
         <form onSubmit={e => {
@@ -102,25 +96,19 @@ export default function CornedBeefCountdown() {
             :
             <input type="checkbox" id="corned_beef" name="newsletter_tag" value="HTML" onClick={(event) => { setCornedBeefToggle(true) }} ></input>
           }
-          <label for="corned_beef">Please remind me to start my corned beef on March 10th, 2023</label><br></br>
+          <label for="corned_beef">Please remind me to start my next corned beef on March 10th, 2023</label><br></br>
 
           { weeklyToggle ?
             <input type="checkbox" id="weekly_recipe" name="newsletter_tag" value="Weekly" onClick={(event) => { setWeeklyToggle(false) }} checked></input>
             :
             <input type="checkbox" id="weekly_recipe" name="newsletter_tag" value="Weekly" onClick={(event) => { setWeeklyToggle(true) }} ></input>
           }
-          <label for="weekly_recipe">Also send me weekly recipes</label><br></br>
+          <label for="weekly_recipe">Also send me weekly recipes, if you don't mind.</label><br></br>
         </form>
 
       </div>
 
-      { popoverActive ? (
-        <Popover
-          title="Awesome! Seeya next year."
-          message="Expect a comprehensive guide to preparing a homemade corned beef on 3/10/2023"
-          dismiss={dismissPopover}></Popover>
-      ):
-      (<div></div>)}
+
 
     </div>
 }

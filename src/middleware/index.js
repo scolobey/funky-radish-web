@@ -933,10 +933,11 @@ export function subscribeToNewsletterMiddleware({ dispatch }) {
         })
         .then(data => {
           console.log(data)
-          return dispatch(warning("somethin somethin"))
+          dispatch(warning("Thanks for the signup, you might not regret it."))
         })
         .catch(err => {
-          return dispatch(warning('Error: ' + err))
+          console.log(err)
+          dispatch(warning('Error: ' + err))
         })
       }
 
