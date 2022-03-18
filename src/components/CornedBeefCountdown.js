@@ -78,10 +78,13 @@ export default function CornedBeefCountdown() {
           You have...
           <br></br>
           <div className="counter">
-            {timeLeft.days} Days {timeLeft.hours} hours {timeLeft.minutes} minutes {timeLeft.seconds} seconds
+            <div>{timeLeft.days} Days</div>
+            <div>{timeLeft.hours} hours</div>
+            <div>{timeLeft.minutes} minutes</div>
+            <div>{timeLeft.seconds} seconds</div>
           </div>
 
-          Until you need to get your next corned beef started, baby!
+          Until you need to get your next corned beef started.
         </div>
 
         <form onSubmit={e => {
@@ -105,7 +108,6 @@ export default function CornedBeefCountdown() {
           }
           <label for="weekly_recipe">Also send me weekly recipes, if you don't mind.</label><br></br>
         </form>
-
       </div>
 
 

@@ -1497,6 +1497,12 @@ input:checked + .slider:before {
   font-family: "Irish Grover";
 }
 
+@media only screen and (max-width: 600px) {
+  .countdown {
+    width: 90%;
+  }
+}
+
 .countdown .page-title {
   font-size: 70px;
   color: $specialBlue;
@@ -1525,4 +1531,21 @@ input:checked + .slider:before {
   border: 1px solid #ccc;
   resize: vertical;
   font-size: 18px;
+}
+
+.leprechaun {
+  animation: MoveUpDown 5s linear infinite;
+  position: fixed;
+  left: 70%;
+  bottom: -10;
+  width: 10%;
+}
+
+@keyframes MoveUpDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-50px);
+  }
 }
