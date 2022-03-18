@@ -73,12 +73,12 @@ export default function CornedBeefCountdown() {
       <Helmet>
         <meta charSet="utf-8" />
         <title>The Corned Beef Countdown</title>
-        <meta name="description" content= "Sign up for the ultimate St. Patrick's Day corned beef tutorial" />
+        <meta name="description" content= "Sign up for the ultimate St. Patrick's Day corned beef tutorial 3/10/2023" />
       </Helmet>
 
       <div className="countdown">
 
-        <div className="page-title">Corned Beef Countdown</div>
+        <div className="page-title">2023 Corned Beef Countdown</div>
 
         <div className="timer">
           You have...
@@ -95,22 +95,21 @@ export default function CornedBeefCountdown() {
             submitEmail(e);
         }}>
           <label><input type="text" name="email" placeholder="email" onChange={(event) => { setEmail(event.target.value) }}/></label>
-          <br></br>
-          <input type="submit" value="Please sign me up for" ></input>
+          <button type="clear">Sign me up</button>
           <br></br>
           { cornedBeefToggle ?
             <input type="checkbox" id="corned_beef" name="newsletter_tag" value="HTML" onClick={(event) => { setCornedBeefToggle(false) }} checked></input>
             :
             <input type="checkbox" id="corned_beef" name="newsletter_tag" value="HTML" onClick={(event) => { setCornedBeefToggle(true) }} ></input>
           }
-          <label for="corned_beef">A corned beef masterclass on March 10th, 2023</label><br></br>
+          <label for="corned_beef">Please remind me to start my corned beef on March 10th, 2023</label><br></br>
 
           { weeklyToggle ?
             <input type="checkbox" id="weekly_recipe" name="newsletter_tag" value="Weekly" onClick={(event) => { setWeeklyToggle(false) }} checked></input>
             :
             <input type="checkbox" id="weekly_recipe" name="newsletter_tag" value="Weekly" onClick={(event) => { setWeeklyToggle(true) }} ></input>
           }
-          <label for="weekly_recipe">Chef-curated weekly recipes, straight to my inbox.</label><br></br>
+          <label for="weekly_recipe">Also send me weekly recipes</label><br></br>
         </form>
 
       </div>

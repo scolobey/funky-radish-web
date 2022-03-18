@@ -1491,7 +1491,7 @@ input:checked + .slider:before {
   margin-top: 200px;
   padding: 20px;
   margin: auto;
-  width: 80%;
+  width: 60%;
   text-align: center;
   font-size: 25px;
   font-family: "Irish Grover";
@@ -1514,4 +1514,15 @@ input:checked + .slider:before {
   font-size: 45px;
   padding-bottom: 30px;
   color: $specialOrange;
+}
+
+.countdown form input[type=text] {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-size: 18px;
 }
