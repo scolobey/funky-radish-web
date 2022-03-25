@@ -44,7 +44,7 @@ class SearchBar extends Component {
         }
         else {
           console.log("searching")
-          this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '-'))
+          this.props.externalRecipeSearch(event.target.value.replace(/\s+/g, '%20'))
 
           // If you're not at home -> redirect
           if (window.location.pathname != "/") {

@@ -46,6 +46,8 @@ function RecipeList(props) {
   return (data?.recipes) ? (
     <div className="recipeView">
 
+    Recipe list
+
     { rec.length > 0 ?  (
       <ul>
         {rec.map((recipe) =>

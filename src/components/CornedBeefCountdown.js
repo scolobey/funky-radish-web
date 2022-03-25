@@ -110,7 +110,5 @@ export default function CornedBeefCountdown() {
         </form>
       </div>
 
-
-
     </div>
 }
