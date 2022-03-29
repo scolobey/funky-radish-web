@@ -9,7 +9,7 @@ $specialBlue	: rgb(100,224,215);
 $specialGreen: rgba(162,255,177,1);
 $specialPink	: rgb(252,3,144);
 $specialOrange	: rgb(252,165,3);
-$clearOrange	: rgba(64,185,222,.6);
+$clearSky	: rgba(64,185,222,.6);
 $black: black;
 
 @import "~@fontsource/vt323/index.css";
@@ -124,82 +124,144 @@ $black: black;
   .header {
     z-index: 6;
     position: fixed;
-    width: 100%;
+    width: 100vw;
     height: 135px;
+    padding: 2vw;
     background: linear-gradient($white 90%, rgba(255,255,255,0));
-    padding-top: 30px;
-    padding-left: 50px;
   }
 
   @media only screen and (max-width: 600px) {
     .header {
-      width: 100%;
       height: 80px;
-      padding-top: 20px;
-      padding-left: 20px;
     }
   }
 
   .icon {
-    width: 5%;
+    width: 4vw;
+    float: left;
     height: auto;
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 800px) {
     .icon {
-      width: 10%;
+      width: 10vw;
     }
   }
 
   .RecipeSearchField {
-    display: inline;
-    float: right;
-    padding-top: 25px;
-    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2vw;
+    width: 90vw;
   }
 
   @media only screen and (max-width: 600px) {
     .RecipeSearchField {
-      height: 60px;
-      padding-top: 5px;
-      width: 70%;
+      height: 15vw;
+      padding-top: 6vw;
     }
   }
 
   .RecipeSearchField img {
     vertical-align: bottom;
     padding-right: 10px;
+    margin-left: 30vw;
   }
 
   .RecipeSearchField input {
-    width: 20%;
-    padding-right: 10%;
-    padding: 10px;
+    width: 15vw;
     font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
-    font-size: 1em;
+    font-size: 1.5em;
     border: none;
     border-bottom: #757575 solid 2px;
     outline: none;
     font-weight: bold;
   }
 
+  @media only screen and (max-width: 600px) {
+    .RecipeSearchField input {
+      width: 32vw;
+      font-size: 1em;
+    }
+
+    .RecipeSearchField img {
+      height: 25px;
+      margin-left: 9vw;
+    }
+
+    .RecipeSearchField input:focus {
+      width: 40vw !important;
+      transition: 0.5s;
+      border-bottom: #757575 solid 2px;
+      outline: none;
+    }
+  }
+
   .RecipeSearchField input:focus {
-    width: 30%;
-    padding: 10px;
+    width: 20vw;
     transition: 0.5s;
     border: none;
     border-bottom: #757575 solid 2px;
     outline: none;
   }
 
+  .search-trail {
+    position:relative;
+    left: -5vw;
+    z-index: 10;
+    padding-top: 30px;
+    padding-bottom: 50px;
+    font-size: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    white-space:nowrap
+  }
+
+  .search-trail a {
+    text-decoration: none;
+    text-align: center;
+    background: $white;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 0 4px gray;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    color: black;
+  }
+
+  .search-trail .parent {
+    background-color: $specialPink;
+  }
+
+  .search-trail .child {
+    background-color: $linkHoverColorBlue;
+  }
+
+  .search-trail .current {
+    box-shadow: 0 0 6px $specialPink;
+  }
+
+  .search-trail .current:hover {
+    box-shadow: 0 0 6px $specialPink;
+  }
+
+  .search-trail a:hover {
+    box-shadow: 0 0 6px $clearSky;
+  }
+
   /* Hamburger menu */
 
   #Nav-Icon {
-    width: 50px;
-    height: 50px;
-    position: fixed;
-    right: 80px;
-    top: 55px;
+    width: 5vw;
+    height: 5vw;
+    float: right;
+    margin-top: 2vw;
+    margin-right: 4vw;
+    cursor: pointer;
+
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -o-transform: rotate(0deg);
@@ -208,13 +270,19 @@ $black: black;
     -moz-transition: .5s ease-in-out;
     -o-transition: .5s ease-in-out;
     transition: .5s ease-in-out;
-    cursor: pointer;
   }
 
   @media only screen and (max-width: 600px) {
     #Nav-Icon {
-      top: 30px;
-      right: 25px;
+      margin: 5vw;
+      margin-right: 13vw !important;
+    }
+  }
+
+  @media only screen and (max-width: 800px) {
+    #Nav-Icon {
+      margin: 5vw;
+      margin-right: 8vw;
     }
   }
 
@@ -277,7 +345,7 @@ $black: black;
 
   #menu {
     position: fixed;
-    top: 20vh;
+    top: 8vw;
     right: 0px;
     height: 100%;
     border-style: solid;
@@ -288,7 +356,7 @@ $black: black;
     font-family: "Luckiest Guy";
     color: $specialBlue;
     width: 20%;
-    z-index: 1;
+    z-index: 10;
     transform: translateX(100%);
     transition: transform 300ms;
   }
@@ -341,7 +409,7 @@ $black: black;
   border-radius: 5px;
   border-style: solid;
   border-color: black;
-  background-color: $clearOrange;
+  background-color: $clearSky;
   font-size: 48px;
   line-height: 45px;
 }
@@ -979,7 +1047,7 @@ button[type=import]:hover {
 
 .externalRecipeView {
   font-family: "Francois One";
-  padding: 10px;
+  padding-top: 4vw;
   width: 100%;
   color: black;
 }
@@ -1020,6 +1088,11 @@ button[type=import]:hover {
 @media only screen and (max-width: 600px) {
   .recipeView ul {
     padding: 0px;
+  }
+
+  .externalRecipeView {
+    padding-top: 15vw;
+
   }
 }
 
@@ -1346,10 +1419,6 @@ input:checked + .slider:before {
 @media only screen and (max-width: 600px) {
   .not-logged-in-banner {
     display: inline;
-  }
-
-  .RecipeSearchField {
-    width: 85%;
   }
 
   .landing-screenshot img {

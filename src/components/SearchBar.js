@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { debounce } from 'lodash';
 import { useLocation, Switch } from 'react-router-dom';
-import { search, autocomplete, setSearchSuggestions, externalRecipeSearch, setRedirect } from "../actions/Actions";
+import {
+  search,
+  autocomplete,
+  setSearchSuggestions,
+  externalRecipeSearch,
+  setRedirect
+} from "../actions/Actions";
 
 import { RealmApolloContext } from "../graphql/RealmApolloProvider";
 
-// import useRecipeSearch from "../graphql/useRecipes";
+import SearchTrail from "./SearchTrail"
 
 import { useHistory } from 'react-router-dom'
 
@@ -90,7 +96,6 @@ class SearchBar extends Component {
   render() {
     return (
       <div className="RecipeSearchField">
-        {this.context.currentUser ? ("") : (<p className="search-cta">Find a recipe -></p>)}
         <img src="/search_icon.svg" height="30" alt="Funky Radish"/>
         <input
           type="text"
@@ -99,6 +104,7 @@ class SearchBar extends Component {
           onKeyDown={ this.handleKeyDown }
           ref={this.searchRef}
         />
+        <SearchTrail />
       </div>
     );
   }

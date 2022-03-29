@@ -1,0 +1,57 @@
+{
+  "cocktails": {
+    "children": [
+      "tiki cocktails",
+      "classic cocktails",
+      "duo cocktails",
+      "trio cocktails"
+    ],
+    "parents": [
+      "home",
+      "drinks"
+    ]
+  },
+  "cocktail": {
+    "children": [
+      "tiki cocktails",
+      "classic cocktails",
+      "duo cocktails",
+      "trio cocktails"
+    ],
+    "parents": [
+      "home",
+      "drinks"
+    ]
+  },
+  "tiki cocktails": {
+    "children": [
+      "daiquiris",
+      "rum cocktails"
+    ],
+    "parents": [
+      "home",
+      "drinks",
+      "cocktails"
+    ]
+  },
+  "cookies": {
+    "children": [
+      "chocolate chip cookies",
+      "oatmeal cookies",
+      "peanut butter cookies"
+    ],
+    "parents": [
+      "home",
+      "desserts"
+    ]
+  },
+  "home": {
+    "children": [
+      "cocktails",
+      "cookies",
+      "soups",
+      "pizza"
+    ],
+    "parents": []
+  }
+}

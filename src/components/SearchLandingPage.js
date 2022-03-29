@@ -4,10 +4,12 @@ import { withRouter, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { externalRecipeSearch } from "../actions/Actions";
 
-const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
 const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
+const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
+const SearchTrail = lazy(() => import("./SearchTrail"));
 
 const Loading = () => <div></div>;
+
 export default function SearchLandingPage(props) {
   let searchQuery = props.match.params.searchQuery
 

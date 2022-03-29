@@ -29,14 +29,14 @@ export default function Navigation(props) {
           />
         </a>
 
-        <SearchBar/>
-
         <div id="Nav-Icon" className={menu ? 'open' : ''} onClick={toggle}>
           <span></span>
           <span></span>
           <span></span>
           <span></span>
         </div>
+
+        <SearchBar/>
       </header>
 
     </div>
