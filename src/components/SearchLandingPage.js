@@ -43,7 +43,7 @@ export default function SearchLandingPage(props) {
         <ExternalRecipeList externalRecipes={externalRecipes}/>
       </Suspense>
 
-      <div className="create-button"><a href="./builder">+</a></div>
+      <div className="create-button"><a href="/builder">+</a></div>
     </div>
   );
 

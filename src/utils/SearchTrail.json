@@ -2,25 +2,20 @@
   "cocktails": {
     "children": [
       "tiki cocktails",
-      "classic cocktails",
-      "duo cocktails",
-      "trio cocktails"
+      "classic cocktails"
     ],
     "parents": [
-      "home",
-      "drinks"
-    ]
+      "home"
+    ],
+    "info": ""
   },
   "cocktail": {
     "children": [
       "tiki cocktails",
-      "classic cocktails",
-      "duo cocktails",
-      "trio cocktails"
+      "classic cocktails"
     ],
     "parents": [
-      "home",
-      "drinks"
+      "home"
     ]
   },
   "tiki cocktails": {
@@ -30,7 +25,6 @@
     ],
     "parents": [
       "home",
-      "drinks",
       "cocktails"
     ]
   },
@@ -53,5 +47,36 @@
       "pizza"
     ],
     "parents": []
+  },
+  "pizza": {
+    "children": [
+      "pizza sauce",
+      "pizza dough",
+      "pizza crust"
+    ],
+    "parents": [
+      "home"
+    ]
+  },
+  "pizza sauce": {
+    "children": [],
+    "parents": [
+      "home",
+      "pizza"
+    ]
+  },
+  "pizza dough": {
+    "children": [],
+    "parents": [
+      "home",
+      "pizza"
+    ]
+  },
+  "pizza crust": {
+    "children": [],
+    "parents": [
+      "home",
+      "pizza"
+    ]
   }
 }

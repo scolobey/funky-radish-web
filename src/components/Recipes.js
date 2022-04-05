@@ -68,7 +68,7 @@ export class Recipes extends Component {
           <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
         </Suspense>
 
-        <div className="create-button"><a href="./builder">+</a></div>
+        <div className="create-button"><a href="/builder">+</a></div>
       </div>
     ):(
       this.props.externalRecipes? (

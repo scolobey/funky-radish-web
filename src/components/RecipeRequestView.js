@@ -47,8 +47,7 @@ export default function RecipeRequestView() {
 
   return (
     <div className="recipe-request-container">
-      <h1>Don't see what you're looking for? </h1>
-      <h3>We don't have a ton of recipes yet. But we do take requests. Or you can add your own.</h3>
+      <h3>Request a recipe</h3>
       <form onSubmit={submitRequest}>
         <label >Recipe Title</label><br></br>
         <input placeholder='Recipe Title...' name='title' value={query} onChange={onChangeQuery} /><br></br>

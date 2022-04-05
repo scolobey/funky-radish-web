@@ -906,6 +906,41 @@ $black: black;
   height: 300px;
 }
 
+.tags input {
+  max-width: 20vw;
+}
+
+.tag {
+  text-align: center;
+  background: $white;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 5px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  background-color: $specialOrange;
+  color: black;
+}
+
+.mint_button button {
+  text-align: center;
+  background: $white;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  min-width: 100px;
+  border-radius: 4px;
+  padding: 4px;
+  margin-top: 15px;
+  cursor: pointer;
+  background-color: $linkHoverColorGreen;
+  color: black;
+}
+
 button[type=submit] {
   background-color: #4CAF50;
   color: $white;
@@ -1043,11 +1078,18 @@ button[type=import]:hover {
   text-align: center;
 }
 
-// Exernal recipe listings
+// recipe listings overall
+.RecipeListContainer {
+  padding-top: 4vw;
+}
 
+.recipe-request-container {
+  padding-top: 4vw;
+}
+
+// Exernal recipe listings
 .externalRecipeView {
   font-family: "Francois One";
-  padding-top: 4vw;
   width: 100%;
   color: black;
 }
@@ -1098,11 +1140,8 @@ button[type=import]:hover {
 
 .recipeView {
   font-family: "Francois One";
-  padding: 20px;
-  padding-top: 60px;
   width: 90%;
   color: black;
-  padding-bottom: 150px;
 }
 
 .recipeView li {

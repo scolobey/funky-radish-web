@@ -31,7 +31,7 @@ export default class ServerService {
 
   // https://funky-radish-api.herokuapp.com/recipes/cookies
   async searchRecipes(query) {
-    let endpoint = BASE_URL + "recipes/" + query
+    let endpoint = BASE_URL + "recipes/" + query.replaceAll("-", " ")
 
     let response = await fetch(endpoint, { method: 'get' })
 

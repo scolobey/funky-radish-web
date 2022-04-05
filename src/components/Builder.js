@@ -11,6 +11,8 @@ import { setRedirect, importRecipe, warning } from "../actions/Actions";
 import SVGService from '../services/SVGService'
 import ServerService from '../services/ServerService'
 
+import tagList from '../utils/TagList.json'
+
 const svgService = new SVGService();
 const serverService = new ServerService();
 
@@ -368,6 +370,9 @@ export default function Builder(props) {
   const [ baseIngredients, setBaseIngredients ] = React.useState([])
   const [ baseDirections, setBaseDirections ] = React.useState([])
 
+  const [ tag, setTag ] = React.useState("")
+  const [ tags, setTags ] = React.useState(["tags", "stuff"])
+
   // If there's an ID in the URL, set the recipeID
   let paramID = props.match.params.recipeId
   var checkForHex = new RegExp("^[0-9a-fA-F]{24}$")
@@ -384,7 +389,7 @@ export default function Builder(props) {
       author: currentRealmUser,
       title: "",
       ingredients: {create: [], link: [newRecipeID]},
-      directions: {create: [], link: [newRecipeID]},
+      directions: {create: [], link: [newRecipeID]}
     }
   )
 
@@ -470,6 +475,25 @@ export default function Builder(props) {
           />
         </div>
 
+        <div className="tags">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="tags"
+            value={tag}
+            id="tags"
+            onChange={(event) => {
+              setTag(event.target.value)
+            }}
+          
+          />
+          {tags.map((tag, index) => (
+            <span className="tag" onClick={(event) => {
+              setTags(tags.splice(index, 1))
+            }}>{tag}</span>
+          ))}
+        </div>
+
         {/* Allow import for new recipes */}
         { !recipeID || recipeID.length === 0 ?
           <div>
@@ -495,12 +519,14 @@ export default function Builder(props) {
 
         {/* If admin, allow NFT creation */}
         { fullRealmUser && fullRealmUser.customData.admin ?
-          <button type="Create NFT" onClick={e => {
-              e.preventDefault();
-              mintNFT()
-            }}>
-            Mint NFT
-          </button>
+          <div className="mint_button">
+            <button type="Create NFT" onClick={e => {
+                e.preventDefault();
+                mintNFT()
+              }}>
+              Mint NFT
+            </button>
+          </div>
         : <div></div> }
 
         {/* state-based loader */}
