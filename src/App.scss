@@ -132,7 +132,7 @@ $black: black;
 
   @media only screen and (max-width: 600px) {
     .header {
-      height: 80px;
+      height: 27vw;
     }
   }
 
@@ -904,6 +904,11 @@ $black: black;
 
 .builder form textarea{
   height: 300px;
+}
+
+div.tags {
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .tags input {
