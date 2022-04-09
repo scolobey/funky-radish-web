@@ -64,12 +64,12 @@ export default function Recipe(props) {
              "author": "FunkyRadish.com",
              "datePublished": "2021-12-15",
              "description": "No pictures, no stories, just a simple recipe for ${recipe.title}",
-             "recipeIngredient": [ ${recipe.ingredients.map((ingredient, index) => (
-               '"' + ingredient.name + '"'
+             "recipeIngredient": [ ${recipe.ing.map((ingredient, index) => (
+               '"' + ingredient + '"'
              ))} ],
              "name": "${recipe.title}",
-             "recipeInstructions": "${recipe.directions.map((direction, index) => (
-               direction.text.replace('"',"%22").replace("\\", "%5C")
+             "recipeInstructions": "${recipe.dir.map((direction, index) => (
+               direction.replace('"',"%22").replace("\\", "%5C")
              )).join("\n")}"
          }
         `}</script>
@@ -96,9 +96,9 @@ export default function Recipe(props) {
 
       <div className="Ingredients">
         <ul>
-          {recipe.ingredients.map((ingredient, index) => (
-            <li key={ingredient._id}>
-              {ingredient.name}
+          {recipe.ing.map((ingredient, index) => (
+            <li key={index}>
+              {ingredient}
             </li>
           ))}
         </ul>
@@ -106,9 +106,9 @@ export default function Recipe(props) {
 
       <div className="Directions">
         <ul>
-          {recipe.directions.map((direction, index) => (
-            <li key={direction._id}>
-              {direction.text}
+          {recipe.dir.map((direction, index) => (
+            <li key={index}>
+              {direction}
             </li>
           ))}
         </ul>

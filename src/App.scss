@@ -195,6 +195,10 @@ $black: black;
       border-bottom: #757575 solid 2px;
       outline: none;
     }
+
+    .search-trail {
+      padding-top: 6vw !important;
+    }
   }
 
   .RecipeSearchField input:focus {
@@ -209,7 +213,7 @@ $black: black;
     position:relative;
     left: -5vw;
     z-index: 10;
-    padding-top: 30px;
+    padding-top: 3vw;
     padding-bottom: 50px;
     font-size: 10px;
     margin-left: auto;
