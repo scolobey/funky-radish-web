@@ -18,7 +18,7 @@
     "express-favicon": "^2.0.1",
     "googleapis": "^39.2.0",
     "graphql": "^15.4.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "node-sass": "^6.0.1",
     "path": "^0.12.7",
     "react": "^17.0.1",
