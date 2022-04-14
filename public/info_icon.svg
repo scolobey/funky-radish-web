@@ -1,0 +1,8 @@
+<svg id="info_button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 68 68" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <g>
+    <text dx="0" dy="0" font-family="&quot;e4T2Cs0yMaF1:::Noto Serif&quot;" font-size="32" font-weight="500" font-style="italic" transform="translate(29 42)" stroke-width="0">
+      <tspan y="0" font-weight="400" stroke-width="0"><![CDATA[i]]></tspan>
+    </text>
+    <ellipse rx="30" ry="30" transform="translate(34 34)" fill="none" stroke="#000" stroke-width="3"/>
+  </g>
+</svg>

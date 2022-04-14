@@ -485,7 +485,6 @@ export default function Builder(props) {
             onChange={(event) => {
               setTag(event.target.value)
             }}
-          
           />
           {tags.map((tag, index) => (
             <span className="tag" onClick={(event) => {

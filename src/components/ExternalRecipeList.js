@@ -31,7 +31,6 @@ class ExternalRecipeListView extends Component {
             </li>
           ))}
         </ul>
-        <RecipeRequestView/>
       </div>
     ):(
       <div></div>

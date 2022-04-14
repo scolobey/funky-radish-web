@@ -256,6 +256,32 @@ $black: black;
     box-shadow: 0 0 6px $clearSky;
   }
 
+  .info_button {
+    width: 5vw;
+    height: 5vw;
+    cursor: pointer;
+    position: fixed;
+    z-index: 10;
+    top: 8vw;
+    left: 12vw;
+  }
+
+  .search_description {
+    width: 75vw;
+    margin: auto;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-style: solid;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .search_description {
+      margin-top: 8vw;
+      margin-bottom: -8vw;
+    }
+  }
+
   /* Hamburger menu */
 
   #Nav-Icon {
@@ -1142,8 +1168,7 @@ button[type=import]:hover {
   }
 
   .externalRecipeView {
-    padding-top: 15vw;
-
+    padding-top: 10vw;
   }
 }
 

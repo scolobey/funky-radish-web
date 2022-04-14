@@ -542,7 +542,6 @@ export function externalSearchMiddleware({ dispatch }) {
   return function(next) {
     return function(action) {
       if (action.type === EXTERNAL_RECIPE_SEARCH) {
-        // dispatch(toggleLoader(true))
 
         console.log("calling search: " + action.query)
 
@@ -553,7 +552,7 @@ export function externalSearchMiddleware({ dispatch }) {
         serverService.searchRecipes(action.query)
         .then(res=> {
           console.log("recipes: ", res)
-          if(res.length == 0) {
+          if(res.recipes.length == 0) {
             console.log("Sending an email to myself.")
             let payload = {
               query: action.query,
@@ -561,6 +560,7 @@ export function externalSearchMiddleware({ dispatch }) {
             }
             dispatch(requestRecipe(payload))
           }
+
           return dispatch(externalRecipesLoaded(res))
         })
         .catch(err => {

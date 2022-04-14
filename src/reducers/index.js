@@ -30,7 +30,7 @@ function rootReducer(state, action) {
 
   if (action.type === EXTERNAL_RECIPES_LOADED) {
 
-    let recList = action.recipes.map(rec => {
+    let recList = action.searchResponse.recipes.map(rec => {
        let recipeObject = {}
        recipeObject["_id"] = rec._id
        recipeObject["title"] = rec.title
@@ -39,12 +39,15 @@ function rootReducer(state, action) {
        return recipeObject
     })
 
+    let description = action.searchResponse.description || ""
+
     console.log("setting external recipes to: ", recList)
 
     // set redirect...
 
     return Object.assign({}, state, {
-      externalRecipes: recList
+      externalRecipes: recList,
+      searchDescription: description
     });
   }
 

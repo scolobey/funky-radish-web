@@ -100,8 +100,8 @@ export function recipesLoaded(recipes) {
   return { type: RECIPES_LOADED, recipes }
 };
 
-export function externalRecipesLoaded(recipes) {
-  return { type: EXTERNAL_RECIPES_LOADED, recipes }
+export function externalRecipesLoaded(searchResponse) {
+  return { type: EXTERNAL_RECIPES_LOADED, searchResponse }
 };
 
 export function clearRecipes() {
