@@ -48,6 +48,14 @@
     ],
     "parents": []
   },
+  "soup": {
+    "children": [],
+    "parents": ["home"]
+  },
+  "soups": {
+    "children": [],
+    "parents": ["home"]
+  },
   "pizza": {
     "children": [
       "pizza sauce",
@@ -77,6 +85,54 @@
     "parents": [
       "home",
       "pizza"
+    ]
+  },
+  "desserts": {
+    "children": [
+      "cookies",
+      "cakes",
+      "pies"
+    ],
+    "parents": [
+      "home"
+    ]
+  },
+  "cakes": {
+    "children": [],
+    "parents": [
+      "home",
+      "desserts"
+    ]
+  },
+  "pies": {
+    "children": [],
+    "parents": [
+      "home",
+      "desserts"
+    ]
+  },
+  "chocolate chip cookies": {
+    "children": [],
+    "parents": [
+      "home",
+      "desserts",
+      "cookies"
+    ]
+  },
+  "oatmeal cookies": {
+    "children": [],
+    "parents": [
+      "home",
+      "desserts",
+      "cookies"
+    ]
+  },
+  "peanut butter cookies": {
+    "children": [],
+    "parents": [
+      "home",
+      "desserts",
+      "cookies"
     ]
   }
 }

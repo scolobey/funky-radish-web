@@ -439,6 +439,7 @@ export default function Builder(props) {
       {/* Recipe fields: title, ingredients, directions */}
       <div className="recipe">
         <div className="title">
+        hereth be the title
           <input
             type="text"
             className="form-control"

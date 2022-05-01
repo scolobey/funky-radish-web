@@ -33,7 +33,7 @@ export default function SearchLandingPage(props) {
         <title>{searchQuery + " recipes"}</title>
         <meta name="description" content= {searchQuery + " recipes from FunkyRadish.com"} />
 
-        // https://jsonld.com/recipe/
+        // https://schema.org/SearchResultsPage
         <script type="application/ld+json">{`
           {
             "@context": "http://schema.org",
