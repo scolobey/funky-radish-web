@@ -41,7 +41,7 @@ function useDraftRecipe(
 
   const dispatch = useDispatch()
 
-  // Pass draftRecipe to GQL, get back ( Create | Update| Delete ) methods
+  // Pass draftRecipe to GQL, get back ( Create | Update | Delete ) methods
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
 
   // A recipe diverges from Realm during editing.
@@ -68,35 +68,51 @@ function useDraftRecipe(
   // if being edited, you need to ignore the data.
   // if the cloud has changed, you need
   if (data && !recipeInProgress) {
-    console.log("data coming in.")
+    console.log("data coming in: " + JSON.stringify(data))
 
     // Convert recipe data to strings for comparison
+    // ingredients
     let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
     let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
 
+    // ing
+    let draftRecipeIng = draftRecipe.ing
+    let dataRecipeIng = data.recipe.ing
+
+    // directions
     let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
     let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
+
+    // dir
+    let draftRecipeDir = draftRecipe.dir
+    let dataRecipeDir = data.recipe.dir
+
 
     let baseIngList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
     let baseDirList = data.recipe.directions.map(dirListing => {return dirListing._id})
 
-    console.log("deleting list after incoming data")
+
+    console.log("delete list after incoming data")
     console.log("ing: " + baseIngList)
     console.log("dir: " + baseDirList)
 
     // If data is different from draftRecipe
     // Create a whole new set of ingredients and directions.
-    if ((draftRecipeIngredients !== dataRecipeIngredients) || (draftRecipeDirections !== dataRecipeDirections) || (draftRecipe.title !== data.recipe.title)) {
+    if ((draftRecipeIng !== dataRecipeIng) || (draftRecipeDir !== dataRecipeDir) || (draftRecipe.title !== data.recipe.title)) {
 
       let dirObject = arrayToDirections(dataRecipeDirections.split(/\r?\n/))
       let ingObject = arrayToIngredients(dataRecipeIngredients.split(/\r?\n/))
+
+      console.log("ing: ");
 
       setDraftRecipe({
         _id: recipeID,
         author: data.recipe.author,
         title: data.recipe.title,
         ingredients: ingObject,
-        directions: dirObject
+        directions: dirObject,
+        ing: dataRecipeIng,
+        dir: dataRecipeDir
       });
 
       setBaseIngredients(baseIngList)
@@ -138,7 +154,9 @@ function useDraftRecipe(
       author: currentRealmUser,
       title: "",
       ingredients: {create: [], link: [recipeID]},
-      directions: {create: [], link: [recipeID]}
+      directions: {create: [], link: [recipeID]},
+      dir: [],
+      ing: []
     });
 
     console.log("setting draft: " + JSON.stringify(draftRecipe))
@@ -152,14 +170,16 @@ function useDraftRecipe(
       author: draftRecipe.author,
       title: title,
       ingredients: draftRecipe.ingredients,
-      directions: draftRecipe.directions
+      directions: draftRecipe.directions,
+      dir: draftRecipe.dir,
+      ing: draftRecipe.ing
     });
   };
 
   const setDraftRecipeIngredients = (ingredients) => {
     setRecipeInProgress(true)
 
-    let ingArray = ingredients.split(/\r?\n/)
+    let ingArray = ingredients.split(/\r?\n/).filter(line => line.length > 0)
     let ingObject = arrayToIngredients(ingArray)
 
     setDraftRecipe({
@@ -167,14 +187,16 @@ function useDraftRecipe(
       author: draftRecipe.author,
       title: draftRecipe.title,
       ingredients:  ingObject,
-      directions: draftRecipe.directions
+      directions: draftRecipe.directions,
+      ing:  ingArray,
+      dir: draftRecipe.dir
     });
   };
 
   const setDraftRecipeDirections = (directions) => {
     setRecipeInProgress(true)
 
-    let directionArray = directions.split(/\r?\n/)
+    let directionArray = directions.split(/\r?\n/).filter(line => line.length > 0)
     let dirObject = arrayToDirections(directionArray)
 
     setDraftRecipe({
@@ -182,7 +204,9 @@ function useDraftRecipe(
       author: draftRecipe.author,
       title: draftRecipe.title,
       ingredients: draftRecipe.ingredients,
-      directions: dirObject
+      directions: dirObject,
+      ing:  draftRecipe.ing,
+      dir: directionArray
     });
   };
 
@@ -190,7 +214,7 @@ function useDraftRecipe(
     console.log("Saving Recipe")
 
     // Make sure the right fields are populated.
-    if (draftRecipe.ingredients.create.length < 1 && draftRecipe.directions.create.length < 1 || draftRecipe.title.length < 1) {
+    if (draftRecipe.ing.length < 1 && draftRecipe.dir.length < 1 || draftRecipe.title.length < 1) {
       return dispatch(warning("Empty fields."))
     }
 
@@ -293,7 +317,9 @@ function useDraftRecipe(
         author: currentRealmUser,
         title: res.title,
         ingredients: gqlIngredients,
-        directions: gqlDirections
+        directions: gqlDirections,
+        ing: res.ingredients,
+        dir: res.directions
       })
 
       console.log("setting to false after importRecipe")
@@ -389,7 +415,9 @@ export default function Builder(props) {
       author: currentRealmUser,
       title: "",
       ingredients: {create: [], link: [newRecipeID]},
-      directions: {create: [], link: [newRecipeID]}
+      directions: {create: [], link: [newRecipeID]},
+      ing: [],
+      dir: []
     }
   )
 
@@ -416,6 +444,15 @@ export default function Builder(props) {
           e.preventDefault();
           submitDraftRecipe(baseIngredients, baseDirections);
       }}>
+
+      { loadingActive ?
+        <div className="saveIndicatorRed">
+        </div>
+      :
+        <div className="saveIndicatorGreen">
+        </div>
+      }
+
       <button type="submit">
         SAVE
       </button>
@@ -439,7 +476,6 @@ export default function Builder(props) {
       {/* Recipe fields: title, ingredients, directions */}
       <div className="recipe">
         <div className="title">
-        hereth be the title
           <input
             type="text"
             className="form-control"
@@ -457,7 +493,7 @@ export default function Builder(props) {
             className="form-control"
             placeholder="ingredients"
             id="ingredients"
-            value={draftRecipe.ingredients.create.length > 0 ? draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n") : ""}
+            value={draftRecipe.ing && draftRecipe.ing.length > 0 ? draftRecipe.ing.join("\n") : ""}
             onChange={(event) => {
               setDraftRecipeIngredients(event.target.value);
             }}
@@ -469,7 +505,7 @@ export default function Builder(props) {
             className="form-control"
             placeholder="directions"
             id="directions"
-            value={draftRecipe.directions.create.length > 0 ? draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n") : ""}
+            value={draftRecipe.dir && draftRecipe.dir.length > 0 ? draftRecipe.dir.join("\n") : ""}
             onChange={(event) => {
               setDraftRecipeDirections(event.target.value);
             }}
@@ -527,11 +563,6 @@ export default function Builder(props) {
               Mint NFT
             </button>
           </div>
-        : <div></div> }
-
-        {/* state-based loader */}
-        { loadingActive ?
-          <div className="loader">Loading...</div>
         : <div></div> }
 
       </div>

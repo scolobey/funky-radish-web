@@ -1,125 +1,282 @@
 // src/schema.js
 
-scalar DateTime
-type DeleteManyPayload {
-  deletedCount: Int!
-}
-type Direction {
-  _id: String
-  author: String!
-  text: String!
-}
-input DirectionInsertInput {
-  author: String!
-  text: String!
-  _id: String
-}
-input DirectionQueryInput {
-  _id_lt: String
-  AND: [DirectionQueryInput!]
-  text_exists: Boolean
-  author_gt: String
-  _id_in: [String]
-  _id: String
-  _id_nin: [String]
-  text_lt: String
-  text_nin: [String]
-  author_exists: Boolean
-  _id_lte: String
-  text_lte: String
-  text_gt: String
-  _id_gt: String
-  author_ne: String
-  author_lt: String
-  _id_ne: String
-  OR: [DirectionQueryInput!]
-  text_in: [String]
-  author_gte: String
-  author_nin: [String]
-  text_gte: String
-  _id_exists: Boolean
-  text: String
-  author: String
-  text_ne: String
-  _id_gte: String
-  author_in: [String]
-  author_lte: String
-}
 enum DirectionSortByInput {
+  _ID_ASC
+  _ID_DESC
   AUTHOR_ASC
   AUTHOR_DESC
   TEXT_ASC
   TEXT_DESC
+}
+type Recipe {
+  _id: String
+  author: String
+  dir: [String]
+  directions: [Direction]
+  ing: [String]
+  ingredients: [Ingredient]
+  tags: [String]
+  title: String
+}
+input RecipeInsertInput {
+  title: String
+  _id: String
+  author: String
+  dir: [String]
+  directions: RecipeDirectionsRelationInput
+  ing: [String]
+  ingredients: RecipeIngredientsRelationInput
+  tags: [String]
+}
+scalar DateTime
+input RecipeDirectionsRelationInput {
+  link: [String]
+  create: [DirectionInsertInput]
+}
+type InsertManyPayload {
+  insertedIds: [ObjectId]!
+}
+input RecipeUpdateInput {
+  ingredients: RecipeIngredientsRelationInput
+  directions: RecipeDirectionsRelationInput
+  tags_unset: Boolean
+  _id: String
+  ing: [String]
+  tags: [String]
+  title_unset: Boolean
+  author: String
+  dir_unset: Boolean
+  directions_unset: Boolean
+  author_unset: Boolean
+  dir: [String]
+  ing_unset: Boolean
+  title: String
+  _id_unset: Boolean
+  ingredients_unset: Boolean
+}
+input DirectionQueryInput {
+  text_lt: String
+  _id_lt: String
+  text_gt: String
+  _id_gt: String
+  _id_in: [String]
+  _id: String
+  AND: [DirectionQueryInput!]
+  OR: [DirectionQueryInput!]
+  text_lte: String
+  _id_gte: String
+  author_lt: String
+  text_nin: [String]
+  author: String
+  text_in: [String]
+  author_in: [String]
+  author_gt: String
+  author_nin: [String]
+  _id_lte: String
+  text_gte: String
+  _id_exists: Boolean
+  author_lte: String
+  _id_nin: [String]
+  author_exists: Boolean
+  text_exists: Boolean
+  text: String
+  _id_ne: String
+  author_gte: String
+  text_ne: String
+  author_ne: String
+}
+input IngredientQueryInput {
+  _id_ne: String
+  author_in: [String]
+  author_nin: [String]
+  _id: String
+  _id_gt: String
+  name_exists: Boolean
+  author_ne: String
+  name: String
+  name_lte: String
+  name_lt: String
+  _id_lt: String
+  author_gt: String
+  OR: [IngredientQueryInput!]
+  _id_lte: String
+  _id_in: [String]
+  author_lt: String
+  author_exists: Boolean
+  name_gt: String
+  author_lte: String
+  _id_nin: [String]
+  _id_gte: String
+  name_in: [String]
+  name_ne: String
+  name_nin: [String]
+  _id_exists: Boolean
+  name_gte: String
+  author_gte: String
+  author: String
+  AND: [IngredientQueryInput!]
+}
+enum RecipeSortByInput {
+  AUTHOR_DESC
+  TITLE_ASC
+  TITLE_DESC
   _ID_ASC
   _ID_DESC
+  AUTHOR_ASC
 }
-input DirectionUpdateInput {
-  text: String
-  text_unset: Boolean
-  _id: String
-  _id_unset: Boolean
-  author: String
-  author_unset: Boolean
+input UserRecipesRelationInput {
+  create: [RecipeInsertInput]
+  link: [String]
 }
 type Ingredient {
   _id: String
   author: String!
   name: String!
 }
-input IngredientInsertInput {
+type User {
+  _id: ObjectId
+  admin: Boolean
   author: String!
-  name: String!
-  _id: String
-}
-input IngredientQueryInput {
-  name_nin: [String]
-  _id_ne: String
-  _id_gte: String
-  name_in: [String]
-  _id_gt: String
-  _id_in: [String]
-  author_ne: String
-  author_gt: String
-  name_gte: String
-  AND: [IngredientQueryInput!]
-  author_in: [String]
-  _id_nin: [String]
-  _id_exists: Boolean
-  name_ne: String
-  author_nin: [String]
-  _id: String
-  author_gte: String
-  name_lt: String
-  _id_lte: String
-  author_lte: String
-  author_exists: Boolean
-  _id_lt: String
+  createdAt: DateTime
+  email: String
   name: String
-  name_lte: String
-  name_gt: String
-  author: String
-  name_exists: Boolean
-  OR: [IngredientQueryInput!]
-  author_lt: String
+  password: String
+  recipes: [Recipe]
+  updatedAt: DateTime
+  verified: Boolean
 }
-enum IngredientSortByInput {
-  _ID_DESC
-  AUTHOR_ASC
-  AUTHOR_DESC
-  NAME_ASC
-  NAME_DESC
-  _ID_ASC
+type DeleteManyPayload {
+  deletedCount: Int!
 }
-input IngredientUpdateInput {
-  _id: String
-  _id_unset: Boolean
+input DirectionUpdateInput {
   author: String
   author_unset: Boolean
-  name: String
-  name_unset: Boolean
+  text: String
+  text_unset: Boolean
+  _id: String
+  _id_unset: Boolean
 }
-type InsertManyPayload {
-  insertedIds: [ObjectId]!
+type Query {
+  direction(query: DirectionQueryInput): Direction
+  directions(query: DirectionQueryInput, limit: Int = 100, sortBy: DirectionSortByInput): [Direction]!
+  ingredient(query: IngredientQueryInput): Ingredient
+  ingredients(limit: Int = 100, sortBy: IngredientSortByInput, query: IngredientQueryInput): [Ingredient]!
+  recipe(query: RecipeQueryInput): Recipe
+  recipes(query: RecipeQueryInput, limit: Int = 100, sortBy: RecipeSortByInput): [Recipe]!
+  user(query: UserQueryInput): User
+  users(limit: Int = 100, sortBy: UserSortByInput, query: UserQueryInput): [User]!
+}
+input RecipeQueryInput {
+  _id: String
+  dir_exists: Boolean
+  title_exists: Boolean
+  ingredients_in: [IngredientQueryInput]
+  _id_gte: String
+  author_nin: [String]
+  AND: [RecipeQueryInput!]
+  OR: [RecipeQueryInput!]
+  ingredients_nin: [IngredientQueryInput]
+  author: String
+  title_lt: String
+  author_in: [String]
+  directions_exists: Boolean
+  title_in: [String]
+  ing_nin: [String]
+  directions: [DirectionQueryInput]
+  dir_in: [String]
+  ingredients: [IngredientQueryInput]
+  author_gt: String
+  author_lt: String
+  dir_nin: [String]
+  author_exists: Boolean
+  ingredients_exists: Boolean
+  dir: [String]
+  tags_exists: Boolean
+  _id_lt: String
+  _id_nin: [String]
+  author_ne: String
+  title_ne: String
+  directions_nin: [DirectionQueryInput]
+  ing_exists: Boolean
+  ing_in: [String]
+  title: String
+  _id_exists: Boolean
+  author_gte: String
+  ing: [String]
+  _id_lte: String
+  author_lte: String
+  title_nin: [String]
+  title_gt: String
+  title_lte: String
+  tags_in: [String]
+  tags: [String]
+  title_gte: String
+  _id_ne: String
+  tags_nin: [String]
+  _id_gt: String
+  _id_in: [String]
+  directions_in: [DirectionQueryInput]
+}
+input UserInsertInput {
+  author: String!
+  verified: Boolean
+  createdAt: DateTime
+  name: String
+  password: String
+  _id: ObjectId
+  recipes: UserRecipesRelationInput
+  admin: Boolean
+  email: String
+  updatedAt: DateTime
+}
+scalar ObjectId
+input DirectionInsertInput {
+  _id: String
+  author: String!
+  text: String!
+}
+input IngredientInsertInput {
+  _id: String
+  author: String!
+  name: String!
+}
+input UserUpdateInput {
+  recipes: UserRecipesRelationInput
+  createdAt_unset: Boolean
+  _id_unset: Boolean
+  author: String
+  name: String
+  recipes_unset: Boolean
+  admin: Boolean
+  name_unset: Boolean
+  admin_unset: Boolean
+  email_unset: Boolean
+  password_unset: Boolean
+  updatedAt_unset: Boolean
+  updatedAt: DateTime
+  createdAt: DateTime
+  verified: Boolean
+  _id: ObjectId
+  author_unset: Boolean
+  verified_unset: Boolean
+  password: String
+  email: String
+}
+enum UserSortByInput {
+  _ID_ASC
+  NAME_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  NAME_ASC
+  _ID_DESC
+  CREATEDAT_DESC
+  UPDATEDAT_ASC
+  AUTHOR_DESC
+  PASSWORD_DESC
+  PASSWORD_ASC
+  UPDATEDAT_DESC
+  AUTHOR_ASC
+  CREATEDAT_ASC
 }
 type Mutation {
   deleteManyDirections(query: DirectionQueryInput): DeleteManyPayload
@@ -144,261 +301,120 @@ type Mutation {
   replaceOneUser(query: UserQueryInput, data: UserInsertInput!): User
   updateManyDirections(query: DirectionQueryInput, set: DirectionUpdateInput!): UpdateManyPayload
   updateManyIngredients(query: IngredientQueryInput, set: IngredientUpdateInput!): UpdateManyPayload
-  updateManyRecipes(query: RecipeQueryInput, set: RecipeUpdateInput!): UpdateManyPayload
+  updateManyRecipes(set: RecipeUpdateInput!, query: RecipeQueryInput): UpdateManyPayload
   updateManyUsers(query: UserQueryInput, set: UserUpdateInput!): UpdateManyPayload
   updateOneDirection(query: DirectionQueryInput, set: DirectionUpdateInput!): Direction
   updateOneIngredient(query: IngredientQueryInput, set: IngredientUpdateInput!): Ingredient
   updateOneRecipe(query: RecipeQueryInput, set: RecipeUpdateInput!): Recipe
   updateOneUser(query: UserQueryInput, set: UserUpdateInput!): User
-  upsertOneDirection(query: DirectionQueryInput, data: DirectionInsertInput!): Direction
+  upsertOneDirection(data: DirectionInsertInput!, query: DirectionQueryInput): Direction
   upsertOneIngredient(query: IngredientQueryInput, data: IngredientInsertInput!): Ingredient
   upsertOneRecipe(query: RecipeQueryInput, data: RecipeInsertInput!): Recipe
-  upsertOneUser(query: UserQueryInput, data: UserInsertInput!): User
-}
-scalar ObjectId
-type Query {
-  direction(query: DirectionQueryInput): Direction
-  directions(query: DirectionQueryInput, limit: Int = 100, sortBy: DirectionSortByInput): [Direction]!
-  ingredient(query: IngredientQueryInput): Ingredient
-  ingredients(query: IngredientQueryInput, limit: Int = 100, sortBy: IngredientSortByInput): [Ingredient]!
-  recipe(query: RecipeQueryInput): Recipe
-  recipes(query: RecipeQueryInput, limit: Int = 100, sortBy: RecipeSortByInput): [Recipe]!
-  user(query: UserQueryInput): User
-  users(query: UserQueryInput, limit: Int = 100, sortBy: UserSortByInput): [User]!
-}
-type Recipe {
-  _id: String
-  author: String!
-  directions: [Direction]
-  ingredients: [Ingredient]
-  title: String
-}
-input RecipeDirectionsRelationInput {
-  link: [String]
-  create: [DirectionInsertInput]
+  upsertOneUser(data: UserInsertInput!, query: UserQueryInput): User
 }
 input RecipeIngredientsRelationInput {
   create: [IngredientInsertInput]
   link: [String]
 }
-input RecipeInsertInput {
-  title: String
-  ingredients: RecipeIngredientsRelationInput
-  directions: RecipeDirectionsRelationInput
+input IngredientUpdateInput {
+  author: String
+  author_unset: Boolean
+  name: String
+  name_unset: Boolean
+  _id: String
+  _id_unset: Boolean
+}
+type Direction {
   _id: String
   author: String!
+  text: String!
 }
-input RecipeQueryInput {
-  title_gt: String
-  ingredients: [IngredientQueryInput]
-  _id_lte: String
-  OR: [RecipeQueryInput!]
-  title_lte: String
-  _id_in: [String]
-  _id_exists: Boolean
-  ingredients_exists: Boolean
-  author: String
-  title_in: [String]
-  _id_lt: String
-  author_gte: String
-  title_gte: String
-  ingredients_nin: [IngredientQueryInput]
-  directions_exists: Boolean
-  _id_nin: [String]
-  _id_gt: String
-  _id: String
-  AND: [RecipeQueryInput!]
-  ingredients_in: [IngredientQueryInput]
-  directions_in: [DirectionQueryInput]
-  title_lt: String
-  directions_nin: [DirectionQueryInput]
-  _id_ne: String
-  author_gt: String
-  author_nin: [String]
-  title_exists: Boolean
-  directions: [DirectionQueryInput]
-  author_in: [String]
-  title: String
-  _id_gte: String
-  title_nin: [String]
-  author_exists: Boolean
-  title_ne: String
-  author_lte: String
-  author_ne: String
-  author_lt: String
-}
-enum RecipeSortByInput {
+enum IngredientSortByInput {
   _ID_ASC
   _ID_DESC
   AUTHOR_ASC
   AUTHOR_DESC
-  TITLE_ASC
-  TITLE_DESC
+  NAME_ASC
+  NAME_DESC
 }
-input RecipeUpdateInput {
-  title_unset: Boolean
-  directions: RecipeDirectionsRelationInput
+input UserQueryInput {
+  author_gte: String
+  password_exists: Boolean
+  email_gt: String
+  updatedAt_exists: Boolean
+  admin: Boolean
+  name_lt: String
+  recipes: [RecipeQueryInput]
+  _id_lt: ObjectId
+  author_ne: String
+  email_nin: [String]
+  updatedAt_gt: DateTime
+  email_lt: String
+  _id: ObjectId
+  name_gte: String
+  _id_gte: ObjectId
+  name_exists: Boolean
+  author_lte: String
+  author_exists: Boolean
+  createdAt_lt: DateTime
+  verified_ne: Boolean
+  updatedAt_nin: [DateTime]
+  updatedAt_ne: DateTime
+  AND: [UserQueryInput!]
+  _id_gt: ObjectId
+  _id_ne: ObjectId
+  password_ne: String
+  author_gt: String
+  recipes_exists: Boolean
+  updatedAt_gte: DateTime
+  author_lt: String
+  author_in: [String]
+  password_gte: String
   author: String
-  author_unset: Boolean
-  title: String
-  ingredients: RecipeIngredientsRelationInput
-  _id_unset: Boolean
-  _id: String
-  ingredients_unset: Boolean
-  directions_unset: Boolean
+  name: String
+  password: String
+  email_ne: String
+  createdAt_lte: DateTime
+  name_nin: [String]
+  createdAt: DateTime
+  email_in: [String]
+  updatedAt_lt: DateTime
+  updatedAt_in: [DateTime]
+  createdAt_gte: DateTime
+  password_lt: String
+  recipes_nin: [RecipeQueryInput]
+  admin_ne: Boolean
+  _id_nin: [ObjectId]
+  createdAt_ne: DateTime
+  OR: [UserQueryInput!]
+  password_lte: String
+  email_gte: String
+  author_nin: [String]
+  _id_exists: Boolean
+  email_exists: Boolean
+  password_gt: String
+  updatedAt_lte: DateTime
+  _id_lte: ObjectId
+  email: String
+  name_in: [String]
+  name_lte: String
+  createdAt_exists: Boolean
+  name_ne: String
+  password_in: [String]
+  name_gt: String
+  _id_in: [ObjectId]
+  createdAt_in: [DateTime]
+  email_lte: String
+  createdAt_gt: DateTime
+  updatedAt: DateTime
+  verified: Boolean
+  admin_exists: Boolean
+  verified_exists: Boolean
+  password_nin: [String]
+  createdAt_nin: [DateTime]
+  recipes_in: [RecipeQueryInput]
 }
 type UpdateManyPayload {
   matchedCount: Int!
   modifiedCount: Int!
-}
-type User {
-  _id: ObjectId
-  admin: Boolean
-  author: String!
-  createdAt: DateTime
-  email: String
-  name: String
-  password: String
-  recipes: [Recipe]
-  updatedAt: DateTime
-  user: ObjectId!
-}
-input UserInsertInput {
-  updatedAt: DateTime
-  recipes: UserRecipesRelationInput
-  _id: ObjectId
-  author: String!
-  createdAt: DateTime
-  email: String
-  name: String
-  password: String
-  user: ObjectId!
-  admin: Boolean
-}
-input UserQueryInput {
-  updatedAt_gt: DateTime
-  email_ne: String
-  author_gte: String
-  updatedAt_in: [DateTime]
-  updatedAt_lt: DateTime
-  user_in: [ObjectId]
-  password_ne: String
-  _id_gte: ObjectId
-  password_gte: String
-  admin_exists: Boolean
-  createdAt_ne: DateTime
-  password_lt: String
-  email_lte: String
-  author_ne: String
-  password_exists: Boolean
-  OR: [UserQueryInput!]
-  name_nin: [String]
-  updatedAt_nin: [DateTime]
-  _id_nin: [ObjectId]
-  author_in: [String]
-  _id_ne: ObjectId
-  user_gt: ObjectId
-  user_ne: ObjectId
-  recipes_nin: [RecipeQueryInput]
-  password: String
-  AND: [UserQueryInput!]
-  createdAt_in: [DateTime]
-  createdAt_gte: DateTime
-  name_in: [String]
-  updatedAt_gte: DateTime
-  author_lte: String
-  createdAt: DateTime
-  createdAt_gt: DateTime
-  user_gte: ObjectId
-  user_exists: Boolean
-  email_gte: String
-  email_nin: [String]
-  name_lte: String
-  name: String
-  _id_in: [ObjectId]
-  updatedAt: DateTime
-  user: ObjectId
-  user_nin: [ObjectId]
-  recipes_exists: Boolean
-  admin_ne: Boolean
-  _id_lte: ObjectId
-  author_nin: [String]
-  _id_lt: ObjectId
-  author_gt: String
-  createdAt_exists: Boolean
-  createdAt_lte: DateTime
-  password_nin: [String]
-  user_lte: ObjectId
-  _id_exists: Boolean
-  author_lt: String
-  name_gt: String
-  recipes_in: [RecipeQueryInput]
-  _id_gt: ObjectId
-  user_lt: ObjectId
-  email_in: [String]
-  name_ne: String
-  name_lt: String
-  updatedAt_exists: Boolean
-  email: String
-  password_lte: String
-  name_gte: String
-  recipes: [RecipeQueryInput]
-  admin: Boolean
-  name_exists: Boolean
-  createdAt_nin: [DateTime]
-  password_gt: String
-  _id: ObjectId
-  email_gt: String
-  email_lt: String
-  updatedAt_ne: DateTime
-  password_in: [String]
-  author_exists: Boolean
-  updatedAt_lte: DateTime
-  createdAt_lt: DateTime
-  author: String
-  email_exists: Boolean
-}
-input UserRecipesRelationInput {
-  link: [String]
-  create: [RecipeInsertInput]
-}
-enum UserSortByInput {
-  AUTHOR_ASC
-  CREATEDAT_DESC
-  PASSWORD_DESC
-  NAME_DESC
-  EMAIL_DESC
-  PASSWORD_ASC
-  USER_DESC
-  AUTHOR_DESC
-  CREATEDAT_ASC
-  NAME_ASC
-  UPDATEDAT_ASC
-  EMAIL_ASC
-  _ID_ASC
-  _ID_DESC
-  UPDATEDAT_DESC
-  USER_ASC
-}
-input UserUpdateInput {
-  _id: ObjectId
-  password_unset: Boolean
-  author: String
-  createdAt_unset: Boolean
-  recipes: UserRecipesRelationInput
-  updatedAt_unset: Boolean
-  name_unset: Boolean
-  email_unset: Boolean
-  recipes_unset: Boolean
-  admin: Boolean
-  name: String
-  email: String
-  createdAt: DateTime
-  _id_unset: Boolean
-  user: ObjectId
-  password: String
-  user_unset: Boolean
-  admin_unset: Boolean
-  author_unset: Boolean
-  updatedAt: DateTime
 }

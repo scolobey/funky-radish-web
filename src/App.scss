@@ -1691,3 +1691,29 @@ input:checked + .slider:before {
     transform: translateY(-50px);
   }
 }
+
+.saveIndicatorRed {
+  width: 30px;
+  height: 30px;
+  float: left;
+  border-radius: 50%;
+  background: radial-gradient(circle at 100px 100px, #F22713, #A51C0F);
+  border:1px solid #C54D42;
+  -moz-border-radius:50%;
+  -webkit-border-radius:50%;
+  margin-top: 13px;
+  box-shadow: 1px 2px 5px #aaa;
+}
+
+.saveIndicatorGreen {
+  width: 30px;
+  height: 30px;
+  float: left;
+  border-radius: 50%;
+  background: radial-gradient(circle at 100px 100px, #5BFD06, #2F780A);
+  border: 1px solid #4BB116;
+  -moz-border-radius:50%;
+  -webkit-border-radius:50%;
+  margin-top: 13px;
+  box-shadow: 1px 2px 5px #aaa;
+}

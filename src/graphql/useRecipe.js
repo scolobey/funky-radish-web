@@ -25,6 +25,8 @@ function useRecipeInProject(recId) {
       recipe(query: { _id: $id }) {
         title
         author
+        dir
+        ing
         ingredients {
           _id
           name

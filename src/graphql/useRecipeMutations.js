@@ -16,6 +16,8 @@ const AddRecipeMutation = gql`
     	_id
       author
       title
+      ing
+      dir
       ingredients {
         _id
         author
@@ -47,6 +49,8 @@ const UpdateRecipeMutation = gql`
       _id
       author
       title
+      ing
+      dir
       ingredients {
         name
       }
