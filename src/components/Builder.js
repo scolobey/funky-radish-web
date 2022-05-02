@@ -35,7 +35,7 @@ var newRecipeID = ObjectId().valueOf()
 // mintNFT
 
 function useDraftRecipe(
-    [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive ],
+    [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive, recipeInProgress, setRecipeInProgress ],
     importAddress
   ) {
 
@@ -43,10 +43,6 @@ function useDraftRecipe(
 
   // Pass draftRecipe to GQL, get back ( Create | Update | Delete ) methods
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
-
-  // A recipe diverges from Realm during editing.
-  // recipeInProgress=true disables Realm synchronization.
-  const [ recipeInProgress, setRecipeInProgress ] = React.useState(false)
 
   const { loading, error, data } = useRecipe(recipeID);
 
@@ -70,8 +66,6 @@ function useDraftRecipe(
   if (data && !recipeInProgress) {
     console.log("data coming in")
 
-    // Convert recipe data to strings for comparison
-
     // ing
     let draftRecipeIng = draftRecipe.ing
     let dataRecipeIng = data.recipe.ing
@@ -83,7 +77,6 @@ function useDraftRecipe(
     // If data is different from draftRecipe
     // Create a whole new set of ingredients and directions.
     if ((draftRecipeIng !== dataRecipeIng) || (draftRecipeDir !== dataRecipeDir) || (draftRecipe.title !== data.recipe.title)) {
-
       console.log("ing time: " + dataRecipeIng);
 
       setDraftRecipe({
@@ -94,18 +87,10 @@ function useDraftRecipe(
         dir: dataRecipeDir
       });
 
-    }
-
-// this causes loading to turn off immediately when saving.
-// How to turn off the loading after the recipe loads, but while the recipe is updating.
-// Either setBaseIngredients to null
-// or what's the difference between updating and loading?
-// What's the data look like here?
-    if (loadingActive && baseIngredients != null) {
-      console.log("loading active and baseIngredients exist.");
-
+      setRecipeInProgress(false)
       setLoadingActive(false)
     }
+
   } else if (data && loadingActive) {
     console.log("data and loading - setting loader to false: setting loading false")
 
@@ -190,6 +175,7 @@ function useDraftRecipe(
       await addRecipe(draftRecipe).then((rec) => {
         console.log("setting to false after addRecipe")
         setLoadingActive(false)
+        setRecipeInProgress(false)
         dispatch(setRedirect("/builder/" + draftRecipe._id))
       });
     }
@@ -214,6 +200,7 @@ function useDraftRecipe(
 
       console.log("setting to false after updateRecipe after the await")
       setLoadingActive(false)
+      setRecipeInProgress(false)
     }
   };
 
@@ -335,6 +322,10 @@ export default function Builder(props) {
   const [ tag, setTag ] = React.useState("")
   const [ tags, setTags ] = React.useState(["tags", "stuff"])
 
+  // A recipe diverges from Realm during editing.
+  // recipeInProgress=true disables Realm synchronization.
+  const [ recipeInProgress, setRecipeInProgress ] = React.useState(false)
+
   // If there's an ID in the URL, set the recipeID
   let paramID = props.match.params.recipeId
   var checkForHex = new RegExp("^[0-9a-fA-F]{24}$")
@@ -368,7 +359,7 @@ export default function Builder(props) {
     importFromAddress,
     mintNFT
   } = useDraftRecipe(
-    [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive ],
+    [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive, recipeInProgress, setRecipeInProgress ],
     importAddress
   );
 
@@ -381,7 +372,7 @@ export default function Builder(props) {
           submitDraftRecipe(baseIngredients, baseDirections);
       }}>
 
-      { loadingActive ?
+      { loadingActive || recipeInProgress ?
         <div className="saveIndicatorRed">
         </div>
       :
