@@ -68,55 +68,32 @@ function useDraftRecipe(
   // if being edited, you need to ignore the data.
   // if the cloud has changed, you need
   if (data && !recipeInProgress) {
-    console.log("data coming in: " + JSON.stringify(data))
+    console.log("data coming in")
 
     // Convert recipe data to strings for comparison
-    // ingredients
-    let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
-    let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
 
     // ing
     let draftRecipeIng = draftRecipe.ing
     let dataRecipeIng = data.recipe.ing
 
-    // directions
-    let draftRecipeDirections = draftRecipe.directions.create.map(directionListing => {return directionListing.text}).join("\n")
-    let dataRecipeDirections = data.recipe.directions.map(dirListing => {return dirListing.text}).join("\n")
-
     // dir
     let draftRecipeDir = draftRecipe.dir
     let dataRecipeDir = data.recipe.dir
-
-
-    let baseIngList = data.recipe.ingredients.map(ingListing => {return ingListing._id})
-    let baseDirList = data.recipe.directions.map(dirListing => {return dirListing._id})
-
-
-    console.log("delete list after incoming data")
-    console.log("ing: " + baseIngList)
-    console.log("dir: " + baseDirList)
 
     // If data is different from draftRecipe
     // Create a whole new set of ingredients and directions.
     if ((draftRecipeIng !== dataRecipeIng) || (draftRecipeDir !== dataRecipeDir) || (draftRecipe.title !== data.recipe.title)) {
 
-      let dirObject = arrayToDirections(dataRecipeDirections.split(/\r?\n/))
-      let ingObject = arrayToIngredients(dataRecipeIngredients.split(/\r?\n/))
-
-      console.log("ing: ");
+      console.log("ing time: " + dataRecipeIng);
 
       setDraftRecipe({
         _id: recipeID,
         author: data.recipe.author,
         title: data.recipe.title,
-        ingredients: ingObject,
-        directions: dirObject,
         ing: dataRecipeIng,
         dir: dataRecipeDir
       });
 
-      setBaseIngredients(baseIngList)
-      setBaseDirections(baseDirList)
     }
 
 // this causes loading to turn off immediately when saving.
@@ -125,19 +102,13 @@ function useDraftRecipe(
 // or what's the difference between updating and loading?
 // What's the data look like here?
     if (loadingActive && baseIngredients != null) {
-
-      let draftRecipeIngredients = draftRecipe.ingredients.create.map(ingredientListing => {return ingredientListing.name}).join("\n")
-      let dataRecipeIngredients = data.recipe.ingredients.map(ingListing => {return ingListing.name}).join("\n")
-
-      console.log("setting loader to false: setting loading false")
-      console.log("draft: " + draftRecipeIngredients)
-      console.log("data: " + dataRecipeIngredients)
+      console.log("loading active and baseIngredients exist.");
 
       setLoadingActive(false)
     }
-
   } else if (data && loadingActive) {
     console.log("data and loading - setting loader to false: setting loading false")
+
     setLoadingActive(false)
   }
 
@@ -147,19 +118,13 @@ function useDraftRecipe(
     // So if you empty a recipe and hit save, it will erase your recipe.
     setRecipeInProgress(true)
 
-    console.log("id: " + recipeID)
-
     setDraftRecipe({
       _id: recipeID,
       author: currentRealmUser,
       title: "",
-      ingredients: {create: [], link: [recipeID]},
-      directions: {create: [], link: [recipeID]},
       dir: [],
       ing: []
     });
-
-    console.log("setting draft: " + JSON.stringify(draftRecipe))
   };
 
   const setDraftRecipeTitle = (title) => {
@@ -169,8 +134,6 @@ function useDraftRecipe(
       _id: draftRecipe._id ,
       author: draftRecipe.author,
       title: title,
-      ingredients: draftRecipe.ingredients,
-      directions: draftRecipe.directions,
       dir: draftRecipe.dir,
       ing: draftRecipe.ing
     });
@@ -179,15 +142,14 @@ function useDraftRecipe(
   const setDraftRecipeIngredients = (ingredients) => {
     setRecipeInProgress(true)
 
-    let ingArray = ingredients.split(/\r?\n/).filter(line => line.length > 0)
-    let ingObject = arrayToIngredients(ingArray)
+    let ingArray = ingredients.split('\n')
+
+    console.log("setting ing: " + ingredients);
 
     setDraftRecipe({
       _id: draftRecipe._id,
       author: draftRecipe.author,
       title: draftRecipe.title,
-      ingredients:  ingObject,
-      directions: draftRecipe.directions,
       ing:  ingArray,
       dir: draftRecipe.dir
     });
@@ -196,22 +158,24 @@ function useDraftRecipe(
   const setDraftRecipeDirections = (directions) => {
     setRecipeInProgress(true)
 
-    let directionArray = directions.split(/\r?\n/).filter(line => line.length > 0)
-    let dirObject = arrayToDirections(directionArray)
+    console.log("setting dir: " + directions);
+
+    let dirArray = directions.split('\n')
 
     setDraftRecipe({
       _id: draftRecipe._id,
       author: draftRecipe.author,
       title: draftRecipe.title,
-      ingredients: draftRecipe.ingredients,
-      directions: dirObject,
       ing:  draftRecipe.ing,
-      dir: directionArray
+      dir: dirArray
     });
   };
 
   const submitDraftRecipe = async (ing, dir) => {
     console.log("Saving Recipe")
+
+    ing = ing.filter(line => line.length > 0)
+    dir = dir.filter(line => line.length > 0)
 
     // Make sure the right fields are populated.
     if (draftRecipe.ing.length < 1 && draftRecipe.dir.length < 1 || draftRecipe.title.length < 1) {
@@ -220,6 +184,7 @@ function useDraftRecipe(
 
     if (!recipeID || recipeID == "") {
       setLoadingActive(true)
+
       console.log("Adding recipe: " + JSON.stringify(draftRecipe))
 
       await addRecipe(draftRecipe).then((rec) => {
@@ -229,42 +194,13 @@ function useDraftRecipe(
       });
     }
     else {
-      // ing and dir are lists of the id's to ingredients and directions that should be removed from the db because they are no longer in use.
-      // There is a special case where an id in ing or dir are also in draftRecipe.ingredients or draftRecipe.directions
-      // This case occurs when a recipe has been updated previously but the page hasn't been reloaded yet to reset the baseIngredients and baseDirections.
-
-      // Convert draftRecipe.ingredients and draftRecipe.directions to arrays of id's
-      let currentIngredients = draftRecipe.ingredients.create.map((ing) => { return ing._id})
-      let currentDirections = draftRecipe.directions.create.map((dir) => { return dir._id})
-
-      console.log("deleting before filtering")
-      console.log("ing: " + ing)
-      console.log("dir: " + dir)
-
-      // Remove those id's from ing and dir
-      let finalIngredients = ing.filter( (el) => !currentIngredients.includes(el) );
-      let finalDirections = dir.filter( (el) => !currentDirections.includes(el) );
-
-      // But we also need to remove that _id from the array of ingredients or directions if it hasn't changed.
-
-      // Adding ingredients and directions.
-      console.log("adding")
-      console.log("ing: " + currentIngredients)
-      console.log("dir: " + currentDirections)
-
-      // Deleting ingredients and directions
-      console.log("deleting")
-      console.log("ing: " + finalIngredients)
-      console.log("dir: " + finalDirections)
+      console.log("Editing recipe: " + JSON.stringify(draftRecipe))
 
       let rec = {
         recipeId: draftRecipe._id,
-        oldIngredients: finalIngredients,
-        oldDirections: finalDirections,
         updates: draftRecipe
       }
 
-      console.log("Updating: loadingActive = true")
       setLoadingActive(true)
 
       await updateRecipe(rec).then((resp) => {
