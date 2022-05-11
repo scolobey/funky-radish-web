@@ -6,17 +6,15 @@ import { externalRecipeSearch } from "../actions/Actions";
 
 const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
 const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
-const SearchTrail = lazy(() => import("./SearchTrail"));
 
 const Loading = () => <div></div>;
-
-
 
 export default function SearchLandingPage(props) {
   let searchQuery = props.match.params.searchQuery
 
   var externalRecipes = useSelector((state) => state.externalRecipes)
-  var searchDescription = useSelector((state) => state.searchDescription)
+  var searchConfig = useSelector((state) => state.searchConfig)
+
   const dispatch = useDispatch()
 
   const [ revealDescription, setRevealDescription ] = React.useState(false)
@@ -44,7 +42,7 @@ export default function SearchLandingPage(props) {
         `}</script>
       </Helmet>
 
-      { searchDescription ? (
+      { searchConfig && searchConfig.description ? (
         <img className="info_button" src="/info_icon.svg" alt="Info" onClick={e => {
           e.preventDefault();
           setRevealDescription(!revealDescription)
@@ -56,7 +54,7 @@ export default function SearchLandingPage(props) {
 
       { revealDescription ? (
         <div className="search_description">
-          {searchDescription}
+          {searchConfig.description}
         </div>
       ) : (
         <div>

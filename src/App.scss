@@ -8,7 +8,7 @@ $linkHoverColorGreen	: rgb(141, 255, 64);
 $specialBlue	: rgb(100,224,215);
 $specialGreen: rgba(162,255,177,1);
 $specialPink	: rgb(252,3,144);
-$specialOrange	: rgb(252,165,3);
+$specialOrange	: rgba(252,165,3,.8);
 $clearSky	: rgba(64,185,222,.6);
 $black: black;
 
@@ -257,8 +257,8 @@ $black: black;
   }
 
   .info_button {
-    width: 5vw;
-    height: 5vw;
+    width: 3vw;
+    height: 3vw;
     cursor: pointer;
     position: fixed;
     z-index: 10;
@@ -1716,4 +1716,9 @@ input:checked + .slider:before {
   -webkit-border-radius:50%;
   margin-top: 13px;
   box-shadow: 1px 2px 5px #aaa;
+}
+
+.blog {
+  padding-top: 2vw;
+  margin: 4vw;
 }

@@ -39,7 +39,7 @@ function rootReducer(state, action) {
        return recipeObject
     })
 
-    let description = action.searchResponse.description || ""
+    let searchConfig = action.searchResponse.config || {}
 
     console.log("setting external recipes to: ", recList)
 
@@ -47,7 +47,7 @@ function rootReducer(state, action) {
 
     return Object.assign({}, state, {
       externalRecipes: recList,
-      searchDescription: description
+      searchConfig: searchConfig
     });
   }
 
