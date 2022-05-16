@@ -232,6 +232,7 @@ function useDraftRecipe(
     setLoadingActive(true)
     serverService.importRecipe(importAddress)
     .then(res=> {
+      console.log("response: " + JSON.stringify(res));
       let gqlIngredients = arrayToIngredients(res.ingredients)
       let gqlDirections = arrayToDirections(res.directions)
 
@@ -246,6 +247,7 @@ function useDraftRecipe(
       })
 
       console.log("setting to false after importRecipe")
+      setRecipeInProgress(true)
       setLoadingActive(false)
     })
     .catch(err => {

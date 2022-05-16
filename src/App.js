@@ -44,6 +44,7 @@ const AuthView = lazy(() => import('./components/AuthView'));
 const ChangePasswordView = lazy(() => import('./components/ChangePasswordView'));
 
 const Minter = lazy(() => import('./components/Minter'));
+const Blog = lazy(() => import('./components/Blog'));
 
 const CornedBeefCountdown = lazy(() => import('./components/CornedBeefCountdown'));
 
@@ -86,6 +87,7 @@ class App extends Component {
 
             <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
             <Route path="/changePassword/:token?" component={ChangePasswordView} />
+            <Route path="/blog/:post?" component={Blog} />
             <Route path="/minter" component={Minter} />
             <Route path="/corned-beef-countdown" component={CornedBeefCountdown} />
           </Suspense>
