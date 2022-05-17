@@ -73,22 +73,12 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipe/dutch-crunch</loc>
-    <lastmod>2022-02-17</lastmod>
-  </url>
-
-  <url>
     <loc>https://www.funkyradish.com/recipe/healthy-apple-muffins</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
 
   <url>
     <loc>https://www.funkyradish.com/recipe/chili-con-carne</loc>
-    <lastmod>2022-02-17</lastmod>
-  </url>
-
-  <url>
-    <loc>https://www.funkyradish.com/recipe/baba-ganoush</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
 
@@ -128,12 +118,7 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipe/turkey-brine</loc>
-    <lastmod>2022-03-03</lastmod>
-  </url>
-
-  <url>
-    <loc>https://www.funkyradish.com/recipe/avgolemonon</loc>
+    <loc>https://www.funkyradish.com/recipe/avgolemono</loc>
     <lastmod>2022-03-03</lastmod>
   </url>
 
@@ -153,7 +138,7 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipe/the-ancient-mariner-cocktail</loc>
+    <loc>https://www.funkyradish.com/recipe/the-ancient-mariner</loc>
     <lastmod>2022-03-03</lastmod>
   </url>
 
@@ -163,7 +148,7 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipe/old-fashioned-cocktail-with-simple-syrup</loc>
+    <loc>https://www.funkyradish.com/recipe/old-fashioned-with-simple-syrup</loc>
     <lastmod>2022-03-03</lastmod>
   </url>
 
@@ -173,12 +158,7 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipe/coconut-cake</loc>
-    <lastmod>2022-03-03</lastmod>
-  </url>
-
-  <url>
-    <loc>https://www.funkyradish.com/recipe/mai-tai-cocktail</loc>
+    <loc>https://www.funkyradish.com/recipe/mai-tais</loc>
     <lastmod>2022-03-03</lastmod>
   </url>
 
@@ -200,16 +180,6 @@
   </url>
 
   <url>
-    <loc>https://www.funkyradish.com/recipes/cocktail</loc>
-    <lastmod>2022-02-17</lastmod>
-  </url>
-
-  <url>
-    <loc>https://www.funkyradish.com/recipes/tiki-cocktails</loc>
-    <lastmod>2022-02-17</lastmod>
-  </url>
-
-  <url>
     <loc>https://www.funkyradish.com/recipe/dale-degroff%27s-singapore-sling</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
@@ -218,5 +188,27 @@
     <loc>https://www.funkyradish.com/recipe/porn-star-martini</loc>
     <lastmod>2022-02-17</lastmod>
   </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipes/cocktails</loc>
+    <lastmod>2022-05-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipes/oatmeal-raisin-cookies</loc>
+    <lastmod>2022-02-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipes/macaroons</loc>
+    <lastmod>2022-02-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://www.funkyradish.com/recipes/peanut-butter-cookies</loc>
+    <lastmod>2022-05-17</lastmod>
+  </url>
+
+
 
 </urlset>
