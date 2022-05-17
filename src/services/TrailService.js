@@ -1,8 +1,9 @@
 export default class TrailService {
 
-  build = (searchConfig, searchQuery) => {
+  build = (searchConfig, searchQuery, recipe) => {
     console.log("config: " + JSON.stringify(searchConfig));
     console.log("query: " + JSON.stringify(searchQuery));
+    console.log("recipe: " + JSON.stringify(recipe));
 
     if(searchQuery.length == 0) {
       searchQuery = "home"

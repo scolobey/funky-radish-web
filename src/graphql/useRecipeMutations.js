@@ -97,6 +97,7 @@ function useUpdateRecipe(recipe) {
   const [updateRecipeMutation] = useMutation(UpdateRecipeMutation);
 
   const updateRecipe = async (recipe) => {
+    console.log("update mutation");
     const { updatedRecipe } = await updateRecipeMutation({
       variables: {
         recipeId: recipe.recipeId,
@@ -104,8 +105,10 @@ function useUpdateRecipe(recipe) {
       }
     });
 
+    console.log("mutation should be complete: " + JSON.stringify(updateRecipe));
     return updatedRecipe;
   };
+
   return updateRecipe;
 }
 

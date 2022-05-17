@@ -27,14 +27,6 @@ function useRecipeInProject(recId) {
         author
         dir
         ing
-        ingredients {
-          _id
-          name
-        }
-        directions {
-          _id
-          text
-        }
       }
     }`;
 

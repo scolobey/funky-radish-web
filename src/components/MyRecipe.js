@@ -62,7 +62,7 @@ export default function MyRecipe(props) {
     <div className="Recipe">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{data.recipe.title}</title>
+        <title>{data.recipe.title} buba</title>
         <meta name="description" content= {"Recipe for: " + data.recipe.title + ". "} />
       </Helmet>
 

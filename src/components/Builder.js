@@ -47,11 +47,12 @@ function useDraftRecipe(
   const { loading, error, data } = useRecipe(recipeID);
 
   if (loading && !loadingActive) {
+    console.log("loading from useRecipe, but !loadingActive");
     setLoadingActive(true)
   }
 
   if (error && loadingActive) {
-    console.log("error: loader to false")
+    console.log("error: loading is active")
     setLoadingActive(false)
     dispatch(warning(error.message))
   };
@@ -64,7 +65,7 @@ function useDraftRecipe(
   // if being edited, you need to ignore the data.
   // if the cloud has changed, you need
   if (data && !recipeInProgress) {
-    console.log("data coming in")
+    console.log("data coming in. Recipe is marked as not inProgress.")
 
     // ing
     let draftRecipeIng = draftRecipe.ing
@@ -77,7 +78,7 @@ function useDraftRecipe(
     // If data is different from draftRecipe
     // Create a whole new set of ingredients and directions.
     if ((draftRecipeIng !== dataRecipeIng) || (draftRecipeDir !== dataRecipeDir) || (draftRecipe.title !== data.recipe.title)) {
-      console.log("ing time: " + dataRecipeIng);
+      console.log("looks like a diff between data and draft " + dataRecipeIng);
 
       setDraftRecipe({
         _id: recipeID,
@@ -92,9 +93,9 @@ function useDraftRecipe(
     }
 
   } else if (data && loadingActive) {
-    console.log("data and loading - setting loader to false: setting loading false")
+    console.log("data coming and loadingActive: " + JSON.stringify(data))
 
-    setLoadingActive(false)
+    // setLoadingActive(false)
   }
 
   /* Presenting... Your recipe interaction methods */
@@ -129,8 +130,6 @@ function useDraftRecipe(
 
     let ingArray = ingredients.split('\n')
 
-    console.log("setting ing: " + ingredients);
-
     setDraftRecipe({
       _id: draftRecipe._id,
       author: draftRecipe.author,
@@ -142,8 +141,6 @@ function useDraftRecipe(
 
   const setDraftRecipeDirections = (directions) => {
     setRecipeInProgress(true)
-
-    console.log("setting dir: " + directions);
 
     let dirArray = directions.split('\n')
 
@@ -190,7 +187,6 @@ function useDraftRecipe(
       setLoadingActive(true)
 
       await updateRecipe(rec).then((resp) => {
-        console.log("this return is skipped when the thing tries to add an ingredient that's already there errors.")
         console.log("update response: " + resp)
 
         // dispatch(warning("recipe updated"))
@@ -198,7 +194,7 @@ function useDraftRecipe(
         console.log("setting to false after updateRecipe catch: " + err)
       });
 
-      console.log("setting to false after updateRecipe after the await")
+      console.log("setting to false after the await from updateRecipe")
       setLoadingActive(false)
       setRecipeInProgress(false)
     }
