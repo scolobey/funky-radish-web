@@ -1,9 +1,8 @@
 export default class TrailService {
 
-  build = (searchConfig, searchQuery, recipe) => {
+  build = (searchConfig, searchQuery) => {
     console.log("config: " + JSON.stringify(searchConfig));
     console.log("query: " + JSON.stringify(searchQuery));
-    console.log("recipe: " + JSON.stringify(recipe));
 
     if(searchQuery.length == 0) {
       searchQuery = "home"
@@ -33,7 +32,11 @@ export default class TrailService {
     }
 
     if (searchQuery && searchQuery.length > 0) {
-      parentTrail.push(<a className="current">{searchQuery}</a>)
+      if (searchQuery == "home") {
+        parentTrail.push(<a className="current" href="/">{searchQuery}</a>)
+      } else {
+        parentTrail.push(<a className="current">{searchQuery}</a>)
+      }
     }
 
     if (searchConfig && searchConfig.children && searchConfig.children.length > 0) {
@@ -43,30 +46,24 @@ export default class TrailService {
       })
     }
 
-    let trail = parentTrail.concat(childTrail)
-
-
-
-
-    //
     // if (recipe && recipe.tags && recipe.tags.length > 0) {
     //   // Make sure you get the deepest category
     //   recipe.tags.forEach((tag, i) => {
-    //     if (searchTrail[tag]) {
-    //       query = tag
-    //
-    //       // check for any matches between children and recipe.tags
-    //       if (searchTrail[tag]["children"]) {
-    //         console.log("children: " + searchTrail[tag]["children"])
-    //         const intersection = recipe.tags.filter(element => searchTrail[tag]["children"].includes(element))
-    //
-    //         console.log("intersection: " + JSON.stringify(intersection));
-    //         if (intersection.length > 0) {
-    //           console.log("matched" + intersection[0])
-    //           query = intersection[0]
-    //         }
-    //       }
-    //     }
+    //     // if (searchTrail[tag]) {
+    //     //   query = tag
+    //     //
+    //     //   // check for any matches between children and recipe.tags
+    //     //   if (searchTrail[tag]["children"]) {
+    //     //     console.log("children: " + searchTrail[tag]["children"])
+    //     //     const intersection = recipe.tags.filter(element => searchTrail[tag]["children"].includes(element))
+    //     //
+    //     //     console.log("intersection: " + JSON.stringify(intersection));
+    //     //     if (intersection.length > 0) {
+    //     //       console.log("matched" + intersection[0])
+    //     //       query = intersection[0]
+    //     //     }
+    //     //   }
+    //     // }
     //   });
     // }
     //
@@ -80,6 +77,8 @@ export default class TrailService {
     //   }
     //
     // }
+
+    let trail = parentTrail.concat(childTrail)
 
     return trail
   }

@@ -76,7 +76,9 @@ export default function Recipe(props) {
       </Helmet>
 
       <div className="Title">
-        <b>{recipe.title}</b>
+        <div className="recipe-title-text">
+          <b>{recipe.title}</b>
+        </div>
 
         {recipe.author === realmUser ? (
           <div>

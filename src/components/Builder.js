@@ -370,33 +370,35 @@ export default function Builder(props) {
           submitDraftRecipe(baseIngredients, baseDirections);
       }}>
 
-      { loadingActive || recipeInProgress ?
-        <div className="saveIndicatorRed">
-        </div>
-      :
-        <div className="saveIndicatorGreen">
-        </div>
-      }
+      <div className="builder-controls">
+        { loadingActive || recipeInProgress ?
+          <div className="saveIndicatorRed">
+          </div>
+        :
+          <div className="saveIndicatorGreen">
+          </div>
+        }
 
-      <button type="submit">
-        SAVE
-      </button>
-      <button type="clear" onClick={e => {
-          e.preventDefault();
-          if (window.confirm('Are you sure you want to clear the form? Unsaved changes will be lost.')) {
-            clearDraftRecipe()
-          } else {
-            console.log("clear canceled")
-          }
-      }}>
-        Clear
-      </button>
-      <button type="delete" onClick={e => {
-          e.preventDefault();
-          submitDeleteRecipe()
+        <button type="submit">
+          SAVE
+        </button>
+        <button type="clear" onClick={e => {
+            e.preventDefault();
+            if (window.confirm('Are you sure you want to clear the form? Unsaved changes will be lost.')) {
+              clearDraftRecipe()
+            } else {
+              console.log("clear canceled")
+            }
         }}>
-        Delete
-      </button>
+          Clear
+        </button>
+        <button type="delete" onClick={e => {
+            e.preventDefault();
+            submitDeleteRecipe()
+          }}>
+          Delete
+        </button>
+      </div>
 
       {/* Recipe fields: title, ingredients, directions */}
       <div className="recipe">
