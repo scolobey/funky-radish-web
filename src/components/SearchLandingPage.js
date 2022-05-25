@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { withRouter, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { externalRecipeSearch } from "../actions/Actions";
+import BlogPost from './BlogPost';
 
 const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
 const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
+
 
 const Loading = () => <div></div>;
 
@@ -64,6 +66,13 @@ export default function SearchLandingPage(props) {
       <Suspense fallback=<Loading/>>
         <ExternalRecipeList externalRecipes={externalRecipes}/>
       </Suspense>
+
+      { searchConfig && searchConfig.content ? (
+        <BlogPost markdown={searchConfig.content}/>
+      ) : (
+        <div>
+        </div>
+      ) }
 
       <div className="create-button"><a href="/builder">+</a></div>
     </div>

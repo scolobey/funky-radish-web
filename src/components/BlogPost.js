@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import { useSelector, useDispatch } from 'react-redux'
+import ReactMarkdown from 'react-markdown';
 
-export default function Blog(props) {
+export default function BlogPost(props) {
 
-  // let postTitle = props.match.params.post
 
-  // const [ blogPost, setBlogPost ] = useState('')
+  const [ blogPost, setBlogPost ] = useState('')
 
   const getPosts = async() => {
     // await fetch(readMePath)
@@ -26,6 +26,8 @@ export default function Blog(props) {
   });
 
   return <div className="blog">
-    This is where the blog content will be.
+    <ReactMarkdown>
+      {props.markdown}
+    </ReactMarkdown>
   </div>
 }
