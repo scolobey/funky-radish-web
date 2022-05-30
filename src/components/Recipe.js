@@ -77,7 +77,7 @@ export default function Recipe(props) {
 
       <div className="Title">
         <div className="recipe-title-text">
-          <b>{recipe.title}</b>
+          <h1>{recipe.title}</h1>
         </div>
 
         {recipe.author === realmUser ? (
