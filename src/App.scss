@@ -1732,6 +1732,8 @@ input:checked + .slider:before {
 }
 
 .blog {
-  padding-top: 2vw;
+  padding: 2vw;
   margin: 4vw;
+  background-color: white;
+  border-radius: 6px;
 }
