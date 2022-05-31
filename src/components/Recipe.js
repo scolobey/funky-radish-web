@@ -53,7 +53,7 @@ export default function Recipe(props) {
     <div className="Recipe">
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{recipe.title.replace('-', '')}</title>
+        <title>{recipe.title}</title>
         <meta name="description" content={"Recipe for " + recipe.title} />
 
         // https://jsonld.com/recipe/
