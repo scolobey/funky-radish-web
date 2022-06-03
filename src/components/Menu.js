@@ -62,20 +62,20 @@ class Menu extends Component {
         <ul>
           {this.renderUserState()}
           <li key='5'>
-            <a href='//docs.google.com/document/d/1LJDYrEtm67WId9lE8Khlx_jvb0letNNlGGbenT42gg4/edit?usp=sharing'>Road Map</a>
+            <a target="_blank" href='//docs.google.com/document/d/1LJDYrEtm67WId9lE8Khlx_jvb0letNNlGGbenT42gg4/edit?usp=sharing'>Road Map</a>
           </li>
           <li key='6'>
-            <a href='./about'>About</a>
+            <a href='/about'>About</a>
           </li>
           <li key='7'>
-            <a href='./privacy'>Privacy</a>
+            <a href='/privacy'>Privacy</a>
           </li>
         </ul>
       </div>
     )
   }
 }
- 
+
 Menu.contextType = RealmApolloContext;
 
 function mapStateToProps(state) {
