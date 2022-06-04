@@ -260,10 +260,7 @@ $black: black;
     width: 3vw;
     height: 3vw;
     cursor: pointer;
-    position: fixed;
-    z-index: 10;
-    top: 8vw;
-    left: 12vw;
+    padding-left: 4vw;
   }
 
   .search_description {
@@ -1119,6 +1116,10 @@ button[type=import]:hover {
 // recipe listings overall
 .RecipeListContainer {
   padding-top: 4vw;
+}
+
+.RecipeListContainer h1 {
+  padding-left: 4vw;
 }
 
 .recipe-request-container {

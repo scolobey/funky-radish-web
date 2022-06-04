@@ -8,10 +8,10 @@ import BlogPost from './BlogPost';
 const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
 const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
 
-
 const Loading = () => <div></div>;
 
 export default function SearchLandingPage(props) {
+
   let searchQuery = props.match.params.searchQuery
 
   var externalRecipes = useSelector((state) => state.externalRecipes)
@@ -32,6 +32,7 @@ export default function SearchLandingPage(props) {
         <meta charSet="utf-8" />
         <title>{searchQuery + " recipes"}</title>
         <meta name="description" content= {searchQuery + " recipes from FunkyRadish.com"} />
+        <meta name="title" content={searchQuery + " recipes from FunkyRadish.com"} data-react-helmet="true" />
 
         // https://schema.org/SearchResultsPage
         <script type="application/ld+json">{`
@@ -44,19 +45,22 @@ export default function SearchLandingPage(props) {
         `}</script>
       </Helmet>
 
-      { searchConfig && searchConfig.description ? (
-        <img className="info_button" src="/info_icon.svg" alt="Info" onClick={e => {
-          e.preventDefault();
-          setRevealDescription(!revealDescription)
-        }}/>
-      ) : (
-        <div>
-        </div>
-      ) }
+      <h1> {searchQuery.replaceAll("-", " ")}
+        { searchConfig && searchConfig.description ? (
+            <img className="info_button" src="/info_icon.svg" alt="Info" onClick={e => {
+              e.preventDefault();
+              setRevealDescription(!revealDescription)
+            }}/>
+          ) : (
+            <div>
+            </div>
+          )
+        }
+      </h1>
 
       { revealDescription ? (
         <div className="search_description">
-          {searchConfig.description}
+          <h2>{searchConfig.description}</h2>
         </div>
       ) : (
         <div>
