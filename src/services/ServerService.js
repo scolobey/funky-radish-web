@@ -34,7 +34,7 @@ export default class ServerService {
     return data;
   }
 
-  // https://funky-radish-api.herokuapp.com/recipes/cookies
+  // https://funky-radish-api.herokuapp.com/recipes/singapore-sling
   async searchRecipes(query) {
     let endpoint = BASE_URL + "recipes/" + query.replaceAll("-", " ")
 
@@ -45,7 +45,6 @@ export default class ServerService {
       })
     })
 
-    //error seems to be here. Maybe not json?
     let data = await response.json()
     return data;
   }
