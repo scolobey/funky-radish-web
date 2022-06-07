@@ -389,7 +389,6 @@ export function getRecipeMiddleware({dispatch}) {
       if (action.type === GET_RECIPE) {
 
         console.log("retrieving recipe: " + action.recipeIdentifier.replaceAll('-', ' '))
-        console.log("token: " + REACT_APP_API_KEY);
 
         dispatch(toggleLoader(true))
 

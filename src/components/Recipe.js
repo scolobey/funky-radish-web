@@ -100,20 +100,20 @@ export default function Recipe(props) {
         <ul>
           {recipe.ing.map((ingredient, index) => (
             <li key={index}>
-              {ingredient}
+              <h2><input type="checkbox"/>{ingredient}</h2>
             </li>
           ))}
         </ul>
       </div>
 
       <div className="Directions">
-        <ul>
+        <ol>
           {recipe.dir.map((direction, index) => (
             <li key={index}>
-              {direction}
+              <h2>{direction}</h2>
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
 
       { popoverActive ? (

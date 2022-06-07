@@ -503,6 +503,26 @@ $black: black;
   }
 }
 
+.Ingredients h2 {
+  font-size: 1em;
+  font-weight: normal;
+}
+
+.Ingredients #checkboxes label {
+  float: left;
+}
+.Ingredients #checkboxes ul {
+  margin: 0;
+  list-style: none;
+  float: left;
+}
+
+.Directions h2 {
+  font-size: 1em;
+  font-weight: normal;
+  padding-top: 10px;
+}
+
 @media only screen and (min-width: 600px) {
   .Directions {
     float: right !important;
