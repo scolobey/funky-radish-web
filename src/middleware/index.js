@@ -59,6 +59,8 @@ import useRecipe from "../graphql/useRecipe";
 
 import { ObjectId } from "bson";
 
+const REACT_APP_API_KEY = process.env.REACT_APP_API_KEY
+
 const auth = new Auth();
 const realmService = new RealmService();
 const serverService = new ServerService();
@@ -351,29 +353,6 @@ export function addRecipeMiddleware({ dispatch }) {
           title: action.recipe.title
         }
 
-        // if(action.recipe._id) {
-        //   let url = "https://funky-radish-api.herokuapp.com/recipe/" + action.recipe._id;
-        //
-        //   fetch(url, {
-        //     method: 'put',
-        //     headers: new Headers({
-        //       'Accept': 'application/json',
-        //       'Content-Type': 'application/json',
-        //       'x-access-token': token
-        //     }),
-        //     body: JSON.stringify(params)
-        //   })
-        //   .then(res=> {
-        //     return res.clone().json()
-        //   })
-        //   .then(data => {
-        //     if (data.message) {
-        //       return dispatch(warning(data.message))
-        //     }
-        //     return dispatch(updateRecipe(data));
-        //   })
-        //   .catch(error => dispatch(warning(error)))
-        // }
         params = [params];
 
         fetch("https://funky-radish-api.herokuapp.com/recipes", {
@@ -410,11 +389,15 @@ export function getRecipeMiddleware({dispatch}) {
       if (action.type === GET_RECIPE) {
 
         console.log("retrieving recipe: " + action.recipeIdentifier.replaceAll('-', ' '))
+        console.log("token: " + REACT_APP_API_KEY);
 
         dispatch(toggleLoader(true))
 
         fetch("https://funky-radish-api.herokuapp.com/recipe/" + action.recipeIdentifier , {
-          method: 'get'
+          method: 'get',
+          headers: new Headers({
+            'x-access-token': REACT_APP_API_KEY
+          })
         })
         .then(response => response.json())
         .then(json => {

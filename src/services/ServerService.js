@@ -1,6 +1,8 @@
 import { BASE_URL } from "../constants/api";
 var path = require('path');
 
+const REACT_APP_API_KEY = process.env.REACT_APP_API_KEY
+
 export default class ServerService {
 
   async generateRecipeToken(recipeID) {
@@ -36,7 +38,12 @@ export default class ServerService {
   async searchRecipes(query) {
     let endpoint = BASE_URL + "recipes/" + query.replaceAll("-", " ")
 
-    let response = await fetch(endpoint, { method: 'get' })
+    let response = await fetch(endpoint, {
+      method: 'get',
+      headers: new Headers({
+        'x-access-token': REACT_APP_API_KEY
+      })
+    })
 
     //error seems to be here. Maybe not json?
     let data = await response.json()
@@ -162,6 +169,5 @@ function fetchWithTimeout(endpoint) {
           reject(err);
       });
   })
-
 
 }
