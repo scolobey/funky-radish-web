@@ -389,6 +389,7 @@ export function getRecipeMiddleware({dispatch}) {
       if (action.type === GET_RECIPE) {
 
         console.log("retrieving recipe: " + action.recipeIdentifier.replaceAll('-', ' '))
+        console.log(REACT_APP_API_KEY);
 
         dispatch(toggleLoader(true))
 
@@ -401,7 +402,6 @@ export function getRecipeMiddleware({dispatch}) {
         .then(response => response.json())
         .then(json => {
           dispatch(toggleLoader(false))
-
           if (json.error && json.error.length > 0) {
             return dispatch(warning(json.error))
           }
