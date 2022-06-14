@@ -14,23 +14,27 @@ export default function SearchTrail(props) {
     query = path.replace("/recipes/", "").replaceAll("-", " ")
   }
 
-  var [ trail, setTrail ] = React.useState([])
+  var [ trailVisible, setTrailVisible ] = React.useState(true)
 
   var recipe = useSelector((state) => state.recipe)
   var externalRecipes = useSelector((state) => state.externalRecipes)
   var searchConfig = useSelector((state) => state.searchConfig)
 
   React.useEffect(() => {
-
     if(query.length == 0) {
-      query = "home"
+      query = ""
     }
-
+    if (path.includes("/builder")) {
+      setTrailVisible(false)
+    }
   }, []);
 
-  return (
+  return trailVisible ? (
     <div >
       <SearchTrailRow config={searchConfig} query={query} recipe={recipe}/>
     </div>
-  );
+  ) : (
+    <div></div>
+  )
+
 }
