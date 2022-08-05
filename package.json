@@ -13,6 +13,7 @@
     "@fontsource/luckiest-guy": "^4.5.1",
     "@fontsource/vt323": "^4.5.2",
     "core-js": "^3.8.2",
+    "dotenv": "^16.0.1",
     "ethers": "^5.5.2",
     "express": "^4.17.2",
     "express-favicon": "^2.0.1",

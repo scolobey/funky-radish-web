@@ -1,6 +1,7 @@
 import { BASE_URL } from "../constants/api";
 var path = require('path');
 
+var dotenv = require('dotenv').config();
 const REACT_APP_API_KEY = process.env.REACT_APP_API_KEY
 
 export default class ServerService {

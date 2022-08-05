@@ -85,8 +85,6 @@ function rootReducer(state, action) {
   }
 
   if (action.type === SET_RECIPE ) {
-    console.log("setting recipe: " + JSON.stringify(action.recipe));
-
     return Object.assign({}, state, {
       recipe: action.recipe
     });

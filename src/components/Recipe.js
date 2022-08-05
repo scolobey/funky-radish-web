@@ -54,7 +54,9 @@ export default function Recipe(props) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>{recipe.title}</title>
-        <meta name="description" content={"Recipe for " + recipe.title} />
+        <meta name="title" content={recipe.title + " Recipe"} />
+        <meta name="description" content={"To make " + recipe.title + ", use " + recipe.ing.join(", ")} />
+        <meta name="keywords" content={"recipe, " + recipe.ing.join(", ") }/>
 
         // https://jsonld.com/recipe/
         <script type="application/ld+json">{`

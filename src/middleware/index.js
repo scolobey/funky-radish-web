@@ -59,6 +59,7 @@ import useRecipe from "../graphql/useRecipe";
 
 import { ObjectId } from "bson";
 
+var dotenv = require('dotenv').config();
 const REACT_APP_API_KEY = process.env.REACT_APP_API_KEY
 
 const auth = new Auth();
@@ -387,8 +388,6 @@ export function getRecipeMiddleware({dispatch}) {
   return function(next) {
     return function(action) {
       if (action.type === GET_RECIPE) {
-
-        console.log("retrieving recipe: " + action.recipeIdentifier.replaceAll('-', ' '))
         dispatch(toggleLoader(true))
 
         fetch("https://funky-radish-api.herokuapp.com/recipe/" + action.recipeIdentifier , {
@@ -402,6 +401,8 @@ export function getRecipeMiddleware({dispatch}) {
           dispatch(toggleLoader(false))
           if (json.error && json.error.length > 0) {
             return dispatch(warning(json.error))
+          } else if (json.error && json.error.message) {
+            return dispatch(warning(json.error.message))
           }
           else {
             return dispatch(setRecipe(json));
