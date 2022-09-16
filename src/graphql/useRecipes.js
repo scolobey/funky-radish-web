@@ -21,7 +21,7 @@ function useAllRecipesInProject(author, watching) {
   // But eventually, somebody that is not foglogs@gmail.com may have issues
   let RECIPE_QUERY = gql`
     query Recipes($author: String!, $watching: [String!]){
-      recipes(query: {OR: [{ author: $author }, {_id_in: $watching}]}, limit:500) {
+      recipes(query: {OR: [{ author: $author }, {_id_in: $watching}]}, sortBy: LASTUPDATED_DESC, limit:500) {
         _id
         author
         title
