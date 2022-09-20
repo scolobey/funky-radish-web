@@ -87,8 +87,8 @@ export class Recipes extends Component {
           <div className="not-logged-in-cta">
             <div className="landing-headline">
               <div className='title-wrapper'>
-                <h1>The recipe app for cooks...</h1>
-                <h3 className="landing-sub">With FunkyRadish you can collect, store and share recipes from any device.</h3>
+                <h1>Professional Recipe Management</h1>
+                <h3 className="landing-sub">Store and edit your recipes on any device, without the fluff.</h3>
               </div>
             </div>
 
@@ -101,7 +101,7 @@ export class Recipes extends Component {
             </a>
 
             <div className="download-icons">
-              <h2>Or download the apps...</h2>
+              <h2>Download the apps...</h2>
               <a href='https://play.google.com/store/apps/details?id=com.funkyradish.funky_radish&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='/play_store_badge.svg' height='75'/></a>
               <a href='https://apps.apple.com/us/app/funky-radish/id1447293832?ls=1'><img alt='Download on the App Store' src='/app_store_badge.svg' height='75'/></a>
             </div>
