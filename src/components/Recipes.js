@@ -59,7 +59,9 @@ export class Recipes extends Component {
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
-          <meta name="description" content= "With FunkyRadish you can collect, store and share recipes from any device." />
+          <title>Funky Radish - Complete Recipe Management for Professionals</title>
+          <meta name="description" content= "With FunkyRadish you can collect, store and share recipes on any device." />
+          <meta name="keywords" content={"recipe, cook, chef, recipe developer, multiplatform, without pictures"}/>
         </Helmet>
 
         <Suspense fallback=<Loading/>>
