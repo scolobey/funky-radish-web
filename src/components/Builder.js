@@ -49,7 +49,7 @@ function useDraftRecipe(
     setRecipeInProgress(true)
 
     setLoadingActive(true)
-    serverService.importRecipe(newImportLink)
+    serverService.importRecipe(decodeURIComponent(newImportLink))
     .then(res=> {
       console.log("response: " + JSON.stringify(res));
       let gqlIngredients = arrayToIngredients(res.ingredients)
