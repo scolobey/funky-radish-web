@@ -36,10 +36,46 @@ var newRecipeID = ObjectId().valueOf()
 
 function useDraftRecipe(
     [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive, recipeInProgress, setRecipeInProgress ],
-    importAddress
+    importAddress,
+    newImportLink
   ) {
 
   const dispatch = useDispatch()
+
+  // if there's a link in the url
+  if (newImportLink && !recipeInProgress) {
+    console.log("this is the link: " + newImportLink);
+
+    setRecipeInProgress(true)
+
+    setLoadingActive(true)
+    serverService.importRecipe(newImportLink)
+    .then(res=> {
+      console.log("response: " + JSON.stringify(res));
+      let gqlIngredients = arrayToIngredients(res.ingredients)
+      let gqlDirections = arrayToDirections(res.directions)
+
+      setDraftRecipe({
+        _id: newRecipeID,
+        author: currentRealmUser,
+        title: res.title,
+        ingredients: gqlIngredients,
+        directions: gqlDirections,
+        ing: res.ingredients,
+        dir: res.directions
+      })
+
+      console.log("setting to false after importRecipe")
+      setRecipeInProgress(true)
+      setLoadingActive(false)
+    })
+    .catch(err => {
+      console.log("setting to false after importRecipe err")
+      setLoadingActive(false)
+      return dispatch(warning("Import failed: " + err))
+    })
+
+  }
 
   // Pass draftRecipe to GQL, get back ( Create | Update | Delete ) methods
   const { addRecipe, updateRecipe, deleteRecipe } = useNewRecipe(draftRecipe);
@@ -65,7 +101,7 @@ function useDraftRecipe(
   // if being edited, you need to ignore the data.
   // if the cloud has changed, you need
   if (data && !recipeInProgress) {
-    console.log("data coming in. Recipe is marked as not inProgress.")
+    console.log("data coming in. Recipe is not inProgress.")
 
     // ing
     let draftRecipeIng = draftRecipe.ing
@@ -78,7 +114,7 @@ function useDraftRecipe(
     // If data is different from draftRecipe
     // Create a whole new set of ingredients and directions.
     if ((draftRecipeIng !== dataRecipeIng) || (draftRecipeDir !== dataRecipeDir) || (draftRecipe.title !== data.recipe.title)) {
-      console.log("looks like a diff between data and draft " + dataRecipeIng);
+      console.log("diff between incoming and draft " + dataRecipeIng);
 
       setDraftRecipe({
         _id: recipeID,
@@ -224,9 +260,9 @@ function useDraftRecipe(
     }
   };
 
-  const importFromAddress = async () => {
+  const importFromAddress = async (address) => {
     setLoadingActive(true)
-    serverService.importRecipe(importAddress)
+    serverService.importRecipe(address)
     .then(res=> {
       console.log("response: " + JSON.stringify(res));
       let gqlIngredients = arrayToIngredients(res.ingredients)
@@ -326,10 +362,15 @@ export default function Builder(props) {
 
   // If there's an ID in the URL, set the recipeID
   let paramID = props.match.params.recipeId
+  let newImportLink = ""
+
   var checkForHex = new RegExp("^[0-9a-fA-F]{24}$")
 
   if (paramID && paramID.length > 0 && checkForHex.test(paramID)) {
     recipeID = props.match.params.recipeId
+  } else if (paramID && paramID.includes("http")) {
+    newImportLink = props.match.params.recipeId
+    console.log(newImportLink);
   }
 
   // Initialize the draftRecipe.
@@ -358,7 +399,8 @@ export default function Builder(props) {
     mintNFT
   } = useDraftRecipe(
     [ draftRecipe, setDraftRecipe, baseIngredients, setBaseIngredients, baseDirections, setBaseDirections, loadingActive, setLoadingActive, recipeInProgress, setRecipeInProgress ],
-    importAddress
+    importAddress,
+    newImportLink
   );
 
   return (
@@ -473,7 +515,7 @@ export default function Builder(props) {
             <button type="import"
               onClick={e => {
                 e.preventDefault();
-                importFromAddress()
+                importFromAddress(importAddress)
               }}>
               Import
             </button>
