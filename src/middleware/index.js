@@ -163,7 +163,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
         let token = localStorage.getItem('recipe_claim_token');
 
         if (token && token.length > 0 ) {
-          console.log("there's a token: " + token)
           params.claimRecipeToken = token
           localStorage.setItem('recipe_claim_token', "")
         }
@@ -175,8 +174,6 @@ export function tokenCollectionMiddleware({ dispatch }) {
           formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-
-        console.log("form body: " + formBody)
 
         dispatch(toggleLoader(true));
 
@@ -193,11 +190,9 @@ export function tokenCollectionMiddleware({ dispatch }) {
         })
         .then(data => {
           if (data.message === "Enjoy your token, ya filthy animal!") {
-            console.log("resp: " + JSON.stringify(data))
 
             realmService.authenticate(data.token)
             .then(user => {
-              console.log("Logged in user: " + Object.keys(user))
               auth.setSession(data.token, action.authData.email)
               auth.setRealmUser(user)
 
