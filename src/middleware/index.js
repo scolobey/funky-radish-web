@@ -53,7 +53,6 @@ import {v1 as uuid} from "uuid";
 import Auth from '../Auth'
 import RealmService from '../services/RealmService'
 import ServerService from '../services/ServerService'
-import Recipe from '../models/RecipeModel'
 import useRecipes from "../graphql/useRecipes";
 import useRecipe from "../graphql/useRecipe";
 
@@ -385,10 +384,13 @@ export function getRecipeMiddleware({dispatch}) {
       if (action.type === GET_RECIPE) {
         dispatch(toggleLoader(true))
 
+        let currentRealmUser = localStorage.getItem('realm_user')
+
         fetch("https://funky-radish-api.herokuapp.com/recipe/" + action.recipeIdentifier , {
           method: 'get',
           headers: new Headers({
-            'x-access-token': REACT_APP_API_KEY
+            'x-access-token': REACT_APP_API_KEY,
+            'user': currentRealmUser
           })
         })
         .then(response => response.json())

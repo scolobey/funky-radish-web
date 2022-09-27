@@ -203,10 +203,10 @@ function useDraftRecipe(
     if (!recipeID || recipeID == "") {
       setLoadingActive(true)
 
-      console.log("Adding recipe: " + JSON.stringify(draftRecipe))
+      console.log("Adding a recipe: " + JSON.stringify(draftRecipe))
 
       await addRecipe(draftRecipe).then((rec) => {
-        console.log("setting to false after addRecipe")
+        console.log("callback after addRecipe")
         setLoadingActive(false)
         setRecipeInProgress(false)
         dispatch(setRedirect("/builder/" + draftRecipe._id))

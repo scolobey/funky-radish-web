@@ -58,6 +58,7 @@ const RecipeFieldsFragment = gql`
 `;
 
 function useAddRecipe(recipe) {
+
   const [addRecipeMutation] = useMutation(AddRecipeMutation, {
     // Manually save added Recipes into the Apollo cache so that Recipe queries automatically update
     // For details, refer to https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
@@ -77,11 +78,14 @@ function useAddRecipe(recipe) {
   });
 
   const addRecipe = async (recipe) => {
+    let currentTime = new Date()
+
     const { addedRecipe } = await addRecipeMutation({
       variables: {
         recipe: {
           _id: recipe._id,
           author: recipe.author,
+          lastUpdated: currentTime,
           ...recipe,
         },
       },
@@ -96,7 +100,11 @@ function useAddRecipe(recipe) {
 function useUpdateRecipe(recipe) {
   const [updateRecipeMutation] = useMutation(UpdateRecipeMutation);
 
+  console.log("time be here");
+
   const updateRecipe = async (recipe) => {
+    let currentTime = new Date()
+    recipe.updates.lastUpdated = currentTime
 
     const { updatedRecipe } = await updateRecipeMutation({
       variables: {

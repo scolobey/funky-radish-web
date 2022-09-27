@@ -17,7 +17,6 @@ import RealmApolloProvider from "./graphql/RealmApolloProvider";
 import store from "./store/index";
 import throttle from "lodash/throttle";
 import { saveState } from './stateLoader.js';
-// import { addRecipe } from "./actions/Actions";
 
 export const APP_ID = "funky-radish-twdxv";
 
@@ -33,7 +32,6 @@ store.subscribe(throttle(() => {
 }, 1000));
 
 window.store = store;
-// window.addRecipe = addRecipe;
 
 ReactDOM.render(
   <RealmApolloProvider>
