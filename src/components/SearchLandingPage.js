@@ -45,7 +45,7 @@ export default function SearchLandingPage(props) {
         `}</script>
       </Helmet>
 
-      <h1> {searchQuery.replaceAll("-", " ")}
+      <h1> {searchQuery.replaceAll("-", " ").toUpperCase()}
         { searchConfig && searchConfig.description ? (
             <img className="info_button" src="/info_icon.svg" alt="Info" onClick={e => {
               e.preventDefault();

@@ -1140,6 +1140,11 @@ button[type=import]:hover {
 
 .RecipeListContainer h1 {
   padding-left: 4vw;
+  font-family: 'Francois One';
+  color: $specialBlue;
+  @include outline($grayLight);
+  @include shade(text, #aaa, #333, 6, 135deg, true);
+  font-size: 36px;
 }
 
 .recipe-request-container {

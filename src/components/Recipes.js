@@ -88,7 +88,7 @@ export class Recipes extends Component {
             <div className="landing-headline">
               <div className='title-wrapper'>
                 <h1>Professional Recipe Management</h1>
-                <h3 className="landing-sub">Store and edit your recipes on any device, without the fluff.</h3>
+                <h3 className="landing-sub">This is where your recipes belong. Store and edit on any device, no fluff.</h3>
               </div>
             </div>
 
