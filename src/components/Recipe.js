@@ -72,7 +72,7 @@ export default function Recipe(props) {
              "name": "${recipe.title}",
              "recipeInstructions": "${recipe.dir.map((direction, index) => (
                direction.replace('"',"%22").replace("\\", "%5C")
-             )).join("\n")}"
+             )).join(" ")}"
          }
         `}</script>
       </Helmet>
