@@ -41,9 +41,14 @@ export default function Recipe(props) {
     setPopoverActive(false)
   };
 
+  let badIdentifierRegex = /.*:\d:\d\d\d\d$/;
+
   React.useEffect(() => {
     if (recipeIdentifier == null || recipeIdentifier == 'undefined') {
       dispatch(setRedirect("/builder/"))
+    } else if (badIdentifierRegex.test(recipeIdentifier)) {
+      // This solves those weird URLs from hackers or some shit
+      dispatch(setRedirect("/"))
     } else {
       dispatch(getRecipe(recipeIdentifier))
     }
@@ -130,6 +135,8 @@ export default function Recipe(props) {
     </div>
   ) :
   (
-    <div></div>
+    <div>
+
+    </div>
   );
 }
