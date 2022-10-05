@@ -33,6 +33,7 @@ export default function SearchLandingPage(props) {
         <title>{searchQuery + " recipes"}</title>
         <meta name="description" content= {searchQuery + " recipes from FunkyRadish.com"} />
         <meta name="title" content={searchQuery + " recipes from FunkyRadish.com"} data-react-helmet="true" />
+        <link rel="canonical" href={"https://www.funkyradish.com/recipes/" + searchQuery}/>
 
         // https://schema.org/SearchResultsPage
         <script type="application/ld+json">{`

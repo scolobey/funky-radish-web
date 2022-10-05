@@ -62,6 +62,7 @@ export default function Recipe(props) {
         <meta name="title" content={recipe.title + " Recipe"} />
         <meta name="description" content={"To make " + recipe.title + ", use " + recipe.ing.join(", ")} />
         <meta name="keywords" content={recipe.title + " recipe, " + recipe.ing.join(", ") }/>
+        <link rel="canonical" href={"https://www.funkyradish.com/recipe/" + recipeIdentifier}/>
 
         // https://jsonld.com/recipe/
         <script type="application/ld+json">{`
