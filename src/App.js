@@ -7,6 +7,7 @@ import './App.scss';
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
 import Redirector from './components/Redirector';
+import { Redirect } from "react-router-dom";
 import ScrollToTop from './components/ScrollToTop';
 
 import Navigation from './components/Navigation';
@@ -61,6 +62,10 @@ class App extends Component {
         <ScrollToTop />
 
         <div className="content">
+          { window.location.pathname && window.location.pathname.search(/:\d*/i) > 0 ?
+            <Redirect to={window.location.pathname.split(':')[0]} /> :
+            <div></div>
+          }
           <Suspense fallback=<Loading/>>
             <Route path="/" exact component={Recipes} />
             <Route path="/login/" exact component={withRouter(AuthView)} />

@@ -405,6 +405,7 @@ export default function Builder(props) {
 
   return (
     <div className="builder">
+      <title>FunkyRadish - Recipe Builder</title>
 
       {/* Recipe controls: save, clear, delete */}
       <form onSubmit={e => {

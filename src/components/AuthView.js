@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { login, signup, resendVerification, sendPasswordResetEmail } from "../actions/Actions";
 
@@ -99,7 +100,25 @@ class AuthView extends Component {
   render() {
       return (
         <div className='auth-container'>
+          {this.state.login ?
+            <Helmet>
+              <meta charSet="utf-8" />
+              <title>Login</title>
+              <meta name="title" content="FunkyRadish - Login View" />
+              <meta name="description" content="Login to the FunkyRadish Recipe Management System." />
+              <meta name="keywords" content="professional, recipe, software"/>
+            </Helmet> :
+            <Helmet>
+              <meta charSet="utf-8" />
+              <title>Signup</title>
+              <meta name="title" content="FunkyRadish - Signup View" />
+              <meta name="description" content="Signup for the FunkyRadish Recipe Management System." />
+              <meta name="keywords" content="professional, recipe, software"/>
+            </Helmet>
+          }
+
           <div className='auth'>
+            {this.state.login ? <title>FunkyRadish - Login</title> : <title>FunkyRadish - Sign up</title> }
             <a href='./'>Dismiss</a>
             {this.state.login ? <h1>Login</h1> : <h1>Sign up</h1> }
             <form onSubmit={this.onSubmit}>

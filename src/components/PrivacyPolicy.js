@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import { Helmet } from "react-helmet";
 
 class PrivacyPolicy extends Component {
   render() {
     return (
       <div className="PrivacyContainer">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>FunkyRadish - Privacy Policy</title>
+          <meta name="title" content="FunkyRadish - Privacy Policy" />
+          <meta name="description" content="Privacy Policy for the FunkyRadish.com recipe platform" />
+        </Helmet>
         <div className="Privacy">
-          <h2>Privacy Policy</h2>
+          <h1>Privacy Policy</h1>
           <p>Funky Radish was designed and built by Ryan goodwin as a Free app. This SERVICE is provided by Ryan Goodwin at no cost and is intended for use as is.</p>
           <p>This page is used to inform visitors of my policies with regards to the collection, use, and disclosure of Personal Information for anyone who decides to use the Funky Radish Service.</p>
           <p>If you choose to use this Service, you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.</p>

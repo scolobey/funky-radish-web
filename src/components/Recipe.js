@@ -69,6 +69,7 @@ export default function Recipe(props) {
           {
             "@context": "https://schema.org",
              "@type": "Recipe",
+             "image": "https://www.funkyradish.com/placeholder.webp",
              "author": "FunkyRadish.com",
              "datePublished": "2021-12-15",
              "description": "No pictures, no stories, just a simple recipe for ${recipe.title}",

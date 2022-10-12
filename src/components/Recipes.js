@@ -59,7 +59,8 @@ export class Recipes extends Component {
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Funky Radish - Recipe Management Software for Professional Cooks</title>
+          <title>Funky Radish - Recipe Management Software for Real Cooks</title>
+          <meta name="title" content= "FunkyRadish - Home" />
           <meta name="description" content= "With FunkyRadish you can collect, store and share recipes on any device." />
           <meta name="keywords" content={"recipe, cook, chef, recipe developer, multiplatform, without pictures"}/>
         </Helmet>
@@ -86,7 +87,8 @@ export class Recipes extends Component {
         <div className="not-logged-in-banner">
           <Helmet>
             <meta charSet="utf-8" />
-            <title>Funky Radish - Recipe Management Software for Professional Cooks</title>
+            <title>Funky Radish - Recipe Management Software for Real Cooks</title>
+            <meta name="title" content= "FunkyRadish - Home" />
             <meta name="description" content= "With FunkyRadish you can collect, store and share recipes on any device." />
             <meta name="keywords" content={"recipe, cook, chef, recipe developer, multiplatform, without pictures"}/>
           </Helmet>
@@ -94,8 +96,8 @@ export class Recipes extends Component {
           <div className="not-logged-in-cta">
             <div className="landing-headline">
               <div className='title-wrapper'>
-                <h1>Professional Recipe Management</h1>
-                <h3 className="landing-sub">This is where your recipes belong. Store and edit on any device, no fluff.</h3>
+                <h1>Your Recipes Deserve a Good Home</h1>
+                <h3 className="landing-sub">This is where your recipes belong. Store and edit on any device.</h3>
               </div>
             </div>
 
