@@ -37,6 +37,7 @@ const Importer = lazy(() => import("./components/admin/Importer"));
 const Recipes = lazy(() => import("./components/Recipes.js"));
 const Recipe = lazy(() => import("./components/Recipe.js"));
 const SearchLandingPage = lazy(() => import("./components/SearchLandingPage"));
+const PerfectSearchPage = lazy(() => import("./components/PerfectSearchPage"));
 const MyRecipe = lazy(() => import("./components/MyRecipe.js"));
 const Verification = lazy(() => import('./components/Verification.js'));
 const RecipeClaimer = lazy(() => import('./components/RecipeClaimer.js'));
@@ -79,6 +80,7 @@ class App extends Component {
             <Route path="/recipe/:recipeTitle?" component={Recipe} />
             <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
             <Route path="/recipes/:searchQuery?" component={SearchLandingPage} />
+            <Route path="/perfectSearch/:searchQuery?" component={PerfectSearchPage} />
 
             { (realmService.getUser() && realmService.getUser()["customData"]["admin"]) ? ([
               <Route path="/admin/" component={Admin} />,

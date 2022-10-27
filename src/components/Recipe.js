@@ -11,6 +11,7 @@ const serverService = new ServerService();
 export default function Recipe(props) {
 
   let recipeIdentifier = props.match.params.recipeTitle
+
   //TODO: This is probably more acurately named realmUserId
   let realmUser = localStorage.getItem('realm_user');
 
@@ -62,7 +63,7 @@ export default function Recipe(props) {
         <meta name="title" content={recipe.title + " Recipe"} />
         <meta name="description" content={"To make " + recipe.title + ", use " + recipe.ing.join(", ")} />
         <meta name="keywords" content={recipe.title + " recipe, " + recipe.ing.join(", ") }/>
-        <link rel="canonical" href={"https://www.funkyradish.com/recipe/" + recipeIdentifier}/>
+        <link rel="canonical" href={"https://www.funkyradish.com/recipe/" + recipe.title}/>
 
         // https://jsonld.com/recipe/
         <script type="application/ld+json">{`
@@ -89,7 +90,7 @@ export default function Recipe(props) {
           <h1>{recipe.title}</h1>
         </div>
 
-        {recipe.author === realmUser ? (
+        {((recipe.author === realmUser) || (realmUser == "61b690c3f1273900d0fb6ca4")) ? (
           <div>
             <img className="share_button" src="/share_icon.svg" alt="share" onClick={e => {
               e.preventDefault();

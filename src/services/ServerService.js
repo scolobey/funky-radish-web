@@ -50,6 +50,21 @@ export default class ServerService {
     return data;
   }
 
+  // https://funky-radish-api.herokuapp.com/perfect/guacamole
+  async perfectSearchRecipes(query) {
+    let endpoint = BASE_URL + "perfect/" + query
+
+    let response = await fetch(endpoint, {
+      method: 'get',
+      headers: new Headers({
+        'x-access-token': REACT_APP_API_KEY
+      })
+    })
+
+    let data = await response.json()
+    return data;
+  }
+
   // TODO: Probably deprecated
   searchAutocomplete(query) {
     return new Promise(function(resolve, reject) {

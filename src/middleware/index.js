@@ -9,6 +9,7 @@ import {
   WARNING,
   GET_RECIPE,
   EXTERNAL_RECIPE_SEARCH,
+  PERFECT_RECIPE_SEARCH,
   AUTOCOMPLETE,
   LOGOUT,
   GRAPHQL,
@@ -528,6 +529,41 @@ export function externalSearchMiddleware({ dispatch }) {
         }
 
         serverService.searchRecipes(action.query)
+        .then(res=> {
+          console.log("recipes: ", res)
+          if(res.recipes.length == 0) {
+            console.log("Sending an email to myself.")
+            let payload = {
+              query: action.query,
+              email: 'no email'
+            }
+            dispatch(requestRecipe(payload))
+          }
+
+          return dispatch(externalRecipesLoaded(res))
+        })
+        .catch(err => {
+          console.log("here's the error: " + err)
+          return dispatch(warning('Error: ' + err))
+        })
+      }
+      return next(action);
+    };
+  };
+}
+
+export function perfectSearchMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === PERFECT_RECIPE_SEARCH) {
+
+        console.log("calling perfect search: " + action.query)
+
+        if (action.query.trim().length < 1) {
+          return dispatch(externalRecipesLoaded([]))
+        }
+
+        serverService.perfectSearchRecipes(action.query)
         .then(res=> {
           console.log("recipes: ", res)
           if(res.recipes.length == 0) {

@@ -24,7 +24,7 @@ export default function SearchTrail(props) {
     if(query.length == 0) {
       query = ""
     }
-    if (path.includes("/builder")) {
+    if (path.includes("/builder") || path.includes("/perfectSearch")) {
       setTrailVisible(false)
     }
   }, []);

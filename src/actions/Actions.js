@@ -26,6 +26,7 @@ import {
   SEARCH,
   SET_IMPORT_QUEUE,
   EXTERNAL_RECIPE_SEARCH,
+  PERFECT_RECIPE_SEARCH,
   AUTOCOMPLETE,
   SET_SEARCH_SUGGESTIONS,
   IMPORT_RECIPE,
@@ -150,6 +151,10 @@ export function setImportQueue(queue) {
 
 export function externalRecipeSearch(query) {
   return { type: EXTERNAL_RECIPE_SEARCH, query }
+};
+
+export function perfectRecipeSearch(query) {
+  return { type: PERFECT_RECIPE_SEARCH, query }
 };
 
 export function autocomplete(query) {
