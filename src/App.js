@@ -48,6 +48,7 @@ const ChangePasswordView = lazy(() => import('./components/ChangePasswordView'))
 const Minter = lazy(() => import('./components/Minter'));
 const Blog = lazy(() => import('./components/Blog'));
 
+const ExtensionLandingPage = lazy(() => import('./components/ExtensionLandingPage.js'));
 const CornedBeefCountdown = lazy(() => import('./components/CornedBeefCountdown'));
 
 const Loading = () => <div className="loader">Loading...</div>;
@@ -81,6 +82,7 @@ class App extends Component {
             <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
             <Route path="/recipes/:searchQuery?" component={SearchLandingPage} />
             <Route path="/perfectSearch/:searchQuery?" component={PerfectSearchPage} />
+            <Route path="/extension-onboarding/" component={ExtensionLandingPage} />
 
             { (realmService.getUser() && realmService.getUser()["customData"]["admin"]) ? ([
               <Route path="/admin/" component={Admin} />,
