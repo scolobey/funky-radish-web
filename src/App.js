@@ -53,6 +53,10 @@ const CornedBeefCountdown = lazy(() => import('./components/CornedBeefCountdown'
 
 const Loading = () => <div className="loader">Loading...</div>;
 
+function clearRecipe() {
+  console.log("time to get rid of the recipe.");
+}
+
 class App extends Component {
   render() {
     return (
@@ -78,7 +82,7 @@ class App extends Component {
             <Route path="/privacy/" component={PrivacyPolicy} />
             <Route path="/verify/:token?" component={Verification} />
             <Route path="/builder/:recipeId?" component={Builder} />
-            <Route path="/recipe/:recipeTitle?" component={Recipe} />
+            <Route path="/recipe/:recipeTitle?" onLeave={clearRecipe} component={Recipe} />
             <Route path="/myrecipes/:recipeId?" component={MyRecipe} />
             <Route path="/recipes/:searchQuery?" component={SearchLandingPage} />
             <Route path="/perfectSearch/:searchQuery?" component={PerfectSearchPage} />

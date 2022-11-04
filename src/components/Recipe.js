@@ -53,6 +53,10 @@ export default function Recipe(props) {
     } else {
       dispatch(getRecipe(recipeIdentifier))
     }
+
+    return () => {
+      dispatch(setRecipe())
+    }
   }, []);
 
   return (recipe && recipe.title) ? (
