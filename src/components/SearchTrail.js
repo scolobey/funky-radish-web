@@ -7,7 +7,7 @@ import SearchTrailRow from './SearchTrailRow'
 // Trail Format
 
 export default function SearchTrail(props) {
-  let path = window.location.pathname
+  let path = window.location.pathname.trim().toLowerCase().replaceAll("%20"," ")
   var query = ''
 
   if (path.includes("/recipes/")) {
