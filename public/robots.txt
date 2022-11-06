@@ -10,3 +10,7 @@ Disallow: /login/
 Disallow: /signup/
 Disallow: /about/
 Disallow: /roadmap/
+
+User-Agent: Googlebot
+Allow: .js
+Allow: .css
