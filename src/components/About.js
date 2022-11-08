@@ -12,7 +12,23 @@ class About extends Component {
         </Helmet>
 
         <div className="Static-Info">
-          <h2>Most recipe apps are weighed down by images, video and useless features. Funky Radish aims to be a lightweight and reliable recipe manager that can be easily accessed from all of your devices for free. Check out our <a href='//docs.google.com/document/d/1LJDYrEtm67WId9lE8Khlx_jvb0letNNlGGbenT42gg4/edit?usp=sharing'>roadmap</a> to see exactly what's being worked on, in real time.</h2>
+
+          <h2>
+            I used to be a cook.
+            But at some point I became obsessed with building tools for Cooks.
+            Like this app for instance.
+          </h2>
+
+          <h2>
+            This is a tool for cooks.
+            You add recipes.
+            Then you can use them on any device.
+          </h2>
+
+          <h2>
+            Most recipe apps are weighed down by images, video and useless features.
+            Funky Radish is just a lightweight and reliable recipe manager. So long as your phone has battery, it works.
+          </h2>
         </div>
       </div>
     );

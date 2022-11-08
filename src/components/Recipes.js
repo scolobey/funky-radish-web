@@ -96,8 +96,7 @@ export class Recipes extends Component {
           <div className="not-logged-in-cta">
             <div className="landing-headline">
               <div className='title-wrapper'>
-                <h1>Your Recipes Deserve a Good Home</h1>
-                <h3 className="landing-sub">This is where your recipes belong. Store and edit on any device.</h3>
+                <h1>Your Recipes Deserve a Home</h1>
               </div>
             </div>
 
