@@ -22,36 +22,60 @@ function initializeReactGA() {
     ReactGA.pageview('/');
 }
 
-const Admin = lazy(() => import('./components/admin/Admin'));
-const GraphAdmin = lazy(() => import('./components/admin/Graph'));
-const RecipesAdmin = lazy(() => import('./components/admin/Recipes'));
-const UsersAdmin = lazy(() => import('./components/admin/Users'));
+const Admin = lazy(() => lazyRetry(() => import('./components/admin/Admin')) );
+const GraphAdmin = lazy(() => lazyRetry(() => import('./components/admin/Graph')) );
+const RecipesAdmin = lazy(() => lazyRetry(() => import('./components/admin/Recipes')) );
+const UsersAdmin = lazy(() => lazyRetry(() => import('./components/admin/Users')) );
 
-const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
-const RoadMap = lazy(() => import('./components/RoadMap'));
-const About = lazy(() => import('./components/About'));
-const Support = lazy(() => import('./components/Support'));
-const Builder = lazy(() => import("./components/Builder"));
-const Importer = lazy(() => import("./components/admin/Importer"));
+const PrivacyPolicy = lazy(() => lazyRetry(() => import('./components/PrivacyPolicy')) );
+const RoadMap = lazy(() => lazyRetry(() => import('./components/RoadMap')) );
+const About = lazy(() => lazyRetry(() => import('./components/About')) );
+const Support = lazy(() => lazyRetry(() => import('./components/Support')) );
+const Builder = lazy(() => lazyRetry(() => import("./components/Builder")) );
+const Importer = lazy(() => lazyRetry(() => import("./components/admin/Importer")) );
 
-const Recipes = lazy(() => import("./components/Recipes.js"));
-const Recipe = lazy(() => import("./components/Recipe.js"));
-const SearchLandingPage = lazy(() => import("./components/SearchLandingPage"));
-const PerfectSearchPage = lazy(() => import("./components/PerfectSearchPage"));
-const MyRecipe = lazy(() => import("./components/MyRecipe.js"));
-const Verification = lazy(() => import('./components/Verification.js'));
-const RecipeClaimer = lazy(() => import('./components/RecipeClaimer.js'));
+const Recipes = lazy(() => lazyRetry(() => import("./components/Recipes.js")) );
+const Recipe = lazy(() => lazyRetry(() => import("./components/Recipe.js")) );
 
-const AuthView = lazy(() => import('./components/AuthView'));
-const ChangePasswordView = lazy(() => import('./components/ChangePasswordView'));
+const SearchLandingPage = lazy(() => lazyRetry(() => import("./components/SearchLandingPage")) );
 
-const Minter = lazy(() => import('./components/Minter'));
-const Blog = lazy(() => import('./components/Blog'));
+const PerfectSearchPage = lazy(() => lazyRetry(() => import("./components/PerfectSearchPage")) );
+const MyRecipe = lazy(() => lazyRetry(() => import("./components/MyRecipe.js")) );
+const Verification = lazy(() => lazyRetry(() => import('./components/Verification.js')) );
+const RecipeClaimer = lazy(() => lazyRetry(() => import('./components/RecipeClaimer.js')) );
 
-const ExtensionLandingPage = lazy(() => import('./components/ExtensionLandingPage.js'));
-const CornedBeefCountdown = lazy(() => import('./components/CornedBeefCountdown'));
+const AuthView = lazy(() => lazyRetry(() => import('./components/AuthView')) );
+const ChangePasswordView = lazy(() => lazyRetry(() => import('./components/ChangePasswordView')) );
+
+const Minter = lazy(() => lazyRetry(() => import('./components/Minter')) );
+const Blog = lazy(() => lazyRetry(() => import('./components/Blog')) );
+
+const ExtensionLandingPage = lazy(() => lazyRetry(() => import('./components/ExtensionLandingPage.js')) );
+const CornedBeefCountdown = lazy(() => lazyRetry(() => import('./components/CornedBeefCountdown')) );
 
 const Loading = () => <div className="loader">Loading...</div>;
+
+// https://www.codemzy.com/blog/fix-chunkloaderror-react
+const lazyRetry = function(componentImport) {
+  return new Promise((resolve, reject) => {
+    // check if the window has already been refreshed
+    const hasRefreshed = JSON.parse(
+        window.sessionStorage.getItem('retry-lazy-refreshed') || 'false'
+    );
+
+    // try to import the component
+    componentImport().then((component) => {
+      window.sessionStorage.setItem('retry-lazy-refreshed', 'false');
+      resolve(component);
+    }).catch((error) => {
+      if (!hasRefreshed) {
+        window.sessionStorage.setItem('retry-lazy-refreshed', 'true');
+        return window.location.reload();
+      }
+      reject(error);
+    });
+  });
+};
 
 function clearRecipe() {
   console.log("time to get rid of the recipe.");

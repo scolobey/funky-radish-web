@@ -1,4 +1,4 @@
-import React, { Component, Suspense, lazy, useState } from 'react';
+import React, { Component, Suspense, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { toggleMenu } from "../actions/Actions";
 
