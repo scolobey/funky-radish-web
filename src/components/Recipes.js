@@ -59,10 +59,10 @@ export class Recipes extends Component {
       <div className="RecipeListContainer">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Funky Radish - Recipe Management Software for Real Cooks</title>
+          <title>Funky Radish - Professional Recipe Software</title>
           <meta name="title" content= "FunkyRadish - Home" />
-          <meta name="description" content= "With FunkyRadish you can collect, store and share recipes on any device." />
-          <meta name="keywords" content={"recipe, cook, chef, recipe developer, multiplatform, without pictures"}/>
+          <meta name="description" content= "FunkyRadish is professional recipe software for real cooks. Collect, store and share recipes quickly and easily on any device, online or offline." />
+          <meta name="keywords" content={"professional recipe software, recipe, cook, chef, recipe developer, multiplatform, without pictures"}/>
         </Helmet>
 
         <Suspense fallback=<Loading/>>
@@ -97,6 +97,7 @@ export class Recipes extends Component {
             <div className="landing-headline">
               <div className='title-wrapper'>
                 <h1>Your Recipes Deserve a Home</h1>
+                <h2>FunkyRadish - Professional Recipe Software for real cooks.</h2>
               </div>
             </div>
 

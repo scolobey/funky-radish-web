@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import { externalRecipeSearch } from "../actions/Actions";
 import BlogPost from './BlogPost';
 
+const pluralize = require('pluralize')
 const RecipeRequestView = lazy(() => import("./RecipeRequestView"));
 const ExternalRecipeList = lazy(() => import("./ExternalRecipeList"));
 
@@ -13,6 +14,10 @@ const Loading = () => <div></div>;
 export default function SearchLandingPage(props) {
 
   let searchQuery = props.match.params.searchQuery
+
+  if (pluralize.isPlural(searchQuery)) {
+    searchQuery = pluralize.singular(searchQuery)
+  }
 
   var externalRecipes = useSelector((state) => state.externalRecipes)
   var searchConfig = useSelector((state) => state.searchConfig)
@@ -31,7 +36,12 @@ export default function SearchLandingPage(props) {
       <Helmet>
         <meta charSet="utf-8" />
         <title>{searchQuery + " recipes"}</title>
-        <meta name="description" content= {searchQuery + " recipes from FunkyRadish.com"} />
+        { searchConfig && searchConfig.description ? (
+            <meta name="description" content= {searchConfig.description} />
+          ) : (
+            <meta name="description" content= {searchQuery + " recipes from FunkyRadish.com"} />
+          )
+        }
         <meta name="title" content={searchQuery + " recipes from FunkyRadish.com"} data-react-helmet="true" />
         <link rel="canonical" href={"https://www.funkyradish.com/recipes/" + searchQuery.toLowerCase().replaceAll(" ", "-")}/>
 

@@ -22,6 +22,7 @@
     "moment": "^2.29.1",
     "node-sass": "^6.0.1",
     "path": "^0.12.7",
+    "pluralize": "^8.0.0",
     "react": "^17.0.1",
     "react-color-gradient-picker": "^0.1.2",
     "react-dom": "^17.0.1",
