@@ -1,8 +1,8 @@
+import './App.scss';
+
 import React, { Component, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router-dom'
-
-import './App.scss';
 
 import Loader from "./components/Loader";
 import Warning from "./components/Warning";
@@ -53,7 +53,7 @@ const Blog = lazy(() => lazyRetry(() => import('./components/Blog')) );
 const ExtensionLandingPage = lazy(() => lazyRetry(() => import('./components/ExtensionLandingPage.js')) );
 const CornedBeefCountdown = lazy(() => lazyRetry(() => import('./components/CornedBeefCountdown')) );
 
-const Loading = () => <div className="loader">Loading...</div>;
+const Loading = () => <div></div>;
 
 // https://www.codemzy.com/blog/fix-chunkloaderror-react
 const lazyRetry = function(componentImport) {

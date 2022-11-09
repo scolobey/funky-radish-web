@@ -1,3 +1,6 @@
+@import "~@fontsource/vt323/index.css";
+@import "~@fontsource/francois-one/index.css";
+@import "~@fontsource/luckiest-guy/index.css";
 
 // Colors
 $grayLight	: #cac6c5;
@@ -11,11 +14,6 @@ $specialPink	: rgb(252,3,144);
 $specialOrange	: rgba(252,165,3,.8);
 $clearSky	: rgba(64,185,222,.6);
 $black: black;
-
-@import "~@fontsource/vt323/index.css";
-@import "~@fontsource/francois-one/index.css";
-@import "~@fontsource/luckiest-guy/index.css";
-@import "~@fontsource/irish-grover/index.css";
 
 /* Functions */
 @function cos($angle) {
@@ -143,7 +141,8 @@ $black: black;
   }
 
   .icon {
-    width: 4vw;
+    width: 50px;
+    height: 75px;
     float: left;
     height: auto;
   }
@@ -176,7 +175,6 @@ $black: black;
 
   .RecipeSearchField input {
     width: 15vw;
-    font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
     font-size: 1.2em;
     border: none;
     border-bottom: #757575 solid 2px;
@@ -783,6 +781,7 @@ $black: black;
 .not-logged-in-cta {
   flex: 50%;
   padding-left: 2%;
+  max-width: 50%;
   margin: 0;
 }
 
@@ -1711,7 +1710,6 @@ input:checked + .slider:before {
   width: 60%;
   text-align: center;
   font-size: 25px;
-  font-family: "Irish Grover";
 }
 
 @media only screen and (max-width: 600px) {

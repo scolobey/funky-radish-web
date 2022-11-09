@@ -9,7 +9,6 @@
     "@apollo/client": "^3.3.7",
     "@apollo/react-hooks": "^4.0.0",
     "@fontsource/francois-one": "^4.5.1",
-    "@fontsource/irish-grover": "^4.5.1",
     "@fontsource/luckiest-guy": "^4.5.1",
     "@fontsource/vt323": "^4.5.2",
     "core-js": "^3.8.2",

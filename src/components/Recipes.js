@@ -74,11 +74,11 @@ export class Recipes extends Component {
       </div>
     ):(
       this.props.externalRecipes? (
-        this.props.externalRecipes.length > 0 ? ([
+        this.props.externalRecipes.length > 0 ? (
           <Suspense fallback=<Loading/>>
             <ExternalRecipeList externalRecipes={this.props.externalRecipes}/>
           </Suspense>
-        ]):(
+        ):(
           <Suspense fallback=<Loading/>>
             <RecipeRequestView/>
           </Suspense>
