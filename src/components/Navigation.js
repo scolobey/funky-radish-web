@@ -4,6 +4,7 @@ import { toggleMenu } from "../actions/Actions";
 
 import Menu from './Menu';
 import SearchBar from './SearchBar';
+import FeatureBar from './FeatureBar';
 
 export default function Navigation(props) {
 
@@ -39,6 +40,9 @@ export default function Navigation(props) {
         <SearchBar/>
       </header>
 
+      <header className="footer">
+        <FeatureBar/>
+      </header>
     </div>
   )
 }

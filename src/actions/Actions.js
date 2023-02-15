@@ -37,7 +37,9 @@ import {
   RESEND_VERIFICATION,
   CLAIM_RECIPE,
   REQUEST_RECIPE,
-  SUBSCRIBE_TO_NEWSLETTER
+  SUBSCRIBE_TO_NEWSLETTER,
+  LOAD_FEATURED_RECIPES,
+  SET_FEATURED_RECIPES
 } from "../constants/action-types"
 
 /* action creators */
@@ -199,4 +201,12 @@ export function requestRecipe(payload) {
 
 export function subscribeToNewsletter(payload) {
   return { type: SUBSCRIBE_TO_NEWSLETTER, payload }
+};
+
+export function loadFeaturedRecipes(payload) {
+  return { type: LOAD_FEATURED_RECIPES, payload }
+};
+
+export function setFeaturedRecipes(payload) {
+  return { type: SET_FEATURED_RECIPES, payload }
 };

@@ -22,7 +22,8 @@ import {
   resendVerificationMiddleware,
   claimRecipelMiddleware,
   requestRecipeMiddleware,
-  subscribeToNewsletterMiddleware
+  subscribeToNewsletterMiddleware,
+  loadFeaturedRecipesMiddleware
 } from "../middleware";
 
 import thunk from "redux-thunk";
@@ -60,6 +61,7 @@ const store = createStore(
       claimRecipelMiddleware,
       requestRecipeMiddleware,
       subscribeToNewsletterMiddleware,
+      loadFeaturedRecipesMiddleware,
       thunk
   ))
 );

@@ -21,7 +21,8 @@ import {
   GET_RECIPE_TOKEN,
   CLAIM_RECIPE,
   REQUEST_RECIPE,
-  SUBSCRIBE_TO_NEWSLETTER
+  SUBSCRIBE_TO_NEWSLETTER,
+  LOAD_FEATURED_RECIPES
 } from "../constants/action-types";
 
 import {
@@ -46,7 +47,9 @@ import {
   updateUserRecord,
   sendPasswordResetEmail,
   requestRecipe,
-  subscribeToNewsletter
+  subscribeToNewsletter,
+  loadFeaturedRecipes,
+  setFeaturedRecipes
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
@@ -955,6 +958,42 @@ export function subscribeToNewsletterMiddleware({ dispatch }) {
         })
       }
 
+      return next(action);
+    };
+  };
+}
+
+export function loadFeaturedRecipesMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+
+      if (action.type === LOAD_FEATURED_RECIPES) {
+
+        console.log("callin for recipes");
+
+        return fetch("https://funky-radish-api.herokuapp.com/recentRecipes", {
+          method: 'get',
+          headers: new Headers({
+            'x-access-token': action.token
+          })
+        })
+        .then(res=> {
+          console.log("res: " + JSON.stringify(res))
+          return res.clone().json()
+        })
+        .then(json => {
+          if (json.recipes) {
+            return dispatch(setFeaturedRecipes(json.recipes));
+          } else if (json.message) {
+            return dispatch(warning(json.message));
+          } else {
+            return dispatch(warning("recent recipes error without warning."));
+          }
+        })
+        .catch(error => {
+          return dispatch(warning("Recipe load failed."));
+        });
+      }
       return next(action);
     };
   };
