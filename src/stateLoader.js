@@ -40,6 +40,8 @@ const initializeState = () => {
   let initialState = {
     recipes: [],
     filteredRecipes: [],
+    featuredRecipes: [],
+    ingredientData: [],
     menu: false,
     recipe: null,
     loader: false,
