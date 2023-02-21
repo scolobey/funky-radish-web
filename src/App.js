@@ -53,6 +53,8 @@ const Blog = lazy(() => lazyRetry(() => import('./components/Blog')) );
 const ExtensionLandingPage = lazy(() => lazyRetry(() => import('./components/ExtensionLandingPage.js')) );
 const CornedBeefCountdown = lazy(() => lazyRetry(() => import('./components/CornedBeefCountdown')) );
 
+const IngredientView = lazy(() => lazyRetry(() => import('./components/IngredientView')) );
+
 const Loading = () => <div></div>;
 
 // https://www.codemzy.com/blog/fix-chunkloaderror-react
@@ -111,7 +113,7 @@ class App extends Component {
             <Route path="/recipes/:searchQuery?" component={SearchLandingPage} />
             <Route path="/perfectSearch/:searchQuery?" component={PerfectSearchPage} />
             <Route path="/extension-onboarding/" component={ExtensionLandingPage} />
-
+            <Route path="/ingredients/:ingredientQuery?" component={IngredientView} />
             { (realmService.getUser() && realmService.getUser()["customData"]["admin"]) ? ([
               <Route path="/admin/" component={Admin} />,
               <Route path="/admin/importer/:recipeId?" component={Importer} />,

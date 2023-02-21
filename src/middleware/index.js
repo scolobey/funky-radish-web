@@ -22,7 +22,8 @@ import {
   CLAIM_RECIPE,
   REQUEST_RECIPE,
   SUBSCRIBE_TO_NEWSLETTER,
-  LOAD_FEATURED_RECIPES
+  LOAD_FEATURED_RECIPES,
+  LOAD_INGREDIENTS
 } from "../constants/action-types";
 
 import {
@@ -49,7 +50,8 @@ import {
   requestRecipe,
   subscribeToNewsletter,
   loadFeaturedRecipes,
-  setFeaturedRecipes
+  setFeaturedRecipes,
+  ingredientDataLoaded
 } from "../actions/Actions";
 
 import {v1 as uuid} from "uuid";
@@ -968,7 +970,6 @@ export function loadFeaturedRecipesMiddleware({ dispatch }) {
     return function(action) {
 
       if (action.type === LOAD_FEATURED_RECIPES) {
-
         console.log("callin for recipes");
 
         return fetch("https://funky-radish-api.herokuapp.com/recentRecipes", {
@@ -993,6 +994,41 @@ export function loadFeaturedRecipesMiddleware({ dispatch }) {
         .catch(error => {
           return dispatch(warning("Recipe load failed."));
         });
+      }
+      return next(action);
+    };
+  };
+}
+
+export function ingredientSearchMiddleware({ dispatch }) {
+  return function(next) {
+    return function(action) {
+      if (action.type === LOAD_INGREDIENTS) {
+
+        console.log("calling ingredient search: " + action.ingredientQuery)
+
+        // if (action.query.trim().length < 1) {
+        //   // return dispatch(externalRecipesLoaded([]))
+        // }
+
+        serverService.searchIngredients(action.ingredientQuery)
+        .then(res=> {
+          console.log("ing list: ", res)
+        //   if(res.recipes.length == 0) {
+        //     console.log("Sending an email to myself.")
+        //     let payload = {
+        //       query: action.query,
+        //       email: 'no email'
+        //     }
+        //     dispatch(requestRecipe(payload))
+        //   }
+
+          return dispatch(ingredientDataLoaded(res))
+        })
+        .catch(err => {
+          return dispatch(warning('Error: ' + err))
+        })
+
       }
       return next(action);
     };

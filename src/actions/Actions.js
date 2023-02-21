@@ -39,7 +39,9 @@ import {
   REQUEST_RECIPE,
   SUBSCRIBE_TO_NEWSLETTER,
   LOAD_FEATURED_RECIPES,
-  SET_FEATURED_RECIPES
+  SET_FEATURED_RECIPES,
+  LOAD_INGREDIENTS,
+  INGREDIENT_DATA_LOADED
 } from "../constants/action-types"
 
 /* action creators */
@@ -209,4 +211,12 @@ export function loadFeaturedRecipes(payload) {
 
 export function setFeaturedRecipes(payload) {
   return { type: SET_FEATURED_RECIPES, payload }
+};
+
+export function loadIngredients(ingredientQuery) {
+  return { type: LOAD_INGREDIENTS, ingredientQuery }
+};
+
+export function ingredientDataLoaded(ingredientData) {
+  return { type: INGREDIENT_DATA_LOADED, ingredientData }
 };

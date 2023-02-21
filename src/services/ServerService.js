@@ -35,6 +35,21 @@ export default class ServerService {
     return data;
   }
 
+  // https://funky-radish-api.herokuapp.com/ingredients/grated ginger
+  async searchIngredients(query) {
+    let endpoint = BASE_URL + "ingredients/" + query
+
+    let response = await fetch(endpoint, {
+      method: 'get',
+      headers: new Headers({
+        'x-access-token': REACT_APP_API_KEY
+      })
+    })
+
+    let data = await response.json()
+    return data;
+  }
+
   // https://funky-radish-api.herokuapp.com/recipes/singapore-sling
   async searchRecipes(query) {
     let endpoint = BASE_URL + "recipes/" + query.replaceAll("-", " ")

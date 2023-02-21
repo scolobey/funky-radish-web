@@ -1901,3 +1901,12 @@ input:checked + .slider:before {
 #carousel.carouselClosed {
   transform: translateY(75%);
 }
+
+.ingredientView h1 {
+  padding-left: 4vw;
+  font-family: 'Francois One';
+  color: $specialBlue;
+  @include outline($grayLight);
+  @include shade(text, #aaa, #333, 6, 135deg, true);
+  font-size: 36px;
+}

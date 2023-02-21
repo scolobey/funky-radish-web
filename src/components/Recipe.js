@@ -2,11 +2,51 @@ import React, { useState } from 'react';
 import { Helmet } from "react-helmet";
 import { useSelector, useDispatch } from 'react-redux'
 import { setRecipe, getRecipe, setRedirect } from "../actions/Actions";
+import { Link } from 'react-router-dom';
+
+import { parse } from "recipe-ingredient-parser-v3";
 
 import Popover from "./Popover";
 
 import ServerService from '../services/ServerService'
 const serverService = new ServerService();
+
+function ingredientLink(recIngredient, dataIngredient) {
+
+  const regex = new RegExp(dataIngredient.ingredient, "gi");
+
+  let ingTrain = recIngredient.split(regex)
+
+  return <span>
+    {ingTrain}<a href={"/ingredients/" + dataIngredient.ingredient}>{recIngredient.match(regex)}</a>
+  </span>
+}
+
+function ingredientLinkArray(ingArray) {
+  return ingArray.map((ingText) => {
+    let cleanedIngredient = ingText.replace(/\s+/g, ' ')
+      .replace('.', '')
+      .replace(/([0-9]+)g/, "$1 grams")
+      .replace(' parts ', ' ')
+      .replace(' part ', ' ')
+      .replace(/([a-zA-Z]+)\./, "$1 ")
+      .replace(' oz ', ' ounce ')
+      .replace(', as needed', '')
+      .replace(', optional', '')
+      .replace(' as needed', '')
+      .replace(' medium ', ' ')
+      .replace(' large ', ' ')
+      .replace(' small ', ' ')
+      .replace(' fresh ', ' ')
+      .replace(' pure ', ' ')
+      .replace('"', ' inches')
+      .replace(/ *\([\s\S]*?\)/g, '')
+      .trim()
+      .toLowerCase()
+
+    return parse(cleanedIngredient, "eng")
+  })
+}
 
 export default function Recipe(props) {
 
@@ -112,9 +152,9 @@ export default function Recipe(props) {
 
       <div className="Ingredients">
         <ul>
-          {recipe.ing.map((ingredient, index) => (
+          {ingredientLinkArray(recipe.ing).map((ingredientObject, index) => (
             <li key={index}>
-              <h2><input type="checkbox"/>{ingredient}</h2>
+              <h2><input type="checkbox"/>{ingredientLink(recipe.ing[index], ingredientObject) }</h2>
             </li>
           ))}
         </ul>
