@@ -32,27 +32,65 @@ export default function IngredientView(props) {
 
       <h1> { ings[0].name } </h1>
 
-      <div className="search_description">
-        <h2>{ ings[0].name } was detected in { ings[0].recipes.length } { ings[0].recipes.length > 1 ? ('recipes') : ('recipe')} in our database.</h2>
+      <div className="ingredient_description">
+        <h3>Typical measurements for this ingredient include: <span className="highlightedIngredient">{ ings[0].units.join(", ") }</span></h3>
 
-        <h2>Typical measurements for this ingredient include: { ings[0].units.join(", ") }</h2>
+        <h3>{ ings[0].name } was detected in <span className="highlightedIngredient">{ ings[0].recipes.length }</span> { ings[0].recipes.length > 1 ? ('recipes') : ('recipe')} in our database.</h3>
 
-        { ings.length > 1 ? (
+        { ings[0].ingredientFrequency ? (
           <div>
-            <h2>Related Ingredients:</h2>
-            <ul>
-              {ings.slice(1).map((ingredient, index) => (
-                <li key={index + "-" +ingredient.name}>
-                  {ingredient.name}
-                </li>
+            <h3>Ingredients: </h3>
+            <div className="relatedIngredients">
+              {ings[0].ingredientFrequency.reverse().map((ingTuple, index) => (
+                  <a href={"/ingredients/" + ingTuple[0]}> {ingTuple[0]} {Math.round(ingTuple[1]/ings[0].recipes.length*100)}% </a>
               ))}
-            </ul>
+            </div>
           </div>
         ) : (
           <div></div>
         )}
+
       </div>
 
+      { ings[0].recipes.length > 1 ? (
+        <div className="recipeListContainer">
+          <h3>Recipes:</h3>
+
+          <div className="ingredientRecipeList">
+            {ings[0].recipes.map((recipe, index) => (
+              <div className="ingredientRecipeListRecipe">
+              
+                <Link
+                  to={{
+                    pathname: "/recipe/" + recipe.title.toLowerCase().replaceAll(' ', '-')
+                  }}
+                >
+                  <div className="ingredientRecipeListing">
+                    {recipe.title}
+                    <ul className="featuredRecipeIngredients">
+                      {recipe.ing.map((ingredientText, index) => (
+                        <div className="recipeListIngredientList">
+                          {ingredientText.toLowerCase().includes("brown sugar") ? (
+                            <li className="highlightedIngredient">
+                              {ingredientText}
+                            </li>
+                          ) : (
+                            <li>
+                              {ingredientText}
+                            </li>
+                          )}
+                        </div>
+                      ))}
+                    </ul>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   ):(
     <div></div>

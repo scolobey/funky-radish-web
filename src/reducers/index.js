@@ -39,10 +39,10 @@ function rootReducer(state, action) {
        let recipeObject = {}
        recipeObject["_id"] = rec.id
        recipeObject["title"] = rec.title
+
        return recipeObject
     })
 
-    console.log("setting recipes to: ", recList)
     return Object.assign({}, state, {
       recipes: recList,
       filteredRecipes: recList
@@ -56,13 +56,13 @@ function rootReducer(state, action) {
        recipeObject["_id"] = rec._id
        recipeObject["title"] = rec.title
        recipeObject["author"] = rec.author
+       recipeObject["ing"] = rec.ing
+       recipeObject["dir"] = rec.dir
 
        return recipeObject
     })
 
     let searchConfig = action.searchResponse.config || {}
-
-    console.log("setting external recipes to: ", recList)
 
     // set redirect...
 

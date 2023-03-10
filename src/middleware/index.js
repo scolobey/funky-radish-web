@@ -992,7 +992,7 @@ export function loadFeaturedRecipesMiddleware({ dispatch }) {
           }
         })
         .catch(error => {
-          return dispatch(warning("Recipe load failed."));
+          return dispatch(warning("Recent recipe load failed."));
         });
       }
       return next(action);

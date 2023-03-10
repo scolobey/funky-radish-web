@@ -11,26 +11,38 @@ class ExternalRecipeListView extends Component {
 
   render() {
     return this.props.externalRecipes ? (
-      <div className="externalRecipeView">
-        <ul>
-          {this.props.externalRecipes.map((recipe, index) => (
-            // sp- is just a reference to sporctacular. If you ever add a different api, change this model.
-            // But also, sporktacular is mostly deprecated.
-            <li key={recipe._id.toString()}>
-              <Link
-                className="externalRecipeListing"
-                onClick={this.handleClick}
-                to={{
-                  pathname: "/recipe/" + recipe.title.toLowerCase().replaceAll(' ', '-'),
-                  state: {
-                    title: recipe.title,
-                    ingredients: recipe.ingredients
-                  }
-                }}
-              > {recipe.title} </Link>
-            </li>
-          ))}
-        </ul>
+      <div className="ingredientRecipeList">
+
+        {this.props.externalRecipes.map((recipe, index) => (
+          <div className="ingredientRecipeListRecipe">
+
+            <Link
+              onClick={this.handleClick}
+              to={{
+                pathname: "/recipe/" + recipe.title.toLowerCase().replaceAll(' ', '-'),
+                state: {
+                  title: recipe.title,
+                  ingredients: recipe.ingredients
+                }
+              }}
+            >
+              <div className="ingredientRecipeListing">
+                {recipe.title}
+                <ul className="featuredRecipeIngredients">
+                  {recipe.ing.map((ingredientText, index) => (
+                    <div className="recipeListIngredientList">
+                      <li>
+                        {ingredientText}
+                      </li>
+                    </div>
+                  ))}
+                </ul>
+              </div>
+            </Link>
+
+          </div>
+        ))}
+
       </div>
     ):(
       <div></div>

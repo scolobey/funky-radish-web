@@ -1910,3 +1910,97 @@ input:checked + .slider:before {
   @include shade(text, #aaa, #333, 6, 135deg, true);
   font-size: 36px;
 }
+
+.ingredientRecipeList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  scroll-snap-type: x mandatory;
+  width: 75vw;
+  margin: auto;
+  scroll-behavior: smooth;
+}
+
+.ingredientRecipeListRecipe a {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+.highlightedIngredient {
+  color: $specialPink;
+}
+
+.ingredient_description {
+  width: 75vw;
+  margin: auto;
+  padding: 15px;
+}
+
+.recipeListContainer{
+  width: 75vw;
+  margin: auto;
+}
+
+.ingredientRecipeListing {
+  text-align: center;
+  background: white;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  min-width: 100px;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  height: 100px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: 'Francois One';
+}
+
+.ingredientRecipeListing:hover {
+  box-shadow: 0 0 4px $linkHoverColorGreen;
+}
+
+.ingredientRecipeIngredients {
+  text-align: left;
+  list-style: none;
+  padding-left: 0px;
+  font-weight: normal;
+  font-size: 8px;
+}
+
+.ingredientRecipeLabel {
+  font-size: 14px;
+  padding-left: 15px;
+  font-family: 'Francois One';
+  vertical-align: middle;
+}
+
+.relatedIngredients {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  scroll-snap-type: x mandatory;
+  width: 75vw;
+  margin: auto;
+  scroll-behavior: smooth;
+  font-size: 10px;
+}
+
+.relatedIngredients a {
+  text-decoration: none;
+  text-align: center;
+  background: $white;
+  background-color: $linkHoverColorBlue;
+  box-shadow: 0 0 6px $specialPink;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 0 4px gray;
+  border-radius: 8px;
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+  color: black;
+}

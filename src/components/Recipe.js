@@ -22,6 +22,8 @@ function ingredientLink(recIngredient, dataIngredient) {
   </span>
 }
 
+// WARNING: If you change this, you have to change the backend as well.
+// Look at admin.controller.js
 function ingredientLinkArray(ingArray) {
   return ingArray.map((ingText) => {
     let cleanedIngredient = ingText.replace(/\s+/g, ' ')

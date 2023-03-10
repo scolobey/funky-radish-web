@@ -38,8 +38,13 @@ export default function FeaturedRecipeList(props) {
           {rec.map((recipe) =>
             <div className="featuredRecipeListing" key={recipe._id.toString()}>
               <Link
-                to={{ pathname: "/recipe/" + recipe.title.toLowerCase().replaceAll(' ', '-')}}
-              >
+                to={{ 
+                  pathname: "/recipe/" + recipe.title.toLowerCase().replaceAll(' ', '-'),
+                  state: {
+                    title: recipe.title,
+                    ingredients: recipe.ing
+                  }
+              }}>
                 {recipe.title}
                 <ul className="featuredRecipeIngredients">
                   {recipe.ing.map((ingredient) =>
