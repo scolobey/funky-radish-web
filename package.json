@@ -23,7 +23,6 @@
     "path": "^0.12.7",
     "pluralize": "^8.0.0",
     "react": "^17.0.1",
-    "react-color-gradient-picker": "^0.1.2",
     "react-dom": "^17.0.1",
     "react-ga": "^3.3.0",
     "react-helmet": "^6.1.0",

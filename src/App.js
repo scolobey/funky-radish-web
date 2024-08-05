@@ -47,7 +47,7 @@ const RecipeClaimer = lazy(() => lazyRetry(() => import('./components/RecipeClai
 const AuthView = lazy(() => lazyRetry(() => import('./components/AuthView')) );
 const ChangePasswordView = lazy(() => lazyRetry(() => import('./components/ChangePasswordView')) );
 
-const Minter = lazy(() => lazyRetry(() => import('./components/Minter')) );
+// const Minter = lazy(() => lazyRetry(() => import('./components/Minter')) );
 const Blog = lazy(() => lazyRetry(() => import('./components/Blog')) );
 
 const ExtensionLandingPage = lazy(() => lazyRetry(() => import('./components/ExtensionLandingPage.js')) );
@@ -129,7 +129,7 @@ class App extends Component {
             <Route path="/claimRecipe/:token?" component={RecipeClaimer} />
             <Route path="/changePassword/:token?" component={ChangePasswordView} />
             <Route path="/blog/:post?" component={Blog} />
-            <Route path="/minter" component={Minter} />
+            // <Route path="/minter" component={Minter} />
             <Route path="/corned-beef-countdown" component={CornedBeefCountdown} />
           </Suspense>
         </div>

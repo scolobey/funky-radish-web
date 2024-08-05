@@ -7,7 +7,7 @@ import { setRedirect, warning } from "../actions/Actions";
 import { Helmet } from "react-helmet";
 
 import { ColorPicker } from 'react-color-gradient-picker';
-import 'react-color-gradient-picker/dist/index.css';
+// import 'react-color-gradient-picker/dist/index.css';
 
 import myRecipeNFT from '../utils/MyRecipeNFT.json'
 
