@@ -54,6 +54,7 @@ const ExtensionLandingPage = lazy(() => lazyRetry(() => import('./components/Ext
 const CornedBeefCountdown = lazy(() => lazyRetry(() => import('./components/CornedBeefCountdown')) );
 
 const IngredientView = lazy(() => lazyRetry(() => import('./components/IngredientView')) );
+const MultiIngredientView = lazy(() => lazyRetry(() => import('./components/MultiIngredientView')) );
 
 const Loading = () => <div></div>;
 
@@ -114,6 +115,7 @@ class App extends Component {
             <Route path="/perfectSearch/:searchQuery?" component={PerfectSearchPage} />
             <Route path="/extension-onboarding/" component={ExtensionLandingPage} />
             <Route path="/ingredients/:ingredientQuery?" component={IngredientView} />
+            <Route path="/what-to-make-with/:multiIngredientQuery?" component={MultiIngredientView} />
             { (realmService.getUser() && realmService.getUser()["customData"]["admin"]) ? ([
               <Route path="/admin/" component={Admin} />,
               <Route path="/admin/importer/:recipeId?" component={Importer} />,

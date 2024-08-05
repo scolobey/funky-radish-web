@@ -8,7 +8,7 @@ import { loadIngredients, warning } from "../actions/Actions";
 
 import { Link } from 'react-router-dom';
 
-export default function IngredientView(props) {
+export default function MultiIngredientView(props) {
 
   let ingredientName = props.match.params.ingredientQuery
 
@@ -42,7 +42,7 @@ export default function IngredientView(props) {
             <h3>Ingredients: </h3>
             <div className="relatedIngredients">
               {ings[0].ingredientFrequency.reverse().map((ingTuple, index) => (
-                  <a href={"/what-to-make-with/" + ingTuple[0]}> {ingTuple[0]} {Math.round(ingTuple[1]/ings[0].recipes.length*100)}% </a>
+                  <a href={"/ingredients/" + ingTuple[0]}> {ingTuple[0]} {Math.round(ingTuple[1]/ings[0].recipes.length*100)}% </a>
               ))}
             </div>
           </div>
