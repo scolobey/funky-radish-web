@@ -47,7 +47,7 @@ export default function FeaturedRecipeList(props) {
               }}>
                 {recipe.title}
 
-                {rec.ing.length > 0 ? (
+                {rec.ing && Array.isArray(rec.ing) && rec.ing.length > 0 ? (
                   <ul className="featuredRecipeIngredients">
                     {recipe.ing.map((ingredient) =>
                       <li>
