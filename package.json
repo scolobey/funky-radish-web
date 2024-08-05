@@ -57,9 +57,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "compression-webpack-plugin": "^9.2.0",
-    "core-js": "3.8.2"
-  }
+  ]
 }
